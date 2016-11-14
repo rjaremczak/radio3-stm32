@@ -1,0 +1,7 @@
+h
+loadfile build/radio3_stm32.hex
+rnh
+sleep 1000
+connect
+sleep 1000
+exit

@@ -1,0 +1,75 @@
+/*
+ * Radio3 - general purpose tool for hams
+ * Author: Robert Jaremczak, SQ6DGT
+ *
+ * ADC library
+ * currently sets up ADC in continuous, circular mode using DMA
+ *
+ */
+
+#include <stm32f10x.h>
+#include "adc.h"
+
+#define AVG_SAMPLES 5
+
+void adc_init(void) {
+	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOA, ENABLE);
+
+	GPIO_InitTypeDef gpi;
+	gpi.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+	gpi.GPIO_Mode = GPIO_Mode_AIN;
+	gpi.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &gpi);
+
+	ADC_InitTypeDef adci;
+	adci.ADC_Mode = ADC_Mode_Independent;
+	adci.ADC_ScanConvMode = DISABLE;
+	adci.ADC_ContinuousConvMode = DISABLE;
+	adci.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	adci.ADC_DataAlign = ADC_DataAlign_Right;
+	adci.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1, &adci);
+	ADC_Cmd(ADC1, ENABLE);
+
+	ADC_ResetCalibration(ADC1);
+	while(ADC_GetResetCalibrationStatus(ADC1)) {};
+
+	ADC_StartCalibration(ADC1);
+	while(ADC_GetCalibrationStatus(ADC1)) {};
+}
+
+static uint16_t adc_readOnce(uint8_t channel) {
+	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_239Cycles5);
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}
+	return ADC_GetConversionValue(ADC1);
+}
+
+static uint16_t adc_read(uint8_t channel) {
+	uint32_t acc = adc_readOnce(channel);
+
+	for(char i=1; i<AVG_SAMPLES; i++) {
+		volatile int w = 1000;
+		while(w) { w--; }
+		acc += adc_readOnce(channel);
+	}
+
+	return acc / AVG_SAMPLES;
+}
+
+uint16_t adc_readLogarithmicProbe(void) {
+	return adc_read(ADC_Channel_0);
+}
+
+uint16_t adc_readLinearProbe(void) {
+	return adc_read(ADC_Channel_1);
+}
+
+uint16_t adc_readVnaGainValue(void) {
+	return adc_read(ADC_Channel_2);
+}
+
+uint16_t adc_readVnaPhaseValue(void) {
+	return adc_read(ADC_Channel_3);
+}
