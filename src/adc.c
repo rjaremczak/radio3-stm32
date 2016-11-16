@@ -3,7 +3,6 @@
  * Author: Robert Jaremczak, SQ6DGT
  *
  * ADC library
- * currently sets up ADC in continuous, circular mode using DMA
  *
  */
 

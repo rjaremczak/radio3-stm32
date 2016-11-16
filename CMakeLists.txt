@@ -10,6 +10,7 @@ file(GLOB_RECURSE USER_SOURCES "src/*.c" "src/*.cpp")
 file(GLOB_RECURSE SYSTEM_SOURCES "system/src/*.c" "system/src/*.cpp")
 
 include_directories(include)
+include_directories(include/usb)
 include_directories(system/include)
 include_directories(system/include/newlib)
 include_directories(system/include/cmsis)
