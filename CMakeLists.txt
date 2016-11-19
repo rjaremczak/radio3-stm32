@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${SYSTEM_SOURCES} ${LINKER_SC
 set(PROJECT_BUILD_DIR ${PROJECT_SOURCE_DIR}/build)
 set(HEX_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.hex)
 set(MAP_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.map)
+set(DUMP_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.txt)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Map=${MAP_FILE}")
 
 add_custom_command(TARGET ${PROJECT_NAME}.elf PRE_BUILD
@@ -34,3 +35,7 @@ add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
 add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
         COMMAND ${TOOLCHAIN}/bin/arm-none-eabi-size --format=berkeley $<TARGET_FILE:${PROJECT_NAME}.elf>
         COMMENT "Size information of ${HEX_FILE}")
+
+add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
+        COMMAND ${CMAKE_OBJDUMP} -S $<TARGET_FILE:${PROJECT_NAME}.elf> > ${DUMP_FILE}
+        COMMENT "Dumping objects...")

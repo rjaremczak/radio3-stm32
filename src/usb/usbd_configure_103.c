@@ -52,16 +52,6 @@ static void USBDperipheralConfigure(void) {
 
 /** USB device initialization API **/
 
-/* Call the USBpreConfigure function as early as possible after
-   microcontroller reset. The main configuration is provided later
-   in the USBconfigure function. Phy transceiver is integrated. */
-
-/*
-int USBDpreConfigure(usb_speed_t speed, __attribute__((unused)) usb_phy_t phy) {
-  return PullUpConfigure(speed);
-}
- */
-
 /* Configure USB interface.
     prio    - preemption priority
     subprio - service priority when the same prio

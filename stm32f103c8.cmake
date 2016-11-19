@@ -19,7 +19,7 @@ set(CMAKE_ASM_FLAGS_DEBUG ${DEBUG_FLAGS})
 set(CMAKE_C_FLAGS_DEBUG ${DEBUG_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG ${DEBUG_FLAGS})
 
-set(COMMON_FLAGS "-mcpu=cortex-m3 -mthumb -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra")
+set(COMMON_FLAGS "-g -mcpu=cortex-m3 -mthumb -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra")
 set(CMAKE_ASM_FLAGS "${COMMON_FLAGS} -x assembler-with-cpp")
 set(CMAKE_C_FLAGS "${COMMON_FLAGS} -std=gnu11")
 set(CMAKE_CXX_FLAGS "${COMMON_FLAGS} -std=c++11 -fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics")

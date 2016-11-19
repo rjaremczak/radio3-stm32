@@ -2,16 +2,11 @@
 #include <usb_regs.h>
 #include <usbd_api.h>
 #include <usbd_core.h>
-#include <usbd_power.h>
-#include "board.h"
 
-/** USB device interrupt handlers for STM32F102, STM32F103 and
-    STM32L1xx **/
+/** USB device interrupt handlers for STM32F102, STM32F103, STM32L1xx **/
 
 void USBglobalInterruptHandler() {
     uint16_t pending;
-
-    board_led_yellow(1);
 
     pending = _GetCNTR() & _GetISTR();
     if (pending & ISTR_CTR) {
@@ -34,32 +29,36 @@ void USBglobalInterruptHandler() {
             USBDtransfer(EPnum, PID_IN);
         }
     }
+
     if (pending & ISTR_DOVR) {
         _SetISTR(CLR_DOVR);
     }
+
     if (pending & ISTR_ERR) {
         _SetISTR(CLR_ERR);
     }
+
     if (pending & ISTR_SUSP) {
         USBDsuspend();
-        PWRreduce();
-        /* The ISTR_SUSP bit must be cleared after
-           setting of the CNTR_FSUSP bit. */
+        /* The ISTR_SUSP bit must be cleared after setting of the CNTR_FSUSP bit. */
         _SetISTR(CLR_SUSP);
     }
+
     if (pending & ISTR_WKUP) {
         _SetISTR(CLR_WKUP);
-        PWRresume();
         USBDwakeup();
     }
+
     if (pending & ISTR_RESET) {
         _SetISTR(CLR_RESET);
         USBDreset(FULL_SPEED);
     }
+
     if (pending & ISTR_SOF) {
         _SetISTR(CLR_SOF);
         USBDsof(_GetFNR() & FNR_FN);
     }
+
     if (pending & ISTR_ESOF) {
         _SetISTR(CLR_ESOF);
     }

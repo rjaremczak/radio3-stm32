@@ -16,14 +16,14 @@
 static usb_device_descriptor_t const device_descriptor = {
         sizeof(usb_device_descriptor_t), /* bLength */
         DEVICE_DESCRIPTOR,               /* bDescriptorType */
-        HTOUSBS(0x0200),                 /* bcdUSB */
+        0x0200,                          /* bcdUSB */
         COMMUNICATION_DEVICE_CLASS,      /* bDeviceClass */
         0,                               /* bDeviceSubClass */
         0,                               /* bDeviceProtocol */
         64,                              /* bMaxPacketSize0 */
-        HTOUSBS(VID),                    /* idVendor */
-        HTOUSBS(PID + 2),                /* idProduct */
-        HTOUSBS(0x0100),                 /* bcdDevice */
+        VID,                             /* idVendor */
+        PID + 2,                         /* idProduct */
+        0x0100,                          /* bcdDevice */
         1,                               /* iManufacturer */
         2,                               /* iProduct */
         3,                               /* iSerialNumber */
@@ -54,7 +54,7 @@ static usb_com_configuration_t const com_configuration = {
         {
                 sizeof(usb_configuration_descriptor_t),   /* bLength */
                 CONFIGURATION_DESCRIPTOR,                 /* bDescriptorType */
-                HTOUSBS(sizeof(usb_com_configuration_t)), /* wTotalLength */
+                sizeof(usb_com_configuration_t),          /* wTotalLength */
                 2,                                        /* bNumInterfaces */
                 1,                                        /* bConfigurationValue */
                 0,                                        /* iConfiguration */
@@ -76,7 +76,7 @@ static usb_com_configuration_t const com_configuration = {
                 sizeof(usb_cdc_header_descriptor_t), /* bFunctionLength */
                 CS_INTERFACE_DESCRIPTOR,             /* bDescriptorType */
                 CDC_HEADER_DESCRIPTOR,               /* bDescriptorSubtype */
-                HTOUSBS(0x120)                       /* bcdCDC */
+                0x120                                /* bcdCDC */
         },
         {
                 sizeof(usb_cdc_call_management_descriptor_t),/* bFunctionLength */
@@ -103,7 +103,7 @@ static usb_com_configuration_t const com_configuration = {
                 ENDPOINT_DESCRIPTOR,               /* bDescriptorType */
                 ENDP2 | ENDP_IN,                   /* bEndpointAddress */
                 INTERRUPT_TRANSFER,                /* bmAttributes */
-                HTOUSBS(INT_BUFF_SIZE),            /* wMaxPacketSize */
+                INT_BUFF_SIZE,                     /* wMaxPacketSize */
                 3                                  /* bInterval */
         },
         {
@@ -122,7 +122,7 @@ static usb_com_configuration_t const com_configuration = {
                 ENDPOINT_DESCRIPTOR,               /* bDescriptorType */
                 ENDP1 | ENDP_OUT,                  /* bEndpointAddress */
                 BULK_TRANSFER,                     /* bmAttributes */
-                HTOUSBS(BLK_BUFF_SIZE),            /* wMaxPacketSize */
+                BLK_BUFF_SIZE,                     /* wMaxPacketSize */
                 0                                  /* bInterval */
         },
         {
@@ -130,51 +130,29 @@ static usb_com_configuration_t const com_configuration = {
                 ENDPOINT_DESCRIPTOR,               /* bDescriptorType */
                 ENDP1 | ENDP_IN,                   /* bEndpointAddress */
                 BULK_TRANSFER,                     /* bmAttributes */
-                HTOUSBS(BLK_BUFF_SIZE),            /* wMaxPacketSize */
+                BLK_BUFF_SIZE,                     /* wMaxPacketSize */
                 0                                  /* bInterval */
         }
 };
 
 static usb_string_descriptor_t(1) const string_lang = {
         sizeof(usb_string_descriptor_t(1)),
-        STRING_DESCRIPTOR,
-        {HTOUSBS(LANG_US_ENGLISH)}
+        STRING_DESCRIPTOR, {LANG_US_ENGLISH}
 };
 
-static usb_string_descriptor_t(16) const string_manufacturer = {
+static usb_string_descriptor_t(12) const string_manufacturer = {
+        sizeof(usb_string_descriptor_t(12)),
+        STRING_DESCRIPTOR, {'m', 'i', 'n', 'd', 'p', 'a', 'r', 't', '.', 'c', 'o', 'm'}
+};
+
+static usb_string_descriptor_t(16) const string_product = {
         sizeof(usb_string_descriptor_t(16)),
-        STRING_DESCRIPTOR,
-        {
-                HTOUSBS('M'), HTOUSBS('a'), HTOUSBS('r'), HTOUSBS('c'),
-                HTOUSBS('i'), HTOUSBS('n'), HTOUSBS(' '), HTOUSBS('P'),
-                HTOUSBS('e'), HTOUSBS('c'), HTOUSBS('z'), HTOUSBS('a'),
-                HTOUSBS('r'), HTOUSBS('s'), HTOUSBS('k'), HTOUSBS('i')
-        }
-};
-
-static usb_string_descriptor_t(31) const string_product = {
-        sizeof(usb_string_descriptor_t(31)),
-        STRING_DESCRIPTOR,
-        {
-                HTOUSBS('U'), HTOUSBS('S'), HTOUSBS('B'), HTOUSBS(' '),
-                HTOUSBS('v'), HTOUSBS('i'), HTOUSBS('r'), HTOUSBS('t'),
-                HTOUSBS('u'), HTOUSBS('a'), HTOUSBS('l'), HTOUSBS(' '),
-                HTOUSBS('s'), HTOUSBS('e'), HTOUSBS('r'), HTOUSBS('i'),
-                HTOUSBS('a'), HTOUSBS('l'), HTOUSBS(' '), HTOUSBS('p'),
-                HTOUSBS('o'), HTOUSBS('r'), HTOUSBS('t'), HTOUSBS(' '),
-                HTOUSBS('e'), HTOUSBS('x'), HTOUSBS('a'), HTOUSBS('m'),
-                HTOUSBS('p'), HTOUSBS('l'), HTOUSBS('e')
-        }
+        STRING_DESCRIPTOR, {'r', 'a', 'd', 'i', 'o', '3', ' ', 'b', 'y', ' ', 'S', 'Q', '6', 'D', 'G', 'T'}
 };
 
 static usb_string_descriptor_t(10) const string_serial = {
         sizeof(usb_string_descriptor_t(10)),
-        STRING_DESCRIPTOR,
-        {
-                HTOUSBS('0'), HTOUSBS('0'), HTOUSBS('0'), HTOUSBS('0'),
-                HTOUSBS('0'), HTOUSBS('0'), HTOUSBS('0'), HTOUSBS('0'),
-                HTOUSBS('0'), HTOUSBS('1')
-        }
+        STRING_DESCRIPTOR, {'0', '0', '0', '0', '0', '0', '0', '0', '0', '1'}
 };
 
 typedef struct {
@@ -196,8 +174,7 @@ static int Configure(void);
 
 static uint8_t Reset(usb_speed_t);
 
-static usb_result_t GetDescriptor(uint16_t, uint16_t,
-                                  uint8_t const **, uint16_t *);
+static usb_result_t GetDescriptor(uint16_t, uint16_t, uint8_t const **, uint16_t *);
 
 static uint8_t GetConfiguration(void);
 
@@ -207,11 +184,9 @@ static uint16_t GetStatus(void);
 
 static usb_result_t ClassNoDataSetup(usb_setup_packet_t const *);
 
-static usb_result_t ClassInDataSetup(usb_setup_packet_t const *,
-                                     uint8_t const **, uint16_t *);
+static usb_result_t ClassInDataSetup(usb_setup_packet_t const *, uint8_t const **, uint16_t *);
 
-static usb_result_t ClassOutDataSetup(usb_setup_packet_t const *,
-                                      uint8_t **);
+static usb_result_t ClassOutDataSetup(usb_setup_packet_t const *, uint8_t **);
 
 static void ClassStatusIn(usb_setup_packet_t const *);
 
@@ -225,8 +200,8 @@ static usbd_callback_list_t const ApplicationCallBacks = {
         0, 0,
         ClassNoDataSetup, ClassInDataSetup,
         ClassOutDataSetup, ClassStatusIn,
-        {0, EP2IN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {EP1OUT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, EP2IN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { EP1OUT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         0, 0
 };
 
@@ -277,8 +252,7 @@ uint8_t Reset(usb_speed_t speed) {
     return device_descriptor.bMaxPacketSize0;
 }
 
-usb_result_t GetDescriptor(uint16_t wValue, uint16_t wIndex,
-                           uint8_t const **data, uint16_t *length) {
+usb_result_t GetDescriptor(uint16_t wValue, uint16_t wIndex, uint8_t const **data, uint16_t *length) {
     uint32_t index = wValue & 0xff;
 
     switch (wValue >> 8) {
@@ -321,10 +295,8 @@ usb_result_t SetConfiguration(uint16_t confValue) {
     if (confValue == com_configuration.cnf_descr.bConfigurationValue) {
         usb_result_t r1, r2;
 
-        r1 = USBDendPointConfigure(ENDP1, BULK_TRANSFER,
-                                   BLK_BUFF_SIZE, BLK_BUFF_SIZE);
-        r2 = USBDendPointConfigure(ENDP2, INTERRUPT_TRANSFER,
-                                   0, INT_BUFF_SIZE);
+        r1 = USBDendPointConfigure(ENDP1, BULK_TRANSFER, BLK_BUFF_SIZE, BLK_BUFF_SIZE);
+        r2 = USBDendPointConfigure(ENDP2, INTERRUPT_TRANSFER, 0, INT_BUFF_SIZE);
         if (r1 == REQUEST_SUCCESS && r2 == REQUEST_SUCCESS)
             return REQUEST_SUCCESS;
         else
@@ -343,14 +315,14 @@ uint16_t GetStatus() {
 }
 
 static usb_cdc_serial_state_t state = {
-        {DEVICE_TO_HOST | CLASS_REQUEST | INTERFACE_RECIPIENT,
-         SERIAL_STATE, 0, 0, 2}, 0
+        {
+                DEVICE_TO_HOST | CLASS_REQUEST | INTERFACE_RECIPIENT,
+                SERIAL_STATE, 0, 0, 2
+        }, 0
 };
 
 usb_result_t ClassNoDataSetup(usb_setup_packet_t const *setup) {
-    if (setup->bmRequestType == (HOST_TO_DEVICE |
-                                 CLASS_REQUEST |
-                                 INTERFACE_RECIPIENT) &&
+    if (setup->bmRequestType == (HOST_TO_DEVICE | CLASS_REQUEST | INTERFACE_RECIPIENT) &&
         setup->bRequest == SET_CONTROL_LINE_STATE &&
         setup->wIndex == 0 &&
         setup->wLength == 0) {
@@ -391,12 +363,8 @@ usb_result_t ClassNoDataSetup(usb_setup_packet_t const *setup) {
     return REQUEST_ERROR;
 }
 
-usb_result_t ClassInDataSetup(usb_setup_packet_t const *setup,
-                              uint8_t const **data,
-                              uint16_t *length) {
-    if (setup->bmRequestType == (DEVICE_TO_HOST |
-                                 CLASS_REQUEST |
-                                 INTERFACE_RECIPIENT) &&
+usb_result_t ClassInDataSetup(usb_setup_packet_t const *setup, uint8_t const **data, uint16_t *length) {
+    if (setup->bmRequestType == (DEVICE_TO_HOST | CLASS_REQUEST | INTERFACE_RECIPIENT) &&
         setup->bRequest == GET_LINE_CODING &&
         setup->wValue == 0 &&
         setup->wIndex == 0) {
@@ -407,11 +375,8 @@ usb_result_t ClassInDataSetup(usb_setup_packet_t const *setup,
     return REQUEST_ERROR;
 }
 
-usb_result_t ClassOutDataSetup(usb_setup_packet_t const *setup,
-                               uint8_t **data) {
-    if (setup->bmRequestType == (HOST_TO_DEVICE |
-                                 CLASS_REQUEST |
-                                 INTERFACE_RECIPIENT) &&
+usb_result_t ClassOutDataSetup(usb_setup_packet_t const *setup, uint8_t **data) {
+    if (setup->bmRequestType == (HOST_TO_DEVICE | CLASS_REQUEST | INTERFACE_RECIPIENT) &&
         setup->bRequest == SET_LINE_CODING &&
         setup->wValue == 0 &&
         setup->wIndex == 0 &&
@@ -423,9 +388,7 @@ usb_result_t ClassOutDataSetup(usb_setup_packet_t const *setup,
 }
 
 void ClassStatusIn(usb_setup_packet_t const *setup) {
-    if (setup->bmRequestType == (HOST_TO_DEVICE |
-                                 CLASS_REQUEST |
-                                 INTERFACE_RECIPIENT) &&
+    if (setup->bmRequestType == (HOST_TO_DEVICE | CLASS_REQUEST | INTERFACE_RECIPIENT) &&
         setup->bRequest == SET_LINE_CODING &&
         setup->wValue == 0 &&
         setup->wIndex == 0 &&
@@ -444,12 +407,12 @@ void EP2IN() {
 
 static uint8_t const help[] =
         "Press:\r\n"
-                "  G to switch green LED on,\r\n"
-                "  g to switch green LED off,\r\n"
-                "  R to switch red LED on,\r\n"
-                "  r to switch red LED off,\r\n"
-                "  W to switch white LED on,\r\n"
-                "  w to switch white LED off.\r\n";
+                "  G to switch yellow LED on,\r\n"
+                "  g to switch yellow LED off,\r\n"
+                "  R buzzer on,\r\n"
+                "  r buzzer off,\r\n"
+                "  W to switch green LED on,\r\n"
+                "  w to switch green LED off.\r\n";
 
 void EP1OUT() {
     uint8_t buffer[BLK_BUFF_SIZE];
