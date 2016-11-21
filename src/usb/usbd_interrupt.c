@@ -5,6 +5,22 @@
 
 /** USB device interrupt handlers for STM32F102, STM32F103, STM32L1xx **/
 
+/* Low-priority USB interrupt, triggered by all USB events */
+void USB_LP_CAN1_RX0_IRQHandler(void) {
+    USBglobalInterruptHandler();
+}
+
+/* High-priority USB interrupt, triggered only by a correct transfer
+   event for isochronous or double-buffered bulk transfer to reach the
+   highest possible transfer rate */
+void USB_HP_CAN1_TX_IRQHandler(void) {
+}
+
+/* Triggered by the wakeup event from the USB suspend mode */
+void USBWakeUp_IRQHandler(void) {
+    EXTI_ClearITPendingBit(EXTI_Line18);
+}
+
 void USBglobalInterruptHandler() {
     uint16_t pending;
 
@@ -24,8 +40,7 @@ void USBglobalInterruptHandler() {
             USBDtransfer(EPnum, PID_OUT);
         } else if (EPflags & EP_CTR_TX) {
             _ClearEP_CTR_TX(EPindex);
-            if (EPnum != 0)
-                USBDcontinueInTransfer(EPnum);
+            if (EPnum != 0) { USBDcontinueInTransfer(EPnum); }
             USBDtransfer(EPnum, PID_IN);
         }
     }

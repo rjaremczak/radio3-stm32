@@ -42,11 +42,10 @@ static usb_device_state_t DeviceState;
 int USBDcoreConfigure() {
     memset(&DeviceState, 0, sizeof(usb_device_state_t));
     DeviceState.callback = USBDgetApplicationCallbacks();
-    if (DeviceState.callback == 0)
-        return -1;
-    if (DeviceState.callback->Configure)
-        if (DeviceState.callback->Configure() < 0)
-            return -1;
+    if (DeviceState.callback == 0) { return -1; }
+    if (DeviceState.callback->Configure) {
+        if (DeviceState.callback->Configure() < 0) { return -1; }
+    }
     DeviceState.visibleState = POWERED;
     DeviceState.controlState = IDLE;
     return 0;
@@ -58,49 +57,39 @@ void USBDreset(usb_speed_t speed) {
     memset(&DeviceState.setup, 0, sizeof(usb_setup_packet_t));
     DeviceState.visibleState = DEFAULT;
     DeviceState.controlState = IDLE;
-    if (DeviceState.callback->Reset)
+    if (DeviceState.callback->Reset) {
         DeviceState.maxPacketSize0 = DeviceState.callback->Reset(speed);
-    else
+    } else {
         DeviceState.maxPacketSize0 = MAX_LS_CONTROL_PACKET_SIZE;
-    /* Default control endpoint is now configured. Set the default
-       address and enable USB function. */
+    }
+    /* Default control endpoint is now configured. Set the default address and enable USB function. */
     USBDsetDeviceAddress(SET_ADDRESS_RESET, 0);
 }
 
 void USBDsuspend() {
-    if (DeviceState.callback->Suspend)
-        DeviceState.callback->Suspend();
+    if (DeviceState.callback->Suspend) { DeviceState.callback->Suspend(); }
     DeviceState.visibleState |= SUSPENDED;
 }
 
 void USBDwakeup() {
-    if (DeviceState.callback->Wakeup)
-        DeviceState.callback->Wakeup();
+    if (DeviceState.callback->Wakeup) { DeviceState.callback->Wakeup(); }
     DeviceState.visibleState &= ~SUSPENDED;
 }
 
 void USBDsof(uint16_t frameNumber) {
-    if (DeviceState.callback->SoF)
-        DeviceState.callback->SoF(frameNumber);
+    if (DeviceState.callback->SoF) { DeviceState.callback->SoF(frameNumber); }
 }
 
 /** Transfers handling **/
 
 /* Control pipe transfer routines */
 static void Setup0(usb_device_state_t *);
-
 static void NoDataSetup0(usb_device_state_t *);
-
 static void InDataSetup0(usb_device_state_t *);
-
 static void In0(usb_device_state_t *);
-
 static void DataStageIn0(usb_device_state_t *);
-
 static void OutDataSetup0(usb_device_state_t *);
-
 static void Out0(usb_device_state_t *);
-
 static void DataStageOut0(usb_device_state_t *);
 
 /* Multiple endpoint transactions are served one by one. For every
@@ -108,8 +97,7 @@ static void DataStageOut0(usb_device_state_t *);
    USBtransfer function is called. */
 void USBDtransfer(uint8_t ep, usb_pid_t token) {
     if (ep == 0) { /* control transfer */
-        if (DeviceState.visibleState == DEFAULT ||
-            DeviceState.visibleState == ADDRESS ||
+        if (DeviceState.visibleState == DEFAULT || DeviceState.visibleState == ADDRESS ||
             DeviceState.visibleState == CONFIGURED) {
             switch (token) {
                 case PID_SETUP:
@@ -129,12 +117,10 @@ void USBDtransfer(uint8_t ep, usb_pid_t token) {
         if (DeviceState.visibleState == CONFIGURED) {
             switch (token) {
                 case PID_OUT:
-                    if (DeviceState.callback->EPout[ep - 1])
-                        DeviceState.callback->EPout[ep - 1]();
+                    if (DeviceState.callback->EPout[ep - 1]) { DeviceState.callback->EPout[ep - 1](); }
                     break;
                 case PID_IN:
-                    if (DeviceState.callback->EPin[ep - 1])
-                        DeviceState.callback->EPin[ep - 1]();
+                    if (DeviceState.callback->EPin[ep - 1]) { DeviceState.callback->EPin[ep - 1](); }
                     break;
                 default:
                     break;
@@ -156,10 +142,6 @@ void Setup0(usb_device_state_t *ds) {
         return;
     }
 
-    ds->setup.wValue = ds->setup.wValue;
-    ds->setup.wIndex = ds->setup.wIndex;
-    ds->setup.wLength = ds->setup.wLength;
-
     if (ds->setup.wLength == 0) {
         /* For SETUP without data stage the direction bit is ignored. */
         ds->setup.bmRequestType &= ~REQUEST_DIRECTION;
@@ -180,71 +162,62 @@ void NoDataSetup0(usb_device_state_t *ds) {
     if ((ds->setup.bmRequestType & REQUEST_TYPE) == STANDARD_REQUEST) {
         recipient = ds->setup.bmRequestType & REQUEST_RECIPIENT;
         if (recipient == DEVICE_RECIPIENT && ds->setup.wIndex == 0) {
-            if (ds->setup.bRequest == SET_ADDRESS &&
-                ds->setup.wValue <= 127 &&
-                (ds->visibleState == DEFAULT ||
-                 ds->visibleState == ADDRESS)) {
+            if (ds->setup.bRequest == SET_ADDRESS && ds->setup.wValue <= 127 &&
+                (ds->visibleState == DEFAULT || ds->visibleState == ADDRESS)) {
                 USBDsetDeviceAddress(SET_ADDRESS_REQUEST, ds->setup.wValue);
                 result = REQUEST_SUCCESS;
             } else if (ds->setup.bRequest == SET_CONFIGURATION &&
-                       (ds->visibleState == ADDRESS ||
-                        ds->visibleState == CONFIGURED)) {
-                if (ds->callback->SetConfiguration)
+                    (ds->visibleState == ADDRESS || ds->visibleState == CONFIGURED)) {
+
+                if (ds->callback->SetConfiguration) {
                     result = ds->callback->SetConfiguration(ds->setup.wValue);
-                if (result == REQUEST_SUCCESS &&
-                    ds->visibleState == ADDRESS &&
-                    ds->setup.wValue != 0) {
+                }
+
+                if (result == REQUEST_SUCCESS && ds->visibleState == ADDRESS && ds->setup.wValue != 0) {
                     ds->visibleState = CONFIGURED;
-                } else if (ds->visibleState == CONFIGURED &&
-                           ds->setup.wValue == 0) {
+                } else if (ds->visibleState == CONFIGURED && ds->setup.wValue == 0) {
                     ds->visibleState = ADDRESS;
                 }
             } else if (ds->setup.bRequest == SET_FEATURE &&
-                       (ds->visibleState == ADDRESS ||
-                        ds->visibleState == CONFIGURED) &&
-                       ds->setup.wValue == DEVICE_REMOTE_WAKEUP) {
-                if (ds->callback->SetDeviceFeature)
+                    (ds->visibleState == ADDRESS || ds->visibleState == CONFIGURED) &&
+                    ds->setup.wValue == DEVICE_REMOTE_WAKEUP) {
+                if (ds->callback->SetDeviceFeature) {
                     result = ds->callback->SetDeviceFeature(ds->setup.wValue);
-            } else if (ds->setup.bRequest == SET_FEATURE &&
-                       ds->setup.wValue == TEST_MODE) {
+                }
+            } else if (ds->setup.bRequest == SET_FEATURE && ds->setup.wValue == TEST_MODE) {
+
                 /* TODO: Implementation of the device TEST_MODE feature */
-            } else if (ds->setup.bRequest == CLEAR_FEATURE &&
-                       (ds->visibleState == ADDRESS ||
-                        ds->visibleState == CONFIGURED)) {
-                if (ds->callback->ClearDeviceFeature)
+
+            } else if (ds->setup.bRequest == CLEAR_FEATURE && (ds->visibleState == ADDRESS || ds->visibleState == CONFIGURED)) {
+                if (ds->callback->ClearDeviceFeature) {
                     result = ds->callback->ClearDeviceFeature(ds->setup.wValue);
+                }
             }
         } else if (recipient == INTERFACE_RECIPIENT) {
-            if (ds->setup.bRequest == SET_INTERFACE &&
-                ds->visibleState == CONFIGURED) {
-                if (ds->callback->SetInterface)
-                    result = ds->callback->SetInterface(ds->setup.wIndex,
-                                                        ds->setup.wValue);
-            } else if (ds->setup.bRequest == SET_FEATURE ||
-                       ds->setup.bRequest == CLEAR_FEATURE) {
+            if (ds->setup.bRequest == SET_INTERFACE && ds->visibleState == CONFIGURED) {
+                if (ds->callback->SetInterface) {
+                    result = ds->callback->SetInterface(ds->setup.wIndex, ds->setup.wValue);
+                }
+            } else if (ds->setup.bRequest == SET_FEATURE || ds->setup.bRequest == CLEAR_FEATURE) {
                 /* There are no feature selectors for interface recipient. */
                 result = REQUEST_ERROR;
             }
         } else if (recipient == ENDPOINT_RECIPIENT &&
-                   ((ds->visibleState == ADDRESS &&
-                     ds->setup.wIndex == 0) ||
-                    ds->visibleState == CONFIGURED)) {
-            if (ds->setup.bRequest == SET_FEATURE &&
-                ds->setup.wValue == ENDPOINT_HALT) {
+                   ((ds->visibleState == ADDRESS && ds->setup.wIndex == 0) || ds->visibleState == CONFIGURED)) {
+            if (ds->setup.bRequest == SET_FEATURE && ds->setup.wValue == ENDPOINT_HALT) {
                 result = USBDsetEndPointHalt(ds->setup.wIndex);
-            } else if (ds->setup.bRequest == CLEAR_FEATURE &&
-                       ds->setup.wValue == ENDPOINT_HALT) {
+            } else if (ds->setup.bRequest == CLEAR_FEATURE && ds->setup.wValue == ENDPOINT_HALT) {
                 result = USBDclearEndPointHalt(ds->setup.wIndex);
             }
         }
     } else if ((ds->setup.bmRequestType & REQUEST_TYPE) != STD_REQ) {
-        if (ds->callback->ClassNoDataSetup)
+        if (ds->callback->ClassNoDataSetup) {
             result = ds->callback->ClassNoDataSetup(&ds->setup);
+        }
     }
 
     if (result == REQUEST_SUCCESS) {
-        /* No data - go to the IN status stage.
-           Send zero length data packet. */
+        /* No data - go to the IN status stage. Send zero length data packet. */
         ds->controlState = WAIT_STATUS_IN;
         USBDwrite0(0, 0);
         USBDendPoint0RxSTALL();
@@ -264,19 +237,16 @@ void InDataSetup0(usb_device_state_t *ds) {
 
     result = REQUEST_ERROR;
 
-    if ((ds->setup.bmRequestType == IN_STD_REQ_DEV ||
-         ds->setup.bmRequestType == IN_STD_REQ_IF) &&
+    if ((ds->setup.bmRequestType == IN_STD_REQ_DEV || ds->setup.bmRequestType == IN_STD_REQ_IF) &&
         ds->setup.bRequest == GET_DESCRIPTOR) {
-        if (ds->callback->GetDescriptor)
-            result = ds->callback->GetDescriptor(ds->setup.wValue,
-                                                 ds->setup.wIndex,
-                                                 &ds->txdata,
-                                                 &ds->length);
+        if (ds->callback->GetDescriptor) {
+            result = ds->callback->GetDescriptor(ds->setup.wValue, ds->setup.wIndex, &ds->txdata, &ds->length);
+        }
     } else if (ds->setup.bmRequestType == IN_STD_REQ_DEV &&
-               ds->setup.bRequest == GET_STATUS &&
-               ds->setup.wValue == 0 &&
-               ds->setup.wIndex == 0 &&
-               ds->setup.wLength == 2) {
+            ds->setup.bRequest == GET_STATUS &&
+            ds->setup.wValue == 0 &&
+            ds->setup.wIndex == 0 &&
+            ds->setup.wLength == 2) {
         if (ds->callback->GetStatus) {
             buffer16 = ds->callback->GetStatus();
             ds->txdata = (uint8_t const *) &buffer16;
@@ -292,18 +262,17 @@ void InDataSetup0(usb_device_state_t *ds) {
         ds->length = 2;
         result = REQUEST_SUCCESS;
     } else if (ds->setup.bmRequestType == IN_STD_REQ_EP &&
-               ds->setup.bRequest == GET_STATUS &&
-               ds->setup.wValue == 0 &&
-               ds->setup.wLength == 2) {
+            ds->setup.bRequest == GET_STATUS &&
+            ds->setup.wValue == 0 &&
+            ds->setup.wLength == 2) {
         result = USBDgetEndPointStatus(ds->setup.wIndex, &buffer16);
-        buffer16 = buffer16;
         ds->txdata = (uint8_t const *) &buffer16;
         ds->length = 2;
     } else if (ds->setup.bmRequestType == IN_STD_REQ_DEV &&
-               ds->setup.bRequest == GET_CONFIGURATION &&
-               ds->setup.wValue == 0 &&
-               ds->setup.wIndex == 0 &&
-               ds->setup.wLength == 1) {
+            ds->setup.bRequest == GET_CONFIGURATION &&
+            ds->setup.wValue == 0 &&
+            ds->setup.wIndex == 0 &&
+            ds->setup.wLength == 1) {
         if (ds->visibleState == ADDRESS) {
             buffer8 = 0;
             ds->txdata = &buffer8;
@@ -318,25 +287,26 @@ void InDataSetup0(usb_device_state_t *ds) {
             }
         }
     } else if (ds->setup.bmRequestType == IN_STD_REQ_IF &&
-               ds->setup.bRequest == GET_INTERFACE &&
-               ds->setup.wValue == 0 &&
-               ds->setup.wLength == 1 &&
-               ds->visibleState == CONFIGURED) {
+            ds->setup.bRequest == GET_INTERFACE &&
+            ds->setup.wValue == 0 &&
+            ds->setup.wLength == 1 &&
+            ds->visibleState == CONFIGURED) {
         if (ds->callback->GetInterface) {
             result = ds->callback->GetInterface(ds->setup.wIndex, &buffer8);
             ds->txdata = &buffer8;
             ds->length = 1;
         }
     } else if (ds->setup.bmRequestType == IN_STD_REQ_EP &&
-               ds->setup.bRequest == SYNCH_FRAME &&
-               ds->setup.wValue == 0 &&
-               ds->setup.wLength == 2) {
-        /* TODO: Implementation of the endpoint SYNCH_FRAME request */
+            ds->setup.bRequest == SYNCH_FRAME &&
+            ds->setup.wValue == 0 &&
+            ds->setup.wLength == 2) {
+
+            /* TODO: Implementation of the endpoint SYNCH_FRAME request */
+
     } else if ((ds->setup.bmRequestType & REQUEST_TYPE) != STD_REQ) {
-        if (ds->callback->ClassInDataSetup)
-            result = ds->callback->ClassInDataSetup(&ds->setup,
-                                                    &ds->txdata,
-                                                    &ds->length);
+        if (ds->callback->ClassInDataSetup) {
+            result = ds->callback->ClassInDataSetup(&ds->setup, &ds->txdata, &ds->length);
+        }
     }
 
     if (result == REQUEST_SUCCESS) {

@@ -316,12 +316,13 @@ uint16_t USBDwrite(uint8_t ep, uint8_t const *buff, uint16_t count) {
         return 0;
     }
 
-    if (count > endPointTxSize[ep])
-        count = endPointTxSize[ep];
-    if (buff)
+    if (count > endPointTxSize[ep]) { count = endPointTxSize[ep]; }
+
+    if (buff) {
         LowLevelWrite(pma_offset, buff, count);
-    else
+    } else {
         count = 0;
+    }
 
     /* Update the data length in the control register. */
     if (configured & configuredDblBuffEndPoints) {

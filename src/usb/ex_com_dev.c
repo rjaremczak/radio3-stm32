@@ -1,10 +1,8 @@
 #include "board_usb_def.h"
-#include "usb_endianness.h"
 #include "usb_vid_pid.h"
 #include "usbd_api.h"
 #include "usbd_callbacks.h"
 #include "error.h"
-#include "board.h"
 
 #include <stdio.h>
 
@@ -42,13 +40,6 @@ typedef struct {
     usb_endpoint_descriptor_t ep1out_descr;
     usb_endpoint_descriptor_t ep1in_descr;
 } __packed usb_com_configuration_t;
-
-#ifndef USB_BM_ATTRIBUTES
-#define USB_BM_ATTRIBUTES  (SELF_POWERED | D7_RESERVED)
-#endif
-#ifndef USB_B_MAX_POWER
-#define USB_B_MAX_POWER  1
-#endif
 
 static usb_com_configuration_t const com_configuration = {
         {
@@ -171,27 +162,16 @@ static uint32_t const stringCount = sizeof(strings) / sizeof(strings[0]);
 /** Callbacks **/
 
 static int Configure(void);
-
 static uint8_t Reset(usb_speed_t);
-
 static usb_result_t GetDescriptor(uint16_t, uint16_t, uint8_t const **, uint16_t *);
-
 static uint8_t GetConfiguration(void);
-
 static usb_result_t SetConfiguration(uint16_t);
-
 static uint16_t GetStatus(void);
-
 static usb_result_t ClassNoDataSetup(usb_setup_packet_t const *);
-
 static usb_result_t ClassInDataSetup(usb_setup_packet_t const *, uint8_t const **, uint16_t *);
-
 static usb_result_t ClassOutDataSetup(usb_setup_packet_t const *, uint8_t **);
-
 static void ClassStatusIn(usb_setup_packet_t const *);
-
 static void EP1OUT(void);
-
 static void EP2IN(void);
 
 static usbd_callback_list_t const ApplicationCallBacks = {
@@ -208,7 +188,7 @@ static usbd_callback_list_t const ApplicationCallBacks = {
 /** COM implementation **/
 
 static uint16_t ep2queue;
-static uint8_t configuration, refresh, rs232state;
+static uint8_t configuration, rs232state;
 static usb_cdc_line_coding_t rs232coding;
 
 /* rs232state bits */
@@ -226,7 +206,6 @@ static void ResetState(void) {
     rs232coding.bParityType = NO_PARITY;
     rs232coding.bDataBits = 8;
     rs232state = 0;
-    refresh = 1;
 }
 
 usbd_callback_list_t const *USBDgetApplicationCallbacks() {
@@ -245,9 +224,9 @@ uint8_t Reset(usb_speed_t speed) {
     /* Default control endpoint must be configured here. */
     if (USBDendPointConfigure(ENDP0, CONTROL_TRANSFER,
                               device_descriptor.bMaxPacketSize0,
-                              device_descriptor.bMaxPacketSize0) !=
-        REQUEST_SUCCESS)
+                              device_descriptor.bMaxPacketSize0) != REQUEST_SUCCESS) {
         ErrorResetable(-1, 7);
+    }
 
     return device_descriptor.bMaxPacketSize0;
 }
@@ -297,10 +276,11 @@ usb_result_t SetConfiguration(uint16_t confValue) {
 
         r1 = USBDendPointConfigure(ENDP1, BULK_TRANSFER, BLK_BUFF_SIZE, BLK_BUFF_SIZE);
         r2 = USBDendPointConfigure(ENDP2, INTERRUPT_TRANSFER, 0, INT_BUFF_SIZE);
-        if (r1 == REQUEST_SUCCESS && r2 == REQUEST_SUCCESS)
+        if (r1 == REQUEST_SUCCESS && r2 == REQUEST_SUCCESS) {
             return REQUEST_SUCCESS;
-        else
+        } else {
             return REQUEST_ERROR;
+        }
     }
 
     return REQUEST_SUCCESS; /* confValue == 0 */
@@ -308,10 +288,11 @@ usb_result_t SetConfiguration(uint16_t confValue) {
 
 uint16_t GetStatus() {
     /* Current power setting should be reported. */
-    if (com_configuration.cnf_descr.bmAttributes & SELF_POWERED)
+    if (com_configuration.cnf_descr.bmAttributes & SELF_POWERED) {
         return STATUS_SELF_POWERED;
-    else
+    } else {
         return 0;
+    }
 }
 
 static usb_cdc_serial_state_t state = {
@@ -328,7 +309,7 @@ usb_result_t ClassNoDataSetup(usb_setup_packet_t const *setup) {
         setup->wLength == 0) {
         uint8_t new_rs232state;
 
-        /* Host do device: DTR or RTS notification */
+        /* Host to device: DTR or RTS notification */
         new_rs232state = rs232state;
         if (setup->wValue & 1) /* DTR set */
             new_rs232state |= (DTR | DSR | DCD);
@@ -355,7 +336,6 @@ usb_result_t ClassNoDataSetup(usb_setup_packet_t const *setup) {
         /* Set new state. */
         if (rs232state != new_rs232state) {
             rs232state = new_rs232state;
-            refresh = 1;
         }
 
         return REQUEST_SUCCESS;
@@ -393,16 +373,12 @@ void ClassStatusIn(usb_setup_packet_t const *setup) {
         setup->wValue == 0 &&
         setup->wIndex == 0 &&
         setup->wLength == sizeof(rs232coding)) {
-        refresh = 1;
     }
 }
 
 void EP2IN() {
-    if (ep2queue > 0)
-        --ep2queue;
-    if (ep2queue > 0)
-        USBDwrite(ENDP2, (uint8_t const *) &state, sizeof(state));
-    refresh = 1;
+    if (ep2queue > 0) { --ep2queue; }
+    if (ep2queue > 0) { USBDwrite(ENDP2, (uint8_t const *) &state, sizeof(state)); }
 }
 
 static uint8_t const help[] =

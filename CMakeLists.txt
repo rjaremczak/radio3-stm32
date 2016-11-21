@@ -36,6 +36,6 @@ add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
         COMMAND ${TOOLCHAIN}/bin/arm-none-eabi-size --format=berkeley $<TARGET_FILE:${PROJECT_NAME}.elf>
         COMMENT "Size information of ${HEX_FILE}")
 
-add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
-        COMMAND ${CMAKE_OBJDUMP} -S $<TARGET_FILE:${PROJECT_NAME}.elf> > ${DUMP_FILE}
-        COMMENT "Dumping objects...")
+#add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
+#        COMMAND ${CMAKE_OBJDUMP} -S $<TARGET_FILE:${PROJECT_NAME}.elf> > ${DUMP_FILE}
+#        COMMENT "Dumping objects...")
