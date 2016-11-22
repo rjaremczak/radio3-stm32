@@ -9,47 +9,42 @@
  */
 
 #include "datalink.h"
-#include "usart.h"
+#include "iodev.h"
 #include "crc.h"
 
 static volatile uint8_t status = DATALINK_STATUS_OK;
 
 static void write_word(uint8_t *crc, uint16_t word) {
-	usart_writeword(word);
+    iodev_writeWord(word);
 	crc8_word(crc, word);
 }
 
 static void write_byte(uint8_t *crc, uint8_t byte) {
-	usart_writeword(byte);
+    iodev_writeWord(byte);
 	crc8_word(crc, byte);
 }
 
 static uint16_t read_word(uint8_t *crc) {
-	uint16_t word = usart_readword();
-	if(usart_error()) { return 0; }
+	uint16_t word = iodev_readWord();
+	if(iodev_error()) { return 0; }
 
 	crc8_word(crc, word);
 	return word;
 }
 
 static uint8_t read_byte(uint8_t *crc) {
-	uint8_t byte = usart_readbyte();
-	if(usart_error()) { return 0; }
+	uint8_t byte = iodev_read();
+	if(iodev_error()) { return 0; }
 
 	crc8_byte(crc, byte);
 	return byte;
 }
 
 void datalink_init(void) {
-	usart_init();
 }
 
 inline uint8_t datalink_error(void) {
 	return status != DATALINK_STATUS_OK;
-}
-
-inline uint8_t datalink_statusCode(void) {
-	return status;
 }
 
 int datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
@@ -65,10 +60,10 @@ int datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
 	}
 
 	if(size > 0) {
-		usart_writebuf(payload, size);
+        iodev_writeBuf(payload, size);
 		crc8_buf(&crc, payload, size);
 	}
-	usart_writebyte(crc);
+	iodev_write(crc);
 	return 0;
 }
 
@@ -77,8 +72,8 @@ void datalink_readFrame(struct datalink_frame *frame, uint8_t *payloadBuf, uint1
 
 	uint8_t crc = 0;
 	uint16_t header = read_word(&crc);
-	if(usart_error()) {
-		status = DATALINK_USART_ERROR;
+	if(iodev_error()) {
+		status = DATALINK_IODEV_ERROR;
 		return;
 	}
 
@@ -92,20 +87,20 @@ void datalink_readFrame(struct datalink_frame *frame, uint8_t *payloadBuf, uint1
 	} else {
 		frame->payloadSize = read_word(&crc) + 270;
 	}
-	if(usart_error()) {
-		status = DATALINK_USART_ERROR;
+	if(iodev_error()) {
+		status = DATALINK_IODEV_ERROR;
 		return;
 	}
 
 	uint16_t size = frame->payloadSize > maxPayloadSize ? maxPayloadSize : frame->payloadSize;
 	if(size > 0) {
-		usart_readbuf(payloadBuf, size);
-		if(usart_error()) { return; }
+        iodev_readBuf(payloadBuf, size);
+		if(iodev_error()) { return; }
 		crc8_buf(&crc, payloadBuf, size);
 	}
-	uint8_t receivedCrc = usart_readbyte();
-	if(usart_error()) {
-		status = DATALINK_USART_ERROR;
+	uint8_t receivedCrc = iodev_read();
+	if(iodev_error()) {
+		status = DATALINK_IODEV_ERROR;
 		return;
 	}
 
@@ -118,5 +113,5 @@ void datalink_readFrame(struct datalink_frame *frame, uint8_t *payloadBuf, uint1
 }
 
 uint8_t datalink_isIncomingData(void) {
-	return usart_isReadDataReady();
+	return iodev_canRead();
 }

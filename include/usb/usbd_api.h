@@ -42,4 +42,9 @@ void     USBDendPoint0RxVALID(void);
 void     USBDendPoint0TxSTALL(void);
 void     USBDendPoint0RxSTALL(void);
 
+/** own functions **/
+
+uint8_t usbd_isWriteInProgress(uint8_t);
+void usbd_clearWriteInProgress(uint8_t);
+
 #endif

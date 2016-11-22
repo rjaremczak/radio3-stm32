@@ -3,7 +3,7 @@
 #include <irq.h>
 #include <usbd_configure.h>
 
-void usbd_main(void) {
+void usbd_init(void) {
     int sysclk = 72;
     Delay(2000000);
     IRQprotectionConfigure();

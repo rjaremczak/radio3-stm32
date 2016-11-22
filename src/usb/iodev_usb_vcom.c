@@ -3,6 +3,7 @@
 #include "usbd_api.h"
 #include "usbd_callbacks.h"
 #include "error.h"
+#include "iodev.h"
 
 #include <stdio.h>
 
@@ -171,7 +172,10 @@ static usb_result_t ClassNoDataSetup(usb_setup_packet_t const *);
 static usb_result_t ClassInDataSetup(usb_setup_packet_t const *, uint8_t const **, uint16_t *);
 static usb_result_t ClassOutDataSetup(usb_setup_packet_t const *, uint8_t **);
 static void ClassStatusIn(usb_setup_packet_t const *);
+
+static void EP1IN(void);
 static void EP1OUT(void);
+
 static void EP2IN(void);
 
 static usbd_callback_list_t const ApplicationCallBacks = {
@@ -180,7 +184,7 @@ static usbd_callback_list_t const ApplicationCallBacks = {
         0, 0,
         ClassNoDataSetup, ClassInDataSetup,
         ClassOutDataSetup, ClassStatusIn,
-        { 0, EP2IN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { EP1IN, EP2IN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { EP1OUT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         0, 0
 };
@@ -381,48 +385,87 @@ void EP2IN() {
     if (ep2queue > 0) { USBDwrite(ENDP2, (uint8_t const *) &state, sizeof(state)); }
 }
 
-static uint8_t const help[] =
-        "Press:\r\n"
-                "  G to switch yellow LED on,\r\n"
-                "  g to switch yellow LED off,\r\n"
-                "  R buzzer on,\r\n"
-                "  r buzzer off,\r\n"
-                "  W to switch green LED on,\r\n"
-                "  w to switch green LED off.\r\n";
+void EP1IN() {
+    usbd_clearWriteInProgress(ENDP1);
+}
+
+// -------------------- iodev implementation --------------------------
+
+static uint8_t buffer[BLK_BUFF_SIZE];
+static volatile uint8_t buffer_write_pos = 0;
+static volatile uint8_t buffer_read_pos = 0;
+
+static uint8_t error = 0;
+static uint32_t timeout;
+static const uint8_t read_timeout_ms = 200;
+
+extern volatile uint32_t currentTime;
 
 void EP1OUT() {
-    uint8_t buffer[BLK_BUFF_SIZE];
-    uint16_t i, len;
+    if(buffer_read_pos == buffer_write_pos) {
+        buffer_read_pos = 0;
+        buffer_write_pos = 0;
+    }
 
-    len = USBDread(ENDP1, buffer, BLK_BUFF_SIZE);
-    for (i = 0; i < len; ++i) {
-        switch (buffer[i]) {
-            case 'G':
-                board_led_yellow(1);
-                break;
-            case 'g':
-                board_led_yellow(0);
-                break;
-            case 'R':
-                board_buzzer(1);
-                break;
-            case 'r':
-                board_buzzer(0);
-                break;
-            case 'W':
-                board_led_green(1);
-                break;
-            case 'w':
-                board_led_green(0);
-                break;
-            case ' ':
-            case '\n':
-            case '\r':
-            case '\t':
-                break;
-            default:
-                USBDwriteEx(ENDP1, help, sizeof(help) - 1);
-                return;
+    uint8_t len = (uint8_t) USBDread(ENDP1, buffer + buffer_write_pos, BLK_BUFF_SIZE - buffer_write_pos);
+    buffer_write_pos += len;
+}
+
+void usbd_init(void);
+
+void iodev_init(void) {
+    usbd_init();
+}
+
+uint8_t iodev_canRead(void) {
+    return buffer_read_pos < buffer_write_pos;
+}
+
+uint8_t iodev_error(void) {
+    return error;
+}
+
+void iodev_write(uint8_t byte) {
+    while(usbd_isWriteInProgress(ENDP1)) {}
+    USBDwrite(ENDP1, &byte, 1);
+}
+
+uint8_t iodev_read(void) {
+    timeout = currentTime + read_timeout_ms;
+
+    while(buffer_read_pos >= buffer_write_pos) {
+        if(currentTime > timeout) {
+            error = 1;
+            return 0;
         }
+    }
+
+    return buffer[buffer_read_pos++];
+}
+
+uint16_t iodev_readWord(void) {
+    uint8_t low = iodev_read();
+    if(iodev_error()) { return 0; }
+
+    uint8_t high = iodev_read();
+    if(iodev_error()) { return 0; }
+
+    return (high << 8) + low;
+}
+
+void iodev_writeWord(uint16_t word) {
+    iodev_write(word & 0xFF);
+    iodev_write((word >> 8) & 0xFF);
+}
+
+void iodev_writeBuf(uint8_t *buf, uint16_t size) {
+    while(usbd_isWriteInProgress(ENDP1)) {}
+    USBDwriteEx(ENDP1, buf, size);
+}
+
+void iodev_readBuf(uint8_t *buf, uint16_t size) {
+    while(size--) {
+        *buf++ = iodev_read();
+        if(iodev_error()) { return; }
     }
 }

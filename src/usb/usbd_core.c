@@ -1,5 +1,4 @@
 #include <string.h>
-#include <usb_endianness.h>
 #include <usbd_api.h>
 #include <usbd_callbacks.h>
 #include <usbd_core.h>

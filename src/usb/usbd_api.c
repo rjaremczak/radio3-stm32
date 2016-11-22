@@ -52,12 +52,11 @@ static uint16_t endPointCount = 0;
 /** Library private API **/
 
 static uint8_t const *pTxBuffer[USB_EP_MAX_COUNT];
+static uint8_t txWriteInProgress[USB_EP_MAX_COUNT];
 static uint32_t txBufferCount[USB_EP_MAX_COUNT];
 
 void USBDcontinueInTransfer(uint8_t ep) {
-    uint32_t count;
-
-    count = txBufferCount[ep];
+    uint32_t count = txBufferCount[ep];
     if (count > 0) {
         if (count > endPointTxSize[ep]) { count = endPointTxSize[ep]; }
         USBDwrite(ep, pTxBuffer[ep], count);
@@ -80,6 +79,7 @@ void USBDdisableAllNonControlEndPoints() {
         endPointRxIndex[i] = endPointTxIndex[i] = endPointTxSize[i] = 0;
         pTxBuffer[i] = 0;
         txBufferCount[i] = 0;
+        txWriteInProgress[i] = 0;
     }
     endPointCount = 1;
     configuredRxEndPoints &= 1;
@@ -114,6 +114,7 @@ usb_result_t USBDendPointConfigure(uint8_t endPoint, usb_transfer_t type, uint16
             /* Reset TX buffer. */
             pTxBuffer[0] = 0;
             txBufferCount[0] = 0;
+            txWriteInProgress[0] = 0;
 
             /* Assume the default control endpoint is configired first. */
             _SetBTABLE(0);
@@ -262,8 +263,7 @@ static void LowLevelWrite(uint32_t pma_offset, uint8_t const *buffer, uint32_t c
         pma[n] = buffer[n];
 }
 
-/* Copy data from the packet memory area (PMA)
-   to a buffer in the user memory.
+/* Copy data from the packet memory area (PMA) to a buffer in user memory.
     pma_offset - source offset in the PMA
     buffer     - destination pointer
     count      - the number of bytes to be copied */
@@ -277,12 +277,10 @@ static void LowLevelRead(uint32_t pma_offset, uint8_t *buffer, uint32_t count) {
     buffer16 = (uint16_t *) buffer;
 
     n = count & ~1;
-    for (i = 0; i < n; i += 2)
-        buffer16[i >> 1] = pma[i];
-    /* If the buffer contains an odd number of bytes,
-       we copy the last one. */
-    if (n < count)
-        buffer[n] = pma[n];
+    for (i = 0; i < n; i += 2) { buffer16[i >> 1] = pma[i]; }
+
+    /* If the buffer contains an odd number of bytes, we copy the last one. */
+    if (n < count) { buffer[n] = pma[n]; }
 }
 
 /** Microcontroller independent endpoint API **/
@@ -316,6 +314,8 @@ uint16_t USBDwrite(uint8_t ep, uint8_t const *buff, uint16_t count) {
         return 0;
     }
 
+    txWriteInProgress[ep] = 1;
+
     if (count > endPointTxSize[ep]) { count = endPointTxSize[ep]; }
 
     if (buff) {
@@ -337,6 +337,14 @@ uint16_t USBDwrite(uint8_t ep, uint8_t const *buff, uint16_t count) {
     }
 
     return count;
+}
+
+uint8_t usbd_isWriteInProgress(uint8_t ep) {
+    return txWriteInProgress[ep] || pTxBuffer[ep];
+}
+
+void usbd_clearWriteInProgress(uint8_t ep) {
+    txWriteInProgress[ep] = 0;
 }
 
 /* Write data to the selected endpoint. Arbitrary number of packets
@@ -362,16 +370,14 @@ uint32_t USBDwriteEx(uint8_t ep, uint8_t const *buff, uint32_t count) {
 
 /* Read data from the selected endpoint.
     ep          - endpoint number
-    buff        - a pointer to data buffer where a received
-                  data are to stored to
+    buff        - a pointer to data buffer where a received data are to stored to
     buffer_size - the size of the destination buffer in bytes
    Return the number of bytes copied. */
 uint16_t USBDread(uint8_t ep, uint8_t *buff, uint16_t buffer_size) {
     uint32_t pma_offset;
     uint16_t copied_data, configured, endp_index;
 
-    /* The "if" anf "else if" statements are false,
-       when ep >= USB_EP_MAX_COUNT. */
+    /* The "if" and "else if" statements are false, when ep >= USB_EP_MAX_COUNT. */
     configured = configuredRxEndPoints & (1 << ep);
     endp_index = endPointRxIndex[ep];
     if (configured & configuredDblBuffEndPoints) {
@@ -389,15 +395,11 @@ uint16_t USBDread(uint8_t ep, uint8_t *buff, uint16_t buffer_size) {
         return 0;
 
     /* Prevent from a buffer overflow. */
-    if (copied_data > buffer_size)
-        copied_data = buffer_size;
-    if (buff)
-        LowLevelRead(pma_offset, buff, copied_data);
+    if (copied_data > buffer_size) { copied_data = buffer_size; }
+    if (buff) { LowLevelRead(pma_offset, buff, copied_data); }
 
-    /* Receiver of the isochronous double buffered endpoint is always in
-       the valid state. */
-    if ((configured & configuredDblBuffEndPoints) == 0)
-        _SetEPRxStatus(endp_index, EP_RX_VALID);
+    /* Receiver of the isochronous double buffered endpoint is always in the valid state. */
+    if ((configured & configuredDblBuffEndPoints) == 0) { _SetEPRxStatus(endp_index, EP_RX_VALID); }
 
     return buff ? copied_data : 0;
 }

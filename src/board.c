@@ -30,15 +30,15 @@ void board_init() {
     GPIO_SetBits(GPIOB, gpi.GPIO_Pin);
 }
 
-void board_integrated_led(uint8_t on) {
+void board_ledOnModule(uint8_t on) {
 	GPIO_WriteBit(LED_GPIO, LED_BOARD_PIN, LED_BIT_ACTION(on));
 }
 
-void board_led_green(uint8_t on) {
+void board_ledGreen(uint8_t on) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_13, LED_BIT_ACTION(on));
 }
 
-void board_led_yellow(uint8_t on) {
+void board_ledYellow(uint8_t on) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_14, LED_BIT_ACTION(on));
 }
 

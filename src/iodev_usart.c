@@ -6,17 +6,20 @@
  *
  */
 
-#include "usart.h"
+#include "iodev.h"
+#include <stm32f10x.h>
 
 #define READ_TIMEOUT_MS 200
 #define USART USART3
+#define USART_STATUS_OK		0
+#define USART_TIMEOUT		2
 
 extern volatile uint32_t currentTime;
 
 static uint8_t status = USART_STATUS_OK;
 static uint32_t timeout;
 
-void usart_init(void) {
+void iodev_init(void) {
 
 	// enable clock for IO components
 
@@ -47,24 +50,20 @@ void usart_init(void) {
     USART_Cmd(USART, ENABLE);
 }
 
-inline uint8_t usart_isReadDataReady(void) {
+inline uint8_t iodev_can_read(void) {
 	return USART_GetFlagStatus(USART, USART_FLAG_RXNE) != RESET;
 }
 
-inline uint8_t usart_error(void) {
+inline uint8_t iodev_error(void) {
 	return status != USART_STATUS_OK;
 }
 
-inline uint8_t usart_statusCode(void) {
-	return status;
-}
-
-void usart_writebyte(uint8_t byte) {
+void iodev_write(uint8_t byte) {
     USART_SendData(USART, byte);
     while (USART_GetFlagStatus(USART, USART_FLAG_TXE) == RESET) {}
 }
 
-uint8_t usart_readbyte(void) {
+uint8_t iodev_read(void) {
 	timeout = currentTime + READ_TIMEOUT_MS;
     while (USART_GetFlagStatus(USART, USART_FLAG_RXNE) == RESET) {
     	if(currentTime > timeout) {
@@ -76,30 +75,31 @@ uint8_t usart_readbyte(void) {
     return USART_ReceiveData(USART);
 }
 
-uint16_t usart_readword(void) {
-	uint8_t low = usart_readbyte();
-	if(status != USART_STATUS_OK) { return 0; }
+uint16_t usart_readWord(void) {
+    uint8_t low = usart_readbyte();
+    if(status != USART_STATUS_OK) { return 0; }
 
-	uint8_t high = usart_readbyte();
-	if(status != USART_STATUS_OK) { return 0; }
+    uint8_t high = usart_readbyte();
+    if(status != USART_STATUS_OK) { return 0; }
 
-	return (high << 8) + low;
+    return (high << 8) + low;
 }
 
-void usart_writeword(uint16_t word) {
-	usart_writebyte(word & 0xFF);
-	usart_writebyte((word >> 8) & 0xFF);
+void usart_writeWord(uint16_t word) {
+    usart_writebyte(word & 0xFF);
+    usart_writebyte((word >> 8) & 0xFF);
 }
 
-void usart_writebuf(uint8_t *buf, uint16_t size) {
-	while(size--) {
-		usart_writebyte(*buf++);
-	}
+void usart_writeBuf(uint8_t *buf, uint16_t size) {
+    while(size--) {
+        usart_writebyte(*buf++);
+    }
 }
 
-void usart_readbuf(uint8_t *buf, uint16_t size) {
-	while(size--) {
-		*buf++ = usart_readbyte();
-		if(status != USART_STATUS_OK) { return; }
-	}
+void usart_readBuf(uint8_t *buf, uint16_t size) {
+    while(size--) {
+        *buf++ = usart_readbyte();
+        if(status != USART_STATUS_OK) { return; }
+    }
 }
+

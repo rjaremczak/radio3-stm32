@@ -7,9 +7,9 @@
 #define _BOARD_H_
 
 void board_init(void);
-void board_integrated_led(uint8_t);
-void board_led_green(uint8_t);
-void board_led_yellow(uint8_t);
+void board_ledOnModule(uint8_t);
+void board_ledGreen(uint8_t);
+void board_ledYellow(uint8_t);
 void board_buzzer(uint8_t);
 
 #endif

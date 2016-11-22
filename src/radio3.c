@@ -9,13 +9,12 @@
 #include <ad985x.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <iodev.h>
 #include "buildid.h"
 #include "radio3.h"
 #include "fmeter.h"
-#include "radio3.h"
 #include "board.h"
 #include "datalink.h"
-#include "usart.h"
 #include "adc.h"
 #include "cortexm/ExceptionHandlers.h"
 
@@ -141,7 +140,7 @@ static struct DeviceInfo deviceInfo = {
         .vfo = {.name = "DDS AD9851", .minFreq = 0L, .maxFreq = 70000000L},
         .fMeter = {.name = "STM32@72MHz", .minFreq = 0L, .maxFreq = 35000000L},
         .logProbe = {
-                .name = "AD9307",
+                .name = "AD8307",
                 .minValue = 372, .maxValue = 3351, // 0.3 V - 2.7 V
                 .minDBm = -74, .maxDBm = 16 // -75 dBm - 16 dBm
         },
@@ -334,8 +333,6 @@ void SysTick_Handler(void) {
 
 void radio3_init() {
     snprintf(deviceInfo.buildId, 31, "%s", BUILD_ID);
-    board_init();
-    datalink_init();
     ad985x_init();
     ad985x_setFrequency(0);
     systick_init();
@@ -355,9 +352,12 @@ static void handleIncomingFrame(void) {
         case DEVICE_RESET:
             radio3_init();
             break;
+
         case DEVICE_INFO:
             cmdGetDeviceInfo();
+            board_ledYellow(0);
             break;
+
         case DEVICE_STATE:
             cmdGetDeviceState();
             break;
@@ -365,6 +365,7 @@ static void handleIncomingFrame(void) {
         case VFO_GET_FREQ:
             cmdGetVfoFrequency();
             break;
+
         case VFO_SET_FREQ:
             cmdSetVfoFrequency(payload);
             break;
@@ -372,21 +373,27 @@ static void handleIncomingFrame(void) {
         case LOGPROBE_GET:
             cmdSampleLogarithmicProbe();
             break;
+
         case LINPROBE_GET:
             cmdSampleLinearProbe();
             break;
+
         case CMPPROBE_GET:
             cmdSampleComplexProbe();
             break;
+
         case FMETER_GET:
             cmdSampleFMeter();
             break;
+
         case PROBES_GET:
             cmdSampleProbes();
             break;
+
         case PROBES_START_SAMPLING:
             deviceState.probesSampling = 1;
             break;
+
         case PROBES_STOP_SAMPLING:
             deviceState.probesSampling = 0;
             break;
@@ -397,6 +404,7 @@ static void handleIncomingFrame(void) {
 
         default:
             sendError(ERROR_INVALID_FRAME);
+            board_ledYellow(1);
     }
 }
 
@@ -416,20 +424,20 @@ static void handleDataSampling(void) {
 void radio3_start() {
     while (1) {
         handleDataSampling();
-        board_integrated_led(1);
-        board_led_green(1);
+        board_ledOnModule(1);
+        board_ledGreen(1);
         if (datalink_isIncomingData()) {
-            board_integrated_led(0);
-            board_led_green(0);
+            board_ledOnModule(0);
+            board_ledGreen(0);
             handleIncomingFrame();
         }
     }
 }
 
-void usbd_main(void);
-
 void main(void) {
-    usbd_main();
+    board_init();
+    iodev_init();
+    datalink_init();
     radio3_init();
     radio3_start();
 }

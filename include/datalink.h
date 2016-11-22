@@ -10,7 +10,7 @@
 
 #define DATALINK_STATUS_OK		0
 #define DATALINK_CRC_ERROR		1
-#define DATALINK_USART_ERROR	2
+#define DATALINK_IODEV_ERROR	2
 
 struct datalink_frame {
 	uint8_t format;

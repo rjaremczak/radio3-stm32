@@ -15,7 +15,7 @@ void OnProjectLoad (void) {
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("1 MHz");
   Project.AddSvdFile ("Cortex-M3.svd");
-  Project.AddSvdFile ("/Applications/SEGGER/Ozone/Ozone.app/Contents/MacOS/Config/Peripherals/STM32F407IG.svd");
+  File.Open ("/Users/robert/Projects/mindpart/radio3-stm32/build/Debug/radio3_stm32.elf");
 }
 
 /*********************************************************************
