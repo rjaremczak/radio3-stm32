@@ -386,7 +386,7 @@ void EP2IN() {
 }
 
 void EP1IN() {
-    usbd_clearWriteInProgress(ENDP1);
+    usbd_write_finished(ENDP1);
 }
 
 // -------------------- iodev implementation --------------------------
@@ -417,11 +417,11 @@ void iodev_init(void) {
     usbd_init();
 }
 
-uint8_t iodev_canRead(void) {
+inline uint8_t iodev_read_data_ready(void) {
     return buffer_read_pos < buffer_write_pos;
 }
 
-uint8_t iodev_error(void) {
+inline uint8_t iodev_error(void) {
     return error;
 }
 
@@ -433,7 +433,7 @@ void iodev_write(uint8_t byte) {
 uint8_t iodev_read(void) {
     timeout = currentTime + read_timeout_ms;
 
-    while(buffer_read_pos >= buffer_write_pos) {
+    while(!iodev_read_data_ready()) {
         if(currentTime > timeout) {
             error = 1;
             return 0;
@@ -443,7 +443,7 @@ uint8_t iodev_read(void) {
     return buffer[buffer_read_pos++];
 }
 
-uint16_t iodev_readWord(void) {
+uint16_t iodev_read_word(void) {
     uint8_t low = iodev_read();
     if(iodev_error()) { return 0; }
 
@@ -453,17 +453,17 @@ uint16_t iodev_readWord(void) {
     return (high << 8) + low;
 }
 
-void iodev_writeWord(uint16_t word) {
+void iodev_write_word(uint16_t word) {
     iodev_write(word & 0xFF);
     iodev_write((word >> 8) & 0xFF);
 }
 
-void iodev_writeBuf(uint8_t *buf, uint16_t size) {
+void iodev_write_buf(uint8_t *buf, uint16_t size) {
     while(usbd_isWriteInProgress(ENDP1)) {}
     USBDwriteEx(ENDP1, buf, size);
 }
 
-void iodev_readBuf(uint8_t *buf, uint16_t size) {
+void iodev_read_buf(uint8_t *buf, uint16_t size) {
     while(size--) {
         *buf++ = iodev_read();
         if(iodev_error()) { return; }

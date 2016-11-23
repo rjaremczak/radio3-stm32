@@ -343,7 +343,7 @@ uint8_t usbd_isWriteInProgress(uint8_t ep) {
     return txWriteInProgress[ep] || pTxBuffer[ep];
 }
 
-void usbd_clearWriteInProgress(uint8_t ep) {
+void usbd_write_finished(uint8_t ep) {
     txWriteInProgress[ep] = 0;
 }
 
