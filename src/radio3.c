@@ -196,6 +196,33 @@ static void logPrintf(char *format, ...) {
     sendData(LOG_MESSAGE, stdioBuf, len);
 }
 
+static void relay_dds_wait_and_idle(void) {
+    waitMs(10);
+    board_dds_relay(0,0);
+}
+
+static void relay_dds_vna(void) {
+    board_dds_relay(1,0);
+    relay_dds_wait_and_idle();
+}
+
+static void relay_dds_vfo(void) {
+    board_dds_relay(0,1);
+    relay_dds_wait_and_idle();
+}
+
+static void set_dds_relay(uint16_t source) {
+    switch(source) {
+        case LOG_PROBE:
+        case LIN_PROBE:
+            relay_dds_vfo();
+            break;
+        case VNA:
+            relay_dds_vna();
+            break;
+    }
+}
+
 static void performAnalysis(struct AnalyserRequest *req) {
     analyserData.freqStart = req->freqStart;
     analyserData.freqStep = req->freqStep;
@@ -255,11 +282,11 @@ static void cmdAnalyserStart(uint8_t *payload) {
     if (analyserState != ANALYSER_BUSY) {
         struct AnalyserRequest *req = (struct AnalyserRequest *) payload;
         uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf("start analyzer from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps,
-                  req->source);
+        logPrintf("start analyzer from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps, req->source);
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS &&
             req->freqStart >= deviceInfo.vfo.minFreq && freqEnd <= deviceInfo.vfo.maxFreq) {
             setAndSendAnalyserState(ANALYSER_BUSY);
+            set_dds_relay(req->source);
             performAnalysis(req);
             sendAnalyserData();
             setAndSendAnalyserState(ANALYSER_IDLE);
@@ -424,10 +451,8 @@ static void handleDataSampling(void) {
 void radio3_start() {
     while (1) {
         handleDataSampling();
-        board_ledOnModule(1);
         board_ledGreen(1);
         if (datalink_isIncomingData()) {
-            board_ledOnModule(0);
             board_ledGreen(0);
             handleIncomingFrame();
         }
@@ -436,8 +461,12 @@ void radio3_start() {
 
 void main(void) {
     board_init();
+    board_ledYellow(1);
+
     iodev_init();
     datalink_init();
     radio3_init();
+
+    board_ledYellow(0);
     radio3_start();
 }
