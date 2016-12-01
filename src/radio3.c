@@ -71,11 +71,10 @@ struct Complex {
 };
 
 struct DeviceState {
-    uint8_t padding;
     uint8_t probesSampling;
     uint16_t samplingPeriodMs;
     uint32_t timeMs;
-};
+} __packed;
 
 struct LogProbeInfo {
     char name[16];
