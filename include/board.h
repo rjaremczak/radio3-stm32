@@ -10,6 +10,6 @@ void board_init(void);
 void board_ledOnModule(uint8_t);
 void board_ledGreen(uint8_t);
 void board_ledYellow(uint8_t);
-void board_dds_relay(uint8_t, uint8_t);
+void board_ddsRelay(uint8_t, uint8_t);
 
 #endif

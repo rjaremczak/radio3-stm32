@@ -20,46 +20,48 @@
 
 #define MAX_PAYLOAD_SIZE        16
 #define TICKS_PER_SECOND        100
-#define MS_PER_TICK                10
+#define MS_PER_TICK             10
 
 #define DEVICE_RESET            0x000
-#define DEVICE_INFO                0x001
+#define DEVICE_INFO             0x001
 #define DEVICE_STATE            0x002
 
 #define VFO_GET_FREQ            0x008
 #define VFO_SET_FREQ            0x009
-#define VFO_ERROR            0x00f
+#define VFO_ERROR               0x00f
 
 #define LOGPROBE_GET            0x010
-#define LOGPROBE_INFO            0x016
-#define LOGPROBE_ERROR        0x017
+#define LOGPROBE_INFO           0x016
+#define LOGPROBE_ERROR          0x017
 
 #define LINPROBE_GET            0x018
-#define LINPROBE_ERROR        0x01f
+#define LINPROBE_ERROR          0x01f
 
 #define CMPPROBE_GET            0x020
-#define CMPPROBE_ERROR        0x027
+#define CMPPROBE_ERROR          0x027
 
-#define FMETER_GET                0x028
+#define FMETER_GET              0x028
 #define FMETER_ERROR            0x02f
 
-#define PROBES_GET                0x030
-#define PROBES_START_SAMPLING    0x031
+#define PROBES_GET              0x030
+#define PROBES_START_SAMPLING   0x031
 #define PROBES_STOP_SAMPLING    0x032
+#define SET_DDS_RALAY_VFO       0x033
+#define SET_DDS_RALAY_VNA       0x034
 
 #define ANALYSER_REQUEST        0x040
-#define ANALYSER_STOP            0x041
-#define ANALYSER_STATE            0x042
-#define ANALYSER_DATA            0x043
+#define ANALYSER_STOP           0x041
+#define ANALYSER_STATE          0x042
+#define ANALYSER_DATA           0x043
 
 #define ANALYSER_HEADER_SIZE    12
-#define ANALYSER_MAX_STEPS        1000
-#define ANALYSER_MAX_SERIES        2
+#define ANALYSER_MAX_STEPS      1000
+#define ANALYSER_MAX_SERIES     2
 
-#define ERROR_INVALID_FRAME        0x3fe
-#define LOG_MESSAGE                0x3ff
+#define ERROR_INVALID_FRAME     0x3fe
+#define LOG_MESSAGE             0x3ff
 
-#define STDIO_BUF_SIZE            128
+#define STDIO_BUF_SIZE          128
 
 volatile uint32_t currentTime = 0;
 
@@ -196,29 +198,29 @@ static void logPrintf(char *format, ...) {
     sendData(LOG_MESSAGE, stdioBuf, len);
 }
 
-static void relay_dds_wait_and_idle(void) {
+static void ddsRelay_commit(void) {
     waitMs(10);
-    board_dds_relay(0,0);
+    board_ddsRelay(0, 0);
 }
 
-static void relay_dds_vna(void) {
-    board_dds_relay(1,0);
-    relay_dds_wait_and_idle();
+static void ddsRelay_vna(void) {
+    board_ddsRelay(1, 0);
+    ddsRelay_commit();
 }
 
-static void relay_dds_vfo(void) {
-    board_dds_relay(0,1);
-    relay_dds_wait_and_idle();
+static void ddsRelay_vfo(void) {
+    board_ddsRelay(0, 1);
+    ddsRelay_commit();
 }
 
-static void set_dds_relay(uint16_t source) {
+static void ddsRelay_set(uint16_t source) {
     switch(source) {
         case LOG_PROBE:
         case LIN_PROBE:
-            relay_dds_vfo();
+            ddsRelay_vfo();
             break;
         case VNA:
-            relay_dds_vna();
+            ddsRelay_vna();
             break;
     }
 }
@@ -286,7 +288,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS &&
             req->freqStart >= deviceInfo.vfo.minFreq && freqEnd <= deviceInfo.vfo.maxFreq) {
             setAndSendAnalyserState(ANALYSER_BUSY);
-            set_dds_relay(req->source);
+            ddsRelay_set(req->source);
             performAnalysis(req);
             sendAnalyserData();
             setAndSendAnalyserState(ANALYSER_IDLE);
@@ -297,7 +299,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
 }
 
 static void cmdGetVfoFrequency(void) {
-    uint32_t frequency = ad985x_getFrequency();
+    uint32_t frequency = ad985x_frequency();
     datalink_writeFrame(VFO_GET_FREQ, &frequency, sizeof(frequency));
 }
 
@@ -423,6 +425,14 @@ static void handleIncomingFrame(void) {
 
         case PROBES_STOP_SAMPLING:
             deviceState.probesSampling = 0;
+            break;
+
+        case SET_DDS_RALAY_VFO:
+            ddsRelay_vfo();
+            break;
+
+        case SET_DDS_RALAY_VNA:
+            ddsRelay_vna();
             break;
 
         case ANALYSER_REQUEST:

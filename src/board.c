@@ -44,7 +44,7 @@ void board_ledYellow(uint8_t on) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_14, LED_BIT_ACTION(on));
 }
 
-void board_dds_relay(uint8_t pin1, uint8_t pin10) {
+void board_ddsRelay(uint8_t pin1, uint8_t pin10) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_15, LED_BIT_ACTION(pin1));
     GPIO_WriteBit(GPIOB, GPIO_Pin_12, LED_BIT_ACTION(pin10));
 }

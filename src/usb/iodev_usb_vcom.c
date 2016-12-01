@@ -417,7 +417,7 @@ void iodev_init(void) {
     usbd_init();
 }
 
-inline uint8_t iodev_read_data_ready(void) {
+inline uint8_t iodev_incomingData(void) {
     return buffer_read_pos < buffer_write_pos;
 }
 
@@ -433,7 +433,7 @@ void iodev_write(uint8_t byte) {
 uint8_t iodev_read(void) {
     timeout = currentTime + read_timeout_ms;
 
-    while(!iodev_read_data_ready()) {
+    while(!iodev_incomingData()) {
         if(currentTime > timeout) {
             error = 1;
             return 0;
@@ -443,7 +443,7 @@ uint8_t iodev_read(void) {
     return buffer[buffer_read_pos++];
 }
 
-uint16_t iodev_read_word(void) {
+uint16_t iodev_readWord(void) {
     uint8_t low = iodev_read();
     if(iodev_error()) { return 0; }
 

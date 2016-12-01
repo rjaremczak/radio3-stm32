@@ -25,7 +25,7 @@ static void write_byte(uint8_t *crc, uint8_t byte) {
 }
 
 static uint16_t read_word(uint8_t *crc) {
-	uint16_t word = iodev_read_word();
+	uint16_t word = iodev_readWord();
 	if(iodev_error()) { return 0; }
 
 	crc8_word(crc, word);
@@ -113,5 +113,5 @@ void datalink_readFrame(struct datalink_frame *frame, uint8_t *payloadBuf, uint1
 }
 
 inline uint8_t datalink_isIncomingData(void) {
-	return iodev_read_data_ready();
+	return iodev_incomingData();
 }

@@ -10,6 +10,6 @@
 
 void ad985x_init(void);
 void ad985x_setFrequency(uint32_t);
-uint32_t ad985x_getFrequency(void);
+uint32_t ad985x_frequency(void);
 
 #endif
