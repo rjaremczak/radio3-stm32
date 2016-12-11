@@ -11,12 +11,12 @@
 
 static uint32_t counter = 0;
 
-inline static void reset_timer_counters(void) {
+inline static void reset_timer_counters() {
 	TIM_SetCounter(TIM1, 0);
 	TIM_SetCounter(TIM2, 0);
 }
 
-void fmeter_init(void) {
+void fmeter_init() {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
@@ -53,11 +53,11 @@ void fmeter_init(void) {
 	TIM_Cmd(TIM2, ENABLE);
 }
 
-uint32_t fmeter_read(void) {
+uint32_t fmeter_read() {
 	return counter;
 }
 
-void fmeter_timebase(void) {
+void fmeter_timebase() {
 	counter = (TIM_GetCounter(TIM2) << 16) | TIM_GetCounter(TIM1);
 	TIM_SetCounter(TIM1, 0);
 	TIM_SetCounter(TIM2, 0);

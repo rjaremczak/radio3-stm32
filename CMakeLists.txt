@@ -17,16 +17,16 @@ file(GLOB_RECURSE SYSTEM_SOURCES "system/src/*.c" "system/src/*.cpp")
 file(GLOB_RECURSE LIB_SOURCES "src/usb/*.c")
 
 set(USER_SOURCES
-        src/datalink.c
-        src/adc.c
-        src/ad985x.c
-        src/board.c
-        src/crc.c
-        src/error.c
-        src/fmeter.c
-        src/radio3.c
+        src/datalink.cpp
+        src/adc.cpp
+        src/ad985x.cpp
+        src/board.cpp
+        src/crc.cpp
+        src/delay.cpp
+        src/fmeter.cpp
+        src/radio3.cpp
         #        src/iodev_usart.c
-        )
+        src/usb/usbd_error.cpp)
 
 set(PROJECT_BUILD_DIR ${PROJECT_SOURCE_DIR}/build)
 set(HEX_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.hex)

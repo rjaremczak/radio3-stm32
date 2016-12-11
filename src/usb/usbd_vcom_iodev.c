@@ -2,7 +2,7 @@
 #include "usb_vid_pid.h"
 #include "usbd_api.h"
 #include "usbd_callbacks.h"
-#include "error.h"
+#include "usbd_error.h"
 #include "iodev.h"
 
 #include <stdio.h>
@@ -222,14 +222,14 @@ int Configure() {
 }
 
 uint8_t Reset(usb_speed_t speed) {
-    ErrorResetable(speed == FULL_SPEED ? 0 : -1, 6);
+    if(speed != FULL_SPEED) { usbd_resetableError(6); }
     ResetState();
 
     /* Default control endpoint must be configured here. */
     if (USBDendPointConfigure(ENDP0, CONTROL_TRANSFER,
                               device_descriptor.bMaxPacketSize0,
                               device_descriptor.bMaxPacketSize0) != REQUEST_SUCCESS) {
-        ErrorResetable(-1, 7);
+        usbd_resetableError(7);
     }
 
     return device_descriptor.bMaxPacketSize0;
@@ -458,14 +458,15 @@ void iodev_write_word(uint16_t word) {
     iodev_write((word >> 8) & 0xFF);
 }
 
-void iodev_write_buf(uint8_t *buf, uint16_t size) {
+void iodev_write_buf(void *buf, uint16_t size) {
     while(usbd_isWriteInProgress(ENDP1)) {}
     USBDwriteEx(ENDP1, buf, size);
 }
 
-void iodev_read_buf(uint8_t *buf, uint16_t size) {
+void iodev_read_buf(void *buf, uint16_t size) {
+    uint8_t *bytePtr = (uint8_t *)buf;
     while(size--) {
-        *buf++ = iodev_read();
+        *bytePtr++ = iodev_read();
         if(iodev_error()) { return; }
     }
 }

@@ -11,7 +11,7 @@
 
 #define AVG_SAMPLES 5
 
-void adc_init(void) {
+void adc_init() {
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOA, ENABLE);
 
@@ -54,21 +54,21 @@ static uint16_t adc_read(uint8_t channel) {
 		acc += adc_readOnce(channel);
 	}
 
-	return acc / AVG_SAMPLES;
+	return (uint16_t) (acc / AVG_SAMPLES);
 }
 
-uint16_t adc_readLogarithmicProbe(void) {
+uint16_t adc_readLogarithmicProbe() {
 	return adc_read(ADC_Channel_0);
 }
 
-uint16_t adc_readLinearProbe(void) {
+uint16_t adc_readLinearProbe() {
 	return adc_read(ADC_Channel_1);
 }
 
-uint16_t adc_readVnaGainValue(void) {
+uint16_t adc_readVnaGainValue() {
 	return adc_read(ADC_Channel_2);
 }
 
-uint16_t adc_readVnaPhaseValue(void) {
+uint16_t adc_readVnaPhaseValue() {
 	return adc_read(ADC_Channel_3);
 }

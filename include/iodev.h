@@ -5,6 +5,10 @@
 #ifndef RADIO3_STM32_IODEV_H
 #define RADIO3_STM32_IODEV_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 // methods must be provided by a concrete implementation
@@ -18,8 +22,12 @@ uint8_t iodev_read(void);
 // methods implemented in generic way
 
 uint16_t iodev_readWord(void);
-void iodev_read_buf(uint8_t *, uint16_t);
+void iodev_read_buf(void *, uint16_t);
 void iodev_write_word(uint16_t);
-void iodev_write_buf(uint8_t *, uint16_t);
+void iodev_write_buf(void *, uint16_t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //RADIO3_STM32_IODEV_H

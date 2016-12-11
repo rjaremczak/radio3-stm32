@@ -8,6 +8,7 @@
 
 #include <stm32f10x.h>
 #include <board.h>
+#include <delay.h>
 
 #define LED_BIT_ACTION(on)	(on ? Bit_RESET : Bit_SET)
 
@@ -47,4 +48,19 @@ void board_ledYellow(uint8_t on) {
 void board_ddsRelay(uint8_t pin1, uint8_t pin10) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_15, LED_BIT_ACTION(pin1));
     GPIO_WriteBit(GPIOB, GPIO_Pin_12, LED_BIT_ACTION(pin10));
+}
+
+void board_indicateError(uint8_t times) {
+    static const unsigned delayTime = 3000000U;
+
+    int i;
+
+    board_ledYellow(0);
+    for (i = 0; i < times; ++i) {
+        delay(delayTime);
+        board_ledYellow(1);
+        delay(delayTime);
+        board_ledYellow(0);
+    }
+    delay(9U * delayTime);
 }

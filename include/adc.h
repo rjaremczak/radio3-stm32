@@ -6,10 +6,18 @@
 #ifndef _ADC_H_
 #define _ADC_H_
 
-void adc_init(void);
-uint16_t adc_readLogarithmicProbe(void);
-uint16_t adc_readLinearProbe(void);
-uint16_t adc_readVnaGainValue(void);
-uint16_t adc_readVnaPhaseValue(void);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void adc_init();
+uint16_t adc_readLogarithmicProbe();
+uint16_t adc_readLinearProbe();
+uint16_t adc_readVnaGainValue();
+uint16_t adc_readVnaPhaseValue();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

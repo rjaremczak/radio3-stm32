@@ -1,5 +1,5 @@
 #include <delay.h>
 
-void Delay(volatile unsigned count) {
+void delay(volatile unsigned count) {
   while (count--);
 }

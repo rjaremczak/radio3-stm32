@@ -5,7 +5,7 @@
 
 void usbd_init(void) {
     int sysclk = 72;
-    Delay(2000000);
+    delay(2000000);
     IRQprotectionConfigure();
     USBDconfigure(MIDDLE_IRQ_PRIO, 0, sysclk);
 }

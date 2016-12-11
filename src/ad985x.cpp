@@ -21,20 +21,22 @@
 #define PIN_RESET		GPIO_Pin_6
 
 #ifdef DDS_AD9850
-	#define XTAL			125000000U
-	#define CONTROL_W0		0x00
+static const auto XTAL = 125000000U;
+static const auto CONTROL_W0 = 0x00;
 #endif
 
 #ifdef DDS_AD9851
-	#define XTAL			180000000U
-	#define CONTROL_W0		0x01
+static const auto XTAL = 180000000U;
+static const auto CONTROL_W0 = 0x01;
 #endif
 
-#define CALC_FREQ(hz)	((hz * 4294967296U) / XTAL)
+static uint32_t calcFreq(uint32_t hz) {
+    return (uint32_t)((hz * 4294967296U) / XTAL);
+}
 
 static volatile uint32_t current_frequency = 0;
 
-static void wait(void) {
+static void wait() {
 	volatile int i=4;
 	while(i) { i--; }
 }
@@ -48,16 +50,16 @@ static void pulse(uint16_t pin) {
 
 static void send_byte(uint8_t data) {
 	for(int i=0; i<8; i++) {
-		GPIO_WriteBit(GPIO_PORT, PIN_DATA, data & 0x01);
+		GPIO_WriteBit(GPIO_PORT, PIN_DATA, static_cast<BitAction>(data & 0x01));
 		pulse(PIN_WCLK);
 		data >>= 1;
 	}
 }
 
 void ad985x_setFrequency(uint32_t frequency) {
-	uint32_t value = CALC_FREQ(frequency);
+    uint32_t value = calcFreq(frequency);
 	for(int i=0; i<4; i++) {
-		send_byte(value & 0xff);
+		send_byte((uint8_t) (value & 0xff));
 		value >>= 8;
 	}
 	send_byte(CONTROL_W0);
@@ -65,11 +67,11 @@ void ad985x_setFrequency(uint32_t frequency) {
 	current_frequency = frequency;
 }
 
-uint32_t ad985x_frequency(void) {
+uint32_t ad985x_frequency() {
 	return current_frequency;
 }
 
-void ad985x_init(void) {
+void ad985x_init() {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 
 	GPIO_InitTypeDef initdata;
