@@ -10,16 +10,10 @@
 
 // ----------------------------------------------------------------------------
 
-caddr_t
-_sbrk(int incr);
-
-// ----------------------------------------------------------------------------
-
 // The definitions used here should be kept in sync with the
 // stack definitions in the linker script.
 
-caddr_t
-_sbrk(int incr)
+caddr_t _sbrk(int incr)
 {
   extern char _Heap_Begin; // Defined by the linker.
   extern char _Heap_Limit; // Defined by the linker.
@@ -43,23 +37,13 @@ _sbrk(int incr)
     {
       // Some of the libstdc++-v3 tests rely upon detecting
       // out of memory errors, so do not abort here.
-#if 0
-      extern void abort (void);
-
-      _write (1, "_sbrk: Heap and stack collision\n", 32);
-
-      abort ();
-#else
       // Heap has overflowed
+
       errno = ENOMEM;
       return (caddr_t) - 1;
-#endif
     }
 
   current_heap_end += incr;
 
   return (caddr_t) current_block_address;
 }
-
-// ----------------------------------------------------------------------------
-

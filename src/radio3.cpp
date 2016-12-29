@@ -47,8 +47,8 @@ static constexpr auto MS_PER_TICK = 10;
 #define PROBES_GET              0x030
 #define PROBES_START_SAMPLING   0x031
 #define PROBES_STOP_SAMPLING    0x032
-#define SET_DDS_RALAY_VFO       0x033
-#define SET_DDS_RALAY_VNA       0x034
+#define SET_DDS_RELAY_VFO       0x033
+#define SET_DDS_RELAY_VNA       0x034
 
 #define ANALYSER_REQUEST        0x040
 #define ANALYSER_STOP           0x041
@@ -161,7 +161,7 @@ static void logPrintf(const char *format, ...) {
 }
 
 static void ddsRelay_commit() {
-    waitMs(10);
+    waitMs(100);
     board_ddsRelay(0, 0);
 }
 
@@ -379,11 +379,11 @@ static void handleIncomingFrame() {
             deviceState.probesSampling = 0;
             break;
 
-        case SET_DDS_RALAY_VFO:
+        case SET_DDS_RELAY_VFO:
             ddsRelay_vfo();
             break;
 
-        case SET_DDS_RALAY_VNA:
+        case SET_DDS_RELAY_VNA:
             ddsRelay_vna();
             break;
 
@@ -428,6 +428,7 @@ void main() {
     iodev_init();
     datalink_init();
     radio3_init();
+    ddsRelay_vfo();
 
     board_ledYellow(0);
     radio3_start();
