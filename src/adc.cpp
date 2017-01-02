@@ -9,7 +9,7 @@
 #include <stm32f10x.h>
 #include "adc.h"
 
-#define AVG_SAMPLES 5
+static const auto AVG_SAMPLES = 3;
 
 void adc_init() {
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);

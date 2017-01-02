@@ -8,8 +8,10 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <stm32f10x.h>
 
-#include "ad985x.h"
+
+#include "vfo.h"
 #include "iodev.h"
 #include "buildid.h"
 #include "radio3.h"
@@ -65,8 +67,6 @@ static constexpr auto MS_PER_TICK = 10;
 
 volatile uint32_t currentTime = 0;
 
-enum class VfoType : uint8_t { NONE, AD9850, AD9851 };
-
 enum class AnalyserDataSource : uint8_t { LOG_PROBE, LIN_PROBE, VNA };
 
 enum class AnalyserState : uint8_t { READY, PROCESSING, INVALID_REQUEST };
@@ -120,13 +120,8 @@ struct AnalyserData {
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
 } __packed;
 
-static DeviceInfo deviceInfo = {
-        "radio3-stm32-md",
-        BUILD_ID,
-        { VfoType::AD9851, 0L, 70000000L },
-};
-
-static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, DdsOut::VFO};
+static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, { VfoType::AD9851, 0L, 70000000L } };
+static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, DdsOut::VFO };
 static AnalyserData analyserData;
 static char stdioBuf[STDIO_BUF_SIZE];
 
@@ -196,7 +191,7 @@ static void performAnalysis(AnalyserRequest *req) {
     analyserData.source = req->source;
 
     uint32_t freq = analyserData.freqStart;
-    ad985x_setFrequency(freq);
+    vfo_setFrequency(freq);
 
     // wait for initial stabilization
     volatile int w = 50000;
@@ -205,7 +200,7 @@ static void performAnalysis(AnalyserRequest *req) {
     uint16_t numSteps = calculateAnalyserDataSteps();
     uint16_t step = 0;
     while (step <= numSteps) {
-        ad985x_setFrequency(freq);
+        vfo_setFrequency(freq);
 
         // wait until frequency and DUT response stabilizes before next measurement
         volatile int w = 2000;
@@ -225,7 +220,7 @@ static void performAnalysis(AnalyserRequest *req) {
         freq += analyserData.freqStep;
     }
 
-    ad985x_setFrequency(0);
+    vfo_setFrequency(0);
 }
 
 static void cmdGetDeviceInfo(void) {
@@ -238,7 +233,7 @@ static void sendDeviceState() {
 }
 
 static void cmdSetVfoFrequency(uint8_t *payload) {
-    ad985x_setFrequency(*((uint32_t *) payload));
+    vfo_setFrequency(*((uint32_t *) payload));
 }
 
 static void cmdAnalyserStart(uint8_t *payload) {
@@ -262,7 +257,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
 }
 
 static void cmdGetVfoFrequency() {
-    uint32_t frequency = ad985x_frequency();
+    uint32_t frequency = vfo_frequency();
     datalink_writeFrame(VFO_GET_FREQ, &frequency, sizeof(frequency));
 }
 
@@ -314,8 +309,8 @@ extern "C" void SysTick_Handler(void) {
 }
 
 void radio3_init() {
-    ad985x_init();
-    ad985x_setFrequency(0);
+    vfo_init(deviceInfo.vfo.type);
+    vfo_setFrequency(0);
     systick_init();
     fmeter_init();
     adc_init();

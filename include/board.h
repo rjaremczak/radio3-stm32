@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 void board_init(void);
 void board_ledOnModule(uint8_t);
 void board_ledGreen(uint8_t);

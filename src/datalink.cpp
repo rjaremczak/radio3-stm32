@@ -15,12 +15,12 @@
 static volatile uint8_t status = DATALINK_STATUS_OK;
 
 static void write_word(uint8_t *crc, uint16_t word) {
-    iodev_write_word(word);
+	iodev_writeWord(word);
 	crc8_word(crc, word);
 }
 
 static void write_byte(uint8_t *crc, uint8_t byte) {
-    iodev_write_word(byte);
+	iodev_writeWord(byte);
 	crc8_word(crc, byte);
 }
 
@@ -60,7 +60,7 @@ int datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
 	}
 
 	if(size > 0) {
-        iodev_write_buf(payload, size);
+		iodev_writeBuf(payload, size);
 		crc8_buf(&crc, payload, size);
 	}
 	iodev_write(crc);
@@ -94,7 +94,7 @@ void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayl
 
 	uint16_t size = frame->payloadSize > maxPayloadSize ? maxPayloadSize : frame->payloadSize;
 	if(size > 0) {
-        iodev_read_buf(payloadBuf, size);
+        iodev_readBuf(payloadBuf, size);
 		if(iodev_error()) { return; }
 		crc8_buf(&crc, payloadBuf, size);
 	}

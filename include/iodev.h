@@ -22,9 +22,9 @@ uint8_t iodev_read(void);
 // methods implemented in generic way
 
 uint16_t iodev_readWord(void);
-void iodev_read_buf(void *, uint16_t);
-void iodev_write_word(uint16_t);
-void iodev_write_buf(void *, uint16_t);
+void iodev_readBuf(void *, uint16_t);
+void iodev_writeWord(uint16_t);
+void iodev_writeBuf(void *, uint16_t);
 
 #ifdef __cplusplus
 }

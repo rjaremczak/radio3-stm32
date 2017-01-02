@@ -20,8 +20,6 @@ void fmeter_init() {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
-	//GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
-
 	GPIO_InitTypeDef gpinit;
 	gpinit.GPIO_Pin = GPIO_Pin_8;
 	gpinit.GPIO_Mode = GPIO_Mode_AF_PP;

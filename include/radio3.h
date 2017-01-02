@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-#include <stm32f10x.h>
-
 void radio3_init(void);
 void radio3_start(void);
 

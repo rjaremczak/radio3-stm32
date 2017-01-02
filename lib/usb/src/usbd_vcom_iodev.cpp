@@ -446,17 +446,17 @@ uint16_t iodev_readWord() {
     return (high << 8) + low;
 }
 
-void iodev_write_word(uint16_t word) {
+void iodev_writeWord(uint16_t word) {
     iodev_write(word & 0xFF);
     iodev_write((word >> 8) & 0xFF);
 }
 
-void iodev_write_buf(void *buf, uint16_t size) {
+void iodev_writeBuf(void *buf, uint16_t size) {
     while (usbd_isWriteInProgress(ENDP1)) {}
     USBDwriteEx(ENDP1, (const uint8_t *) buf, size);
 }
 
-void iodev_read_buf(void *buf, uint16_t size) {
+void iodev_readBuf(void *buf, uint16_t size) {
     uint8_t *bytePtr = (uint8_t *) buf;
     while (size--) {
         *bytePtr++ = iodev_read();
