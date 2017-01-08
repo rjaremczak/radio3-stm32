@@ -409,6 +409,7 @@ void radio3_start() {
     while (true) {
         handleDataSampling();
         board_ledGreen(1);
+        board_ledOnModule(1);
         if (datalink_isIncomingData()) {
             board_ledGreen(0);
             handleIncomingFrame();

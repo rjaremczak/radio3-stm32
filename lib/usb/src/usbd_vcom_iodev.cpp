@@ -12,7 +12,7 @@ const auto INT_BUFF_SIZE = 16;
 const auto USB_BM_ATTRIBUTES = D7_RESERVED;
 const auto USB_B_MAX_POWER = (400 / 2);
 const auto VID = 0x0483;
-const auto PID = 0x5750;
+const auto PID = 0x5740; // was 0x5750
 
 static UsbDeviceDescriptor const device_descriptor = {
         sizeof(UsbDeviceDescriptor), /* bLength */
@@ -23,7 +23,7 @@ static UsbDeviceDescriptor const device_descriptor = {
         0,                               /* bDeviceProtocol */
         64,                              /* bMaxPacketSize0 */
         VID,                             /* idVendor */
-        PID + 2,                         /* idProduct */
+        PID,                             /* idProduct */
         0x0100,                          /* bcdDevice */
         1,                               /* iManufacturer */
         2,                               /* iProduct */
