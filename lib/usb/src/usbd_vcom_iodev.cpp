@@ -15,20 +15,20 @@ const auto VID = 0x0483;
 const auto PID = 0x5740; // was 0x5750
 
 static UsbDeviceDescriptor const device_descriptor = {
-        sizeof(UsbDeviceDescriptor), /* bLength */
-        DEVICE_DESCRIPTOR,               /* bDescriptorType */
-        0x0200,                          /* bcdUSB */
-        COMMUNICATION_DEVICE_CLASS,      /* bDeviceClass */
-        0,                               /* bDeviceSubClass */
-        0,                               /* bDeviceProtocol */
-        64,                              /* bMaxPacketSize0 */
-        VID,                             /* idVendor */
-        PID,                             /* idProduct */
-        0x0100,                          /* bcdDevice */
-        1,                               /* iManufacturer */
-        2,                               /* iProduct */
-        3,                               /* iSerialNumber */
-        1                                /* bNumConfigurations */
+        .bLength = sizeof(UsbDeviceDescriptor),
+        .bDescriptorType = DEVICE_DESCRIPTOR,
+        .bcdUSB = 0x0200,
+        .bDeviceClass = COMMUNICATION_DEVICE_CLASS,
+        .bDeviceSubClass = 0,
+        .bDeviceProtocol = 0,
+        .bMaxPacketSize0 = 64,
+        .idVendor = VID,
+        .idProduct = PID,
+        .bcdDevice = 0x0100,
+        .iManufacturer = 1,
+        .iProduct = 2,
+        .iSerialNumber = 3,
+        .bNumConfigurations = 1
 };
 
 struct UsbComConfiguration {
