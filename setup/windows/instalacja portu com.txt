@@ -1,0 +1,5 @@
+- po podłączeniu urządzenia powinno się pojawić pod sekcją "Inne" jako "radio3 by SQ6DGT" z żółtym znakiem zapytania
+- kliknąć "aktualizuj sterownik"
+- wybrać katalog gdzie został umieszczony plik stmcdc.inf
+- po wyświetleniu informacj o znalezionym urządzeniu STM Virtual COM Port kliknąć dalej
+- po zakończeniu instalacji powinien zostać dodany nowy port szeregowy w odpowiedniej sekcji Managera Urządzeń

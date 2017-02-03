@@ -64,11 +64,11 @@ uint32_t vfo_frequency() {
 
 void vfo_init(VfoType vfoType) {
     switch (vfoType) {
-        case VfoType::AD9850 :
+        case VfoType::DDS_AD9850 :
             XTAL = 125000000U;
             CONTROL_W0 = 0x00;
             break;
-        case VfoType::AD9851 :
+        case VfoType::DDS_AD9851 :
             XTAL = 180000000U;
             CONTROL_W0 = 0x01;
             break;

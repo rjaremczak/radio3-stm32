@@ -21,49 +21,52 @@
 #include "adc.h"
 #include "cortexm/ExceptionHandlers.h"
 
-static constexpr auto MAX_PAYLOAD_SIZE = 16;
-static constexpr auto TICKS_PER_SECOND = 100;
-static constexpr auto MS_PER_TICK = 10;
+static const auto MAX_PAYLOAD_SIZE = 16;
+static const auto TICKS_PER_SECOND = 100;
+static const auto MS_PER_TICK = 10;
 
-#define DEVICE_RESET            0x000
-#define DEVICE_INFO             0x001
-#define DEVICE_STATE            0x002
+static const auto DEVICE_RESET = 0x000;
+static const auto DEVICE_INFO = 0x001;
+static const auto DEVICE_STATE = 0x002;
+static const auto DEVICE_HARDWARE_REVISION = 0x003;
 
-#define VFO_GET_FREQ            0x008
-#define VFO_SET_FREQ            0x009
-#define VFO_ERROR               0x00f
+static const auto VFO_GET_FREQ = 0x008;
+static const auto VFO_SET_FREQ = 0x009;
+static const auto VFO_ERROR = 0x00f;
 
-#define LOGPROBE_GET            0x010
-#define LOGPROBE_INFO           0x016
-#define LOGPROBE_ERROR          0x017
+static const auto LOGPROBE_GET = 0x010;
+static const auto LOGPROBE_INFO = 0x016;
+static const auto LOGPROBE_ERROR = 0x017;
 
-#define LINPROBE_GET            0x018
-#define LINPROBE_ERROR          0x01f
+static const auto LINPROBE_GET = 0x018;
+static const auto LINPROBE_ERROR = 0x01f;
 
-#define CMPPROBE_GET            0x020
-#define CMPPROBE_ERROR          0x027
+static const auto CMPPROBE_GET = 0x020;
+static const auto CMPPROBE_ERROR = 0x027;
 
-#define FMETER_GET              0x028
-#define FMETER_ERROR            0x02f
+static const auto FMETER_GET = 0x028;
+static const auto FMETER_ERROR = 0x02f;
 
-#define PROBES_GET              0x030
-#define PROBES_START_SAMPLING   0x031
-#define PROBES_STOP_SAMPLING    0x032
-#define SET_DDS_RELAY_VFO       0x033
-#define SET_DDS_RELAY_VNA       0x034
+static const auto PROBES_GET = 0x030;
+static const auto PROBES_START_SAMPLING = 0x031;
+static const auto PROBES_STOP_SAMPLING = 0x032;
+static const auto VFO_OUT_DIRECT = 0x033;
+static const auto VFO_OUT_VNA = 0x034;
+static const auto VFO_TYPE = 0x035;
+static const auto VFO_ATTENUATOR = 0x036;
 
-#define ANALYSER_REQUEST        0x040
-#define ANALYSER_STOP           0x041
-#define ANALYSER_DATA           0x042
+static const auto ANALYSER_REQUEST = 0x040;
+static const auto ANALYSER_STOP = 0x041;
+static const auto ANALYSER_DATA = 0x042;
 
-#define ANALYSER_HEADER_SIZE    12
-#define ANALYSER_MAX_STEPS      1000
-#define ANALYSER_MAX_SERIES     2
+static const auto ANALYSER_HEADER_SIZE = 12;
+static const auto ANALYSER_MAX_STEPS = 1000;
+static const auto ANALYSER_MAX_SERIES = 2;
 
-#define ERROR_INVALID_FRAME     0x3fe
-#define LOG_MESSAGE             0x3ff
+static const auto ERROR_INVALID_FRAME = 0x3fe;
+static const auto LOG_MESSAGE = 0x3ff;
 
-#define STDIO_BUF_SIZE          128
+static const auto STDIO_BUF_SIZE = 128;
 
 volatile uint32_t currentTime = 0;
 
@@ -71,7 +74,11 @@ enum class AnalyserDataSource : uint8_t { LOG_PROBE, LIN_PROBE, VNA };
 
 enum class AnalyserState : uint8_t { READY, PROCESSING, INVALID_REQUEST };
 
-enum class DdsOut : uint8_t { VFO, VNA };
+enum class VfoOut : uint8_t { DIRECT, VNA };
+
+enum class HardwareRevision : uint8_t { UNKNOWN, PROTOTYPE_1, PROTOTYPE_2 };
+
+enum class VfoAttenuator : uint8_t { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7 };
 
 struct Complex {
     uint16_t value;
@@ -83,19 +90,15 @@ struct DeviceState {
     uint16_t samplingPeriodMs;
     uint32_t timeMs;
     AnalyserState analyser;
-    DdsOut ddsOut;
-} __packed;
-
-struct VfoInfo {
-    VfoType type;
-    uint32_t minFreq;
-    uint32_t maxFreq;
+    VfoOut vfoOut;
+    VfoAttenuator vfoAttenuator;
 } __packed;
 
 struct DeviceInfo {
     const char name[16];
     const char buildId[32];
-    VfoInfo vfo;
+    HardwareRevision hardwareRevision;
+    VfoType vfoType;
 } __packed;
 
 struct Probes {
@@ -120,8 +123,8 @@ struct AnalyserData {
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
 } __packed;
 
-static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, { VfoType::AD9851, 0L, 70000000L } };
-static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, DdsOut::VFO };
+static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::UNKNOWN, VfoType::DDS_AD9851 };
+static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, VfoOut::DIRECT , VfoAttenuator::LEVEL_0 };
 static AnalyserData analyserData;
 static char stdioBuf[STDIO_BUF_SIZE];
 
@@ -155,31 +158,47 @@ static void logPrintf(const char *format, ...) {
     sendData(LOG_MESSAGE, stdioBuf, len);
 }
 
-static void ddsRelay_commit() {
+static void vfoRelayCommit() {
     waitMs(100);
-    board_ddsRelay(0, 0);
+    board_vfoOutBistable(0, 0);
 }
 
-static void ddsRelay_vna() {
-    board_ddsRelay(1, 0);
-    ddsRelay_commit();
-    deviceState.ddsOut = DdsOut::VNA;
+static void vfoOutput_vna() {
+    switch (deviceInfo.hardwareRevision) {
+        case HardwareRevision::PROTOTYPE_1:
+            board_vfoOutBistable(1, 0);
+            vfoRelayCommit();
+            break;
+        case HardwareRevision::PROTOTYPE_2:
+            board_vfoOut(true);
+            break;
+        default: return;
+    }
+    deviceState.vfoOut = VfoOut::VNA;
 }
 
-static void ddsRelay_vfo() {
-    board_ddsRelay(0, 1);
-    ddsRelay_commit();
-    deviceState.ddsOut = DdsOut::VFO;
+static void vfoOutput_direct() {
+    switch (deviceInfo.hardwareRevision) {
+        case HardwareRevision::PROTOTYPE_1:
+            board_vfoOutBistable(0, 1);
+            vfoRelayCommit();
+            break;
+        case HardwareRevision::PROTOTYPE_2:
+            board_vfoOut(false);
+            break;
+        default: return;
+    }
+    deviceState.vfoOut = VfoOut::DIRECT;
 }
 
-static void ddsRelay_set(AnalyserDataSource source) {
+static void vfoRelay_set(AnalyserDataSource source) {
     switch(source) {
         case AnalyserDataSource::LOG_PROBE:
         case AnalyserDataSource::LIN_PROBE:
-            ddsRelay_vfo();
+            vfoOutput_direct();
             break;
         case AnalyserDataSource::VNA:
-            ddsRelay_vna();
+            vfoOutput_vna();
             break;
     }
 }
@@ -241,10 +260,9 @@ static void cmdAnalyserStart(uint8_t *payload) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
         uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
         logPrintf("start analyzer from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps, req->source);
-        if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS &&
-            req->freqStart >= deviceInfo.vfo.minFreq && freqEnd <= deviceInfo.vfo.maxFreq) {
+        if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
             deviceState.analyser = AnalyserState::PROCESSING;
-            ddsRelay_set(req->source);
+            vfoRelay_set(req->source);
             performAnalysis(req);
             sendAnalyserData();
             deviceState.analyser = AnalyserState::READY;
@@ -274,6 +292,21 @@ static void cmdSampleLogarithmicProbe() {
 static void cmdSampleLinearProbe() {
     uint16_t value = adc_readLinearProbe();
     datalink_writeFrame(LINPROBE_GET, &value, sizeof(value));
+}
+
+static void cmdVfoType(uint8_t *payload) {
+    deviceInfo.vfoType = (VfoType) *payload;
+    vfo_init(deviceInfo.vfoType);
+    vfo_setFrequency(0);
+}
+
+static void cmdVfoAttenuator(uint8_t *payload) {
+    if(deviceInfo.hardwareRevision == HardwareRevision::PROTOTYPE_2) {
+        deviceState.vfoAttenuator = (VfoAttenuator) *payload;
+        board_vfoAtt_1((bool) (*payload & 0b001));
+        board_vfoAtt_2((bool) (*payload & 0b010));
+        board_vfoAtt_3((bool) (*payload & 0b100));
+    }
 }
 
 inline static Complex readVnaProbe() {
@@ -309,8 +342,6 @@ extern "C" void SysTick_Handler(void) {
 }
 
 void radio3_init() {
-    vfo_init(deviceInfo.vfo.type);
-    vfo_setFrequency(0);
     systick_init();
     fmeter_init();
     adc_init();
@@ -374,16 +405,28 @@ static void handleIncomingFrame() {
             deviceState.probesSampling = 0;
             break;
 
-        case SET_DDS_RELAY_VFO:
-            ddsRelay_vfo();
+        case VFO_OUT_DIRECT:
+            vfoOutput_direct();
             break;
 
-        case SET_DDS_RELAY_VNA:
-            ddsRelay_vna();
+        case VFO_OUT_VNA:
+            vfoOutput_vna();
             break;
 
         case ANALYSER_REQUEST:
             cmdAnalyserStart(payload);
+            break;
+
+        case DEVICE_HARDWARE_REVISION:
+            deviceInfo.hardwareRevision = (HardwareRevision) payload[0];
+            break;
+
+        case VFO_TYPE:
+            cmdVfoType(payload);
+            break;
+
+        case VFO_ATTENUATOR:
+            cmdVfoAttenuator(payload);
             break;
 
         default:
@@ -424,7 +467,7 @@ void main() {
     iodev_init();
     datalink_init();
     radio3_init();
-    ddsRelay_vfo();
+    vfoOutput_direct();
 
     board_ledYellow(0);
     radio3_start();

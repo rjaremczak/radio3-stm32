@@ -12,7 +12,7 @@ extern "C" {
 
 #include <stdint.h>
 
-enum class VfoType : uint8_t { NONE, AD9850, AD9851 };
+enum class VfoType : uint8_t { NONE, DDS_AD9850, DDS_AD9851 };
 
 void vfo_init(VfoType vfoType);
 void vfo_setFrequency(uint32_t frequency);

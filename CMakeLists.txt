@@ -15,7 +15,7 @@ include_directories(lib/usb/include)
 set(USER_SOURCES
         src/datalink.cpp
         src/adc.cpp
-        src/vfo_ad985x.cpp
+        src/ad985x.cpp
         src/board.cpp
         src/crc.cpp
         src/delay.cpp
