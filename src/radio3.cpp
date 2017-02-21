@@ -76,7 +76,7 @@ enum class AnalyserState : uint8_t { READY, PROCESSING, INVALID_REQUEST };
 
 enum class VfoOut : uint8_t { DIRECT, VNA };
 
-enum class HardwareRevision : uint8_t { UNKNOWN, PROTOTYPE_1, PROTOTYPE_2 };
+enum class HardwareRevision : uint8_t { UNKNOWN, V_1, V_2 };
 
 enum class VfoAttenuator : uint8_t { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7 };
 
@@ -160,16 +160,16 @@ static void logPrintf(const char *format, ...) {
 
 static void vfoRelayCommit() {
     waitMs(100);
-    board_vfoOutBistable(0, 0);
+    board_vfoOutBistable(false, false);
 }
 
 static void vfoOutput_vna() {
     switch (deviceInfo.hardwareRevision) {
-        case HardwareRevision::PROTOTYPE_1:
-            board_vfoOutBistable(1, 0);
+        case HardwareRevision::V_1:
+            board_vfoOutBistable(true, false);
             vfoRelayCommit();
             break;
-        case HardwareRevision::PROTOTYPE_2:
+        case HardwareRevision::V_2:
             board_vfoOut(true);
             break;
         default: return;
@@ -179,11 +179,11 @@ static void vfoOutput_vna() {
 
 static void vfoOutput_direct() {
     switch (deviceInfo.hardwareRevision) {
-        case HardwareRevision::PROTOTYPE_1:
-            board_vfoOutBistable(0, 1);
+        case HardwareRevision::V_1:
+            board_vfoOutBistable(false, true);
             vfoRelayCommit();
             break;
-        case HardwareRevision::PROTOTYPE_2:
+        case HardwareRevision::V_2:
             board_vfoOut(false);
             break;
         default: return;
@@ -301,11 +301,11 @@ static void cmdVfoType(uint8_t *payload) {
 }
 
 static void cmdVfoAttenuator(uint8_t *payload) {
-    if(deviceInfo.hardwareRevision == HardwareRevision::PROTOTYPE_2) {
+    if(deviceInfo.hardwareRevision == HardwareRevision::V_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
-        board_vfoAtt_1((bool) (*payload & 0b001));
-        board_vfoAtt_2((bool) (*payload & 0b010));
-        board_vfoAtt_3((bool) (*payload & 0b100));
+        board_vfoAtt1((bool) (*payload & 0b001));
+        board_vfoAtt2((bool) (*payload & 0b010));
+        board_vfoAtt3((bool) (*payload & 0b100));
     }
 }
 
@@ -362,7 +362,6 @@ static void handleIncomingFrame() {
 
         case DEVICE_INFO:
             cmdGetDeviceInfo();
-            board_ledYellow(0);
             break;
 
         case DEVICE_STATE:
@@ -431,7 +430,6 @@ static void handleIncomingFrame() {
 
         default:
             sendError(ERROR_INVALID_FRAME);
-            board_ledYellow(1);
     }
 }
 
@@ -451,10 +449,9 @@ static void handleDataSampling(void) {
 void radio3_start() {
     while (true) {
         handleDataSampling();
-        board_ledGreen(1);
-        board_ledOnModule(1);
+        board_indicator(false);
         if (datalink_isIncomingData()) {
-            board_ledGreen(0);
+            board_indicator(true);
             handleIncomingFrame();
         }
     }
@@ -462,13 +459,16 @@ void radio3_start() {
 
 void main() {
     board_init();
-    board_ledYellow(1);
+    deviceInfo.hardwareRevision = board_detectRev2() ? HardwareRevision::V_2 : HardwareRevision::V_1;
+    switch (deviceInfo.hardwareRevision) {
+        case HardwareRevision::V_1: board_initRev1(); break;
+        case HardwareRevision::V_2: board_initRev2(); break;
+        default: break;
+    }
 
     iodev_init();
     datalink_init();
     radio3_init();
     vfoOutput_direct();
-
-    board_ledYellow(0);
     radio3_start();
 }

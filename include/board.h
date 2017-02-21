@@ -12,16 +12,17 @@ extern "C" {
 
 #include <stdint.h>
 
-void board_init(void);
-void board_ledOnModule(uint8_t);
-void board_ledGreen(uint8_t);
-void board_ledYellow(uint8_t);
-void board_vfoOutBistable(uint8_t, uint8_t);
-void board_indicateError(uint8_t);
+void board_init();
+void board_initRev1();
+void board_initRev2();
+bool board_detectRev2();
+void board_indicator(bool);
+void board_vfoOutBistable(bool, bool);
 void board_vfoOut(bool energize);
-void board_vfoAtt_1(bool energize);
-void board_vfoAtt_2(bool energize);
-void board_vfoAtt_3(bool energize);
+void board_vfoAtt1(bool energize);
+void board_vfoAtt2(bool energize);
+void board_vfoAtt3(bool energize);
+void board_vnaMode(bool alternate);
 
 #ifdef __cplusplus
 }
