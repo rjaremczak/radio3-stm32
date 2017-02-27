@@ -122,6 +122,11 @@ struct AnalyserRequest {
     uint32_t freqStep;
     uint16_t numSteps;
     AnalyserDataSource source;
+
+    bool isValid() {
+        return numSteps>0 && freqStep>0;
+    }
+
 } __packed;
 
 struct AnalyserData {
@@ -242,6 +247,8 @@ static void divideAccumulatedData(uint16_t numSteps, uint8_t divider) {
 }
 
 static void performAnalysis(AnalyserRequest *req) {
+    if(!req->isValid()) return;
+
     analyserData.freqStart = req->freqStart;
     analyserData.freqStep = req->freqStep;
     analyserData.steps = req->numSteps;
