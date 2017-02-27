@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 void delay(volatile unsigned);
+void delayUs(unsigned us);
 
 #ifdef __cplusplus
 }

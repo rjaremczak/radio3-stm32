@@ -11,7 +11,7 @@
 
 inline static BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
 
-void board_init() {
+void board_preInit() {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
@@ -25,38 +25,36 @@ void board_init() {
     gpi.GPIO_Pin = GPIO_Pin_13;
     GPIO_Init(GPIOB, &gpi);
     GPIO_SetBits(GPIOB, gpi.GPIO_Pin);
-
-    gpi.GPIO_Mode = GPIO_Mode_IPU;
-    gpi.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_15;
-    GPIO_Init(GPIOB, &gpi);
-    GPIO_ResetBits(GPIOB, gpi.GPIO_Pin);
 }
 
-void board_initRev1() {
+bool board_isRevision2() {
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
-    gpi.GPIO_Mode = GPIO_Mode_Out_PP;
-    gpi.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_15;
+    gpi.GPIO_Mode = GPIO_Mode_IPU;
+    gpi.GPIO_Pin = GPIO_Pin_12;
     GPIO_Init(GPIOB, &gpi);
-    GPIO_ResetBits(GPIOB, gpi.GPIO_Pin);
+    return !GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12);
 }
 
-void board_initRev2() {
+void board_init() {
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
     gpi.GPIO_Mode = GPIO_Mode_Out_PP;
     gpi.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_14 | GPIO_Pin_15;
     GPIO_Init(GPIOB, &gpi);
     GPIO_ResetBits(GPIOB, gpi.GPIO_Pin);
-}
 
-bool board_detectRev2() {
-    return !GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    gpi.GPIO_Pin = GPIO_Pin_9;
+    GPIO_Init(GPIOA, &gpi);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_13);
+
 }
 
 void board_indicator(bool on) {
-    GPIO_WriteBit(GPIOC, GPIO_Pin_13, toBitAction(!on));
-    GPIO_WriteBit(GPIOB, GPIO_Pin_13, toBitAction(!on));
+    BitAction val = toBitAction(!on);
+    GPIO_WriteBit(GPIOC, GPIO_Pin_13, val);
+    GPIO_WriteBit(GPIOB, GPIO_Pin_13, val);
 }
 
 void board_vfoOutBistable(bool pin1, bool pin10) {
@@ -80,6 +78,10 @@ void board_vfoAtt3(bool energize) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_11, toBitAction(energize));
 }
 
+void board_vfoAmplifier(bool enable) {
+    GPIO_WriteBit(GPIOB, GPIO_Pin_14, toBitAction(enable));
+}
+
 void board_vnaMode(bool alternate) {
-    GPIO_WriteBit(GPIOB, GPIO_Pin_14, toBitAction(alternate));
+    GPIO_WriteBit(GPIOA, GPIO_Pin_9, toBitAction(alternate));
 }

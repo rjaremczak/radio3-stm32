@@ -20,6 +20,9 @@
 #include "datalink.h"
 #include "adc.h"
 #include "cortexm/ExceptionHandlers.h"
+#include "delay.h"
+
+static const auto NUM_ANALYSER_PASSES = 3;
 
 static const auto MAX_PAYLOAD_SIZE = 16;
 static const auto TICKS_PER_SECOND = 100;
@@ -54,6 +57,8 @@ static const auto VFO_OUT_DIRECT = 0x033;
 static const auto VFO_OUT_VNA = 0x034;
 static const auto VFO_TYPE = 0x035;
 static const auto VFO_ATTENUATOR = 0x036;
+static const auto VFO_AMPLIFIER = 0x037;
+static const auto VNA_MODE = 0x038;
 
 static const auto ANALYSER_REQUEST = 0x040;
 static const auto ANALYSER_STOP = 0x041;
@@ -76,9 +81,13 @@ enum class AnalyserState : uint8_t { READY, PROCESSING, INVALID_REQUEST };
 
 enum class VfoOut : uint8_t { DIRECT, VNA };
 
-enum class HardwareRevision : uint8_t { UNKNOWN, V_1, V_2 };
+enum class HardwareRevision : uint8_t { AUTODETECT, VERSION_1, VERSION_2 };
 
 enum class VfoAttenuator : uint8_t { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7 };
+
+enum class VfoAmplifier : uint8_t { OFF, ON };
+
+enum class VnaMode : uint8_t { DIRECTIONAL_COUPLER, BRIDGE };
 
 struct Complex {
     uint16_t value;
@@ -123,7 +132,7 @@ struct AnalyserData {
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
 } __packed;
 
-static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::UNKNOWN, VfoType::DDS_AD9851 };
+static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851 };
 static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, VfoOut::DIRECT , VfoAttenuator::LEVEL_0 };
 static AnalyserData analyserData;
 static char stdioBuf[STDIO_BUF_SIZE];
@@ -165,11 +174,11 @@ static void vfoRelayCommit() {
 
 static void vfoOutput_vna() {
     switch (deviceInfo.hardwareRevision) {
-        case HardwareRevision::V_1:
+        case HardwareRevision::VERSION_1:
             board_vfoOutBistable(true, false);
             vfoRelayCommit();
             break;
-        case HardwareRevision::V_2:
+        case HardwareRevision::VERSION_2:
             board_vfoOut(true);
             break;
         default: return;
@@ -179,11 +188,11 @@ static void vfoOutput_vna() {
 
 static void vfoOutput_direct() {
     switch (deviceInfo.hardwareRevision) {
-        case HardwareRevision::V_1:
+        case HardwareRevision::VERSION_1:
             board_vfoOutBistable(false, true);
             vfoRelayCommit();
             break;
-        case HardwareRevision::V_2:
+        case HardwareRevision::VERSION_2:
             board_vfoOut(false);
             break;
         default: return;
@@ -203,42 +212,44 @@ static void vfoRelay_set(AnalyserDataSource source) {
     }
 }
 
+static void sweepAndAccumulate(uint16_t numSteps) {
+    uint32_t freq = analyserData.freqStart;
+    uint16_t step = 0;
+    while (step <= numSteps) {
+        vfo_setFrequency(freq);
+        delayUs(1);
+        switch (analyserData.source) {
+            case AnalyserDataSource::LOG_PROBE:
+                analyserData.data[step++] += adc_readLogarithmicProbe();
+                break;
+            case AnalyserDataSource::LIN_PROBE:
+                analyserData.data[step++] += adc_readLinearProbe();
+                break;
+            case AnalyserDataSource::VNA:
+                analyserData.data[step++] += adc_readVnaGainValue();
+                analyserData.data[step++] += adc_readVnaPhaseValue();
+        }
+        freq += analyserData.freqStep;
+    }
+}
+
+static void resetSweepData(uint16_t numSteps) {
+    for(uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] = 0; }
+}
+
+static void divideAccumulatedData(uint16_t numSteps, uint8_t divider) {
+    for(uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] /= divider; }
+}
+
 static void performAnalysis(AnalyserRequest *req) {
     analyserData.freqStart = req->freqStart;
     analyserData.freqStep = req->freqStep;
     analyserData.steps = req->numSteps;
     analyserData.source = req->source;
-
-    uint32_t freq = analyserData.freqStart;
-    vfo_setFrequency(freq);
-
-    // wait for initial stabilization
-    volatile int w = 50000;
-    while (w) { w--; }
-
     uint16_t numSteps = calculateAnalyserDataSteps();
-    uint16_t step = 0;
-    while (step <= numSteps) {
-        vfo_setFrequency(freq);
-
-        // wait until frequency and DUT response stabilizes before next measurement
-        volatile int w = 2000;
-        while (w) { w--; }
-
-        switch (analyserData.source) {
-            case AnalyserDataSource::LOG_PROBE:
-                analyserData.data[step++] = adc_readLogarithmicProbe();
-                break;
-            case AnalyserDataSource::LIN_PROBE:
-                analyserData.data[step++] = adc_readLinearProbe();
-                break;
-            case AnalyserDataSource::VNA:
-                analyserData.data[step++] = adc_readVnaGainValue();
-                analyserData.data[step++] = adc_readVnaPhaseValue();
-        }
-        freq += analyserData.freqStep;
-    }
-
+    resetSweepData(numSteps);
+    for(uint8_t i=0; i<NUM_ANALYSER_PASSES; i++) { sweepAndAccumulate(numSteps); }
+    divideAccumulatedData(numSteps, NUM_ANALYSER_PASSES);
     vfo_setFrequency(0);
 }
 
@@ -259,7 +270,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
     if (deviceState.analyser != AnalyserState::PROCESSING) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
         uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf("start analyzer from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps, req->source);
+        logPrintf("sweep from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps, req->source);
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
             deviceState.analyser = AnalyserState::PROCESSING;
             vfoRelay_set(req->source);
@@ -301,12 +312,22 @@ static void cmdVfoType(uint8_t *payload) {
 }
 
 static void cmdVfoAttenuator(uint8_t *payload) {
-    if(deviceInfo.hardwareRevision == HardwareRevision::V_2) {
+    if(deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
         board_vfoAtt1((bool) (*payload & 0b001));
         board_vfoAtt2((bool) (*payload & 0b010));
         board_vfoAtt3((bool) (*payload & 0b100));
     }
+}
+
+static void cmdVfoAmplifier(uint8_t *payload) {
+    VfoAmplifier vfoAmplifier = (VfoAmplifier) *payload;
+    board_vfoAmplifier(vfoAmplifier == VfoAmplifier::ON ? true : false);
+}
+
+static void cmdVnaMode(uint8_t *payload) {
+    VnaMode vnaMode = (VnaMode) *payload;
+    board_vnaMode(vnaMode == VnaMode::BRIDGE ? true : false);
 }
 
 inline static Complex readVnaProbe() {
@@ -325,6 +346,16 @@ static void cmdSampleComplexProbe() {
 static void cmdSampleProbes() {
     Probes data = readAllProbes();
     datalink_writeFrame(PROBES_GET, &data, sizeof(data));
+}
+
+static void cmdHardwareRevision(HardwareRevision hardwareRevision) {
+    if(hardwareRevision == HardwareRevision::AUTODETECT) {
+        deviceInfo.hardwareRevision = board_isRevision2() ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_1;
+    } else {
+        deviceInfo.hardwareRevision = hardwareRevision;
+    }
+
+    board_init();
 }
 
 static void systick_init() {
@@ -417,7 +448,7 @@ static void handleIncomingFrame() {
             break;
 
         case DEVICE_HARDWARE_REVISION:
-            deviceInfo.hardwareRevision = (HardwareRevision) payload[0];
+            cmdHardwareRevision((HardwareRevision) payload[0]);
             break;
 
         case VFO_TYPE:
@@ -426,6 +457,14 @@ static void handleIncomingFrame() {
 
         case VFO_ATTENUATOR:
             cmdVfoAttenuator(payload);
+            break;
+
+        case VFO_AMPLIFIER:
+            cmdVfoAmplifier(payload);
+            break;
+
+        case VNA_MODE:
+            cmdVnaMode(payload);
             break;
 
         default:
@@ -449,23 +488,16 @@ static void handleDataSampling(void) {
 void radio3_start() {
     while (true) {
         handleDataSampling();
-        board_indicator(false);
+        board_indicator(true);
         if (datalink_isIncomingData()) {
-            board_indicator(true);
+            board_indicator(false);
             handleIncomingFrame();
         }
     }
 }
 
 void main() {
-    board_init();
-    deviceInfo.hardwareRevision = board_detectRev2() ? HardwareRevision::V_2 : HardwareRevision::V_1;
-    switch (deviceInfo.hardwareRevision) {
-        case HardwareRevision::V_1: board_initRev1(); break;
-        case HardwareRevision::V_2: board_initRev2(); break;
-        default: break;
-    }
-
+    board_preInit();
     iodev_init();
     datalink_init();
     radio3_init();

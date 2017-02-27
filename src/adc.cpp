@@ -8,6 +8,7 @@
 
 #include <stm32f10x.h>
 #include "adc.h"
+#include "delay.h"
 
 static const auto AVG_SAMPLES = 3;
 
@@ -47,11 +48,11 @@ static uint16_t adc_readOnce(uint8_t channel) {
 
 static uint16_t adc_read(uint8_t channel) {
 	uint32_t acc = adc_readOnce(channel);
+	delayUs(1);
 
 	for(char i=1; i<AVG_SAMPLES; i++) {
-		volatile int w = 1000;
-		while(w) { w--; }
 		acc += adc_readOnce(channel);
+		delayUs(1);
 	}
 
 	return (uint16_t) (acc / AVG_SAMPLES);
