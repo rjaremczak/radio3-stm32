@@ -51,8 +51,6 @@ static const auto FMETER_GET = 0x028;
 static const auto FMETER_ERROR = 0x02f;
 
 static const auto PROBES_GET = 0x030;
-static const auto PROBES_START_SAMPLING = 0x031;
-static const auto PROBES_STOP_SAMPLING = 0x032;
 static const auto VFO_OUT_DIRECT = 0x033;
 static const auto VFO_OUT_VNA = 0x034;
 static const auto VFO_TYPE = 0x035;
@@ -95,11 +93,10 @@ struct Complex {
 } __packed;
 
 struct DeviceState {
-    uint8_t probesSampling;
-    uint16_t samplingPeriodMs;
     uint32_t timeMs;
     AnalyserState analyser;
     VfoOut vfoOut;
+    VfoAmplifier vfoAmplifier;
     VfoAttenuator vfoAttenuator;
 } __packed;
 
@@ -138,7 +135,7 @@ struct AnalyserData {
 } __packed;
 
 static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851 };
-static DeviceState deviceState = { 0, 200, 0, AnalyserState::READY, VfoOut::DIRECT , VfoAttenuator::LEVEL_0 };
+static DeviceState deviceState = { 0, AnalyserState::READY, VfoOut::DIRECT , VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
 static AnalyserData analyserData;
 static char stdioBuf[STDIO_BUF_SIZE];
 
@@ -328,8 +325,10 @@ static void cmdVfoAttenuator(uint8_t *payload) {
 }
 
 static void cmdVfoAmplifier(uint8_t *payload) {
-    VfoAmplifier vfoAmplifier = (VfoAmplifier) *payload;
-    board_vfoAmplifier(vfoAmplifier == VfoAmplifier::ON ? true : false);
+    if(deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
+        deviceState.vfoAmplifier = (VfoAmplifier) *payload;
+        board_vfoAmplifier((bool) *payload);
+    }
 }
 
 static void cmdVnaMode(uint8_t *payload) {
@@ -395,7 +394,8 @@ static void handleIncomingFrame() {
 
     switch (frame.command) {
         case DEVICE_RESET:
-            radio3_init();
+            deviceState.timeMs = 0;
+            logPrintf("reset performed");
             break;
 
         case DEVICE_INFO:
@@ -432,14 +432,6 @@ static void handleIncomingFrame() {
 
         case PROBES_GET:
             cmdSampleProbes();
-            break;
-
-        case PROBES_START_SAMPLING:
-            deviceState.probesSampling = 1;
-            break;
-
-        case PROBES_STOP_SAMPLING:
-            deviceState.probesSampling = 0;
             break;
 
         case VFO_OUT_DIRECT:
@@ -479,22 +471,8 @@ static void handleIncomingFrame() {
     }
 }
 
-static void handleDataSampling(void) {
-    static uint32_t nextSamplingTimeMs = 0;
-
-    if (currentTime > nextSamplingTimeMs) {
-        nextSamplingTimeMs = currentTime + deviceState.samplingPeriodMs;
-
-        if (deviceState.probesSampling) {
-            cmdSampleProbes();
-            waitMs(10);
-        }
-    }
-}
-
 void radio3_start() {
     while (true) {
-        handleDataSampling();
         board_indicator(true);
         if (datalink_isIncomingData()) {
             board_indicator(false);
