@@ -177,7 +177,7 @@ static void vfoRelayCommit() {
 static void vfoOutput_vna() {
     switch (deviceInfo.hardwareRevision) {
         case HardwareRevision::VERSION_1:
-            board_vfoOutBistable(true, false);
+            board_vfoOutBistable(false, true);
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
@@ -191,7 +191,7 @@ static void vfoOutput_vna() {
 static void vfoOutput_direct() {
     switch (deviceInfo.hardwareRevision) {
         case HardwareRevision::VERSION_1:
-            board_vfoOutBistable(false, true);
+            board_vfoOutBistable(true, false);
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
@@ -217,9 +217,12 @@ static void vfoRelay_set(AnalyserDataSource source) {
 static void sweepAndAccumulate(uint16_t numSteps) {
     uint32_t freq = analyserData.freqStart;
     uint16_t step = 0;
+    vfo_setFrequency(freq);
+    delayUs(100000);
+
     while (step <= numSteps) {
         vfo_setFrequency(freq);
-        delayUs(1);
+        delayUs(10);
         switch (analyserData.source) {
             case AnalyserDataSource::LOG_PROBE:
                 analyserData.data[step++] += adc_readLogarithmicProbe();

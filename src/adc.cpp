@@ -47,12 +47,10 @@ static uint16_t adc_readOnce(uint8_t channel) {
 }
 
 static uint16_t adc_read(uint8_t channel) {
-	uint32_t acc = adc_readOnce(channel);
-	delayUs(1);
-
-	for(char i=1; i<AVG_SAMPLES; i++) {
+	uint16_t acc = 0;
+	for(char i=0; i<AVG_SAMPLES; i++) {
 		acc += adc_readOnce(channel);
-		delayUs(1);
+		delayUs(10);
 	}
 
 	return (uint16_t) (acc / AVG_SAMPLES);
