@@ -10,8 +10,6 @@
 #include "adc.h"
 #include "delay.h"
 
-static const auto AVG_SAMPLES = 3;
-
 void adc_init() {
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOA, ENABLE);
@@ -46,28 +44,28 @@ static uint16_t adc_readOnce(uint8_t channel) {
 	return ADC_GetConversionValue(ADC1);
 }
 
-static uint16_t adc_read(uint8_t channel) {
+static uint16_t adc_read(uint8_t channel, uint8_t avgSamples) {
 	uint16_t acc = 0;
-	for(char i=0; i<AVG_SAMPLES; i++) {
+	for(char i=0; i<avgSamples; i++) {
 		acc += adc_readOnce(channel);
 		delayUs(10);
 	}
 
-	return (uint16_t) (acc / AVG_SAMPLES);
+	return (uint16_t) (acc / avgSamples);
 }
 
-uint16_t adc_readLogarithmicProbe() {
-	return adc_read(ADC_Channel_0);
+uint16_t adc_readLogarithmicProbe(uint8_t avgSamples) {
+	return adc_read(ADC_Channel_0, avgSamples);
 }
 
-uint16_t adc_readLinearProbe() {
-	return adc_read(ADC_Channel_1);
+uint16_t adc_readLinearProbe(uint8_t avgSamples) {
+	return adc_read(ADC_Channel_1, avgSamples);
 }
 
-uint16_t adc_readVnaGainValue() {
-	return adc_read(ADC_Channel_2);
+uint16_t adc_readVnaGainValue(uint8_t avgSamples) {
+	return adc_read(ADC_Channel_2, avgSamples);
 }
 
-uint16_t adc_readVnaPhaseValue() {
-	return adc_read(ADC_Channel_3);
+uint16_t adc_readVnaPhaseValue(uint8_t avgSamples) {
+	return adc_read(ADC_Channel_3, avgSamples);
 }

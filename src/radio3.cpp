@@ -22,7 +22,7 @@
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
 
-static const auto NUM_ANALYSER_PASSES = 3;
+static const auto DEFAULT_AVG_SAMPLES = 3;
 
 static const auto MAX_PAYLOAD_SIZE = 16;
 static const auto TICKS_PER_SECOND = 100;
@@ -119,9 +119,18 @@ struct AnalyserRequest {
     uint32_t freqStep;
     uint16_t numSteps;
     AnalyserDataSource source;
+    uint8_t avgMode;
 
     bool isValid() {
         return numSteps>0 && freqStep>0;
+    }
+
+    uint8_t getAvgSamples() {
+        return (uint8_t) ((avgMode & 0x0f) + 1);
+    }
+
+    uint8_t getAvgPasses() {
+        return (uint8_t ) ((avgMode >> 4) + 1);
     }
 
 } __packed;
@@ -214,7 +223,7 @@ static void vfoRelay_set(AnalyserDataSource source) {
     }
 }
 
-static void sweepAndAccumulate(uint16_t numSteps) {
+static void sweepAndAccumulate(uint16_t numSteps, uint8_t avgSamples) {
     uint32_t freq = analyserData.freqStart;
     uint16_t step = 0;
     vfo_setFrequency(freq);
@@ -225,14 +234,14 @@ static void sweepAndAccumulate(uint16_t numSteps) {
         delayUs(10);
         switch (analyserData.source) {
             case AnalyserDataSource::LOG_PROBE:
-                analyserData.data[step++] += adc_readLogarithmicProbe();
+                analyserData.data[step++] += adc_readLogarithmicProbe(avgSamples);
                 break;
             case AnalyserDataSource::LIN_PROBE:
-                analyserData.data[step++] += adc_readLinearProbe();
+                analyserData.data[step++] += adc_readLinearProbe(avgSamples);
                 break;
             case AnalyserDataSource::VNA:
-                analyserData.data[step++] += adc_readVnaGainValue();
-                analyserData.data[step++] += adc_readVnaPhaseValue();
+                analyserData.data[step++] += adc_readVnaGainValue(avgSamples);
+                analyserData.data[step++] += adc_readVnaPhaseValue(avgSamples);
         }
         freq += analyserData.freqStep;
     }
@@ -255,8 +264,9 @@ static void performAnalysis(AnalyserRequest *req) {
     analyserData.source = req->source;
     uint16_t numSteps = calculateAnalyserDataSteps();
     resetSweepData(numSteps);
-    for(uint8_t i=0; i<NUM_ANALYSER_PASSES; i++) { sweepAndAccumulate(numSteps); }
-    divideAccumulatedData(numSteps, NUM_ANALYSER_PASSES);
+    const auto avgSamples = req->getAvgSamples();
+    for(uint8_t i=0; i<req->getAvgPasses(); i++) { sweepAndAccumulate(numSteps, avgSamples); }
+    divideAccumulatedData(numSteps, avgSamples);
     vfo_setFrequency(0);
 }
 
@@ -277,7 +287,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
     if (deviceState.analyser != AnalyserState::PROCESSING) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
         uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf("sweep from %lu to %lu in %d steps, source: %d", req->freqStart, freqEnd, req->numSteps, req->source);
+        logPrintf("sweep from %lu to %lu in %d steps, avgMode: %02X, source: %d", req->freqStart, freqEnd, req->numSteps, req->avgMode, req->source);
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
             deviceState.analyser = AnalyserState::PROCESSING;
             vfoRelay_set(req->source);
@@ -303,12 +313,12 @@ static void cmdSampleFMeter() {
 }
 
 static void cmdSampleLogarithmicProbe() {
-    uint16_t value = adc_readLogarithmicProbe();
+    uint16_t value = adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES);
     datalink_writeFrame(LOGPROBE_GET, &value, sizeof(value));
 }
 
 static void cmdSampleLinearProbe() {
-    uint16_t value = adc_readLinearProbe();
+    uint16_t value = adc_readLinearProbe(DEFAULT_AVG_SAMPLES);
     datalink_writeFrame(LINPROBE_GET, &value, sizeof(value));
 }
 
@@ -336,15 +346,15 @@ static void cmdVfoAmplifier(uint8_t *payload) {
 
 static void cmdVnaMode(uint8_t *payload) {
     VnaMode vnaMode = (VnaMode) *payload;
-    board_vnaMode(vnaMode == VnaMode::BRIDGE ? true : false);
+    board_vnaMode(vnaMode == VnaMode::BRIDGE);
 }
 
 inline static Complex readVnaProbe() {
-    return { adc_readVnaGainValue(), adc_readVnaPhaseValue() };
+    return { adc_readVnaGainValue(DEFAULT_AVG_SAMPLES), adc_readVnaPhaseValue(DEFAULT_AVG_SAMPLES) };
 }
 
 inline static Probes readAllProbes() {
-    return { adc_readLogarithmicProbe(), adc_readLinearProbe(), readVnaProbe(), fmeter_read() };
+    return { adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES), adc_readLinearProbe(DEFAULT_AVG_SAMPLES), readVnaProbe(), fmeter_read() };
 }
 
 static void cmdSampleComplexProbe() {
