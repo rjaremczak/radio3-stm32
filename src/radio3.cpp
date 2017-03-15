@@ -264,9 +264,10 @@ static void performAnalysis(AnalyserRequest *req) {
     analyserData.source = req->source;
     uint16_t numSteps = calculateAnalyserDataSteps();
     resetSweepData(numSteps);
+    const auto avgPasses = req->getAvgPasses();
     const auto avgSamples = req->getAvgSamples();
     for(uint8_t i=0; i<req->getAvgPasses(); i++) { sweepAndAccumulate(numSteps, avgSamples); }
-    divideAccumulatedData(numSteps, avgSamples);
+    divideAccumulatedData(numSteps, avgPasses);
     vfo_setFrequency(0);
 }
 
@@ -287,7 +288,7 @@ static void cmdAnalyserStart(uint8_t *payload) {
     if (deviceState.analyser != AnalyserState::PROCESSING) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
         uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf("sweep from %lu to %lu in %d steps, avgMode: %02X, source: %d", req->freqStart, freqEnd, req->numSteps, req->avgMode, req->source);
+        logPrintf("sweep range: %lu-%lu Hz quality: %d steps %d passes %d samples, source: %d", req->freqStart, freqEnd, req->numSteps, req->getAvgPasses(), req->getAvgSamples(), req->source);
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
             deviceState.analyser = AnalyserState::PROCESSING;
             vfoRelay_set(req->source);
@@ -480,7 +481,7 @@ static void handleIncomingFrame() {
             break;
 
         default:
-            sendError(ERROR_INVALID_FRAME);
+            logPrintf("command not supported: 0x%03X", frame.command);
     }
 }
 
