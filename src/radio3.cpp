@@ -28,7 +28,7 @@ static const auto MAX_PAYLOAD_SIZE = 16;
 static const auto TICKS_PER_SECOND = 100;
 static const auto MS_PER_TICK = 10;
 
-static const auto DEVICE_RESET = 0x000;
+static const auto PING = 0x000;
 static const auto DEVICE_INFO = 0x001;
 static const auto DEVICE_STATE = 0x002;
 static const auto DEVICE_HARDWARE_REVISION = 0x003;
@@ -74,21 +74,37 @@ static const auto STDIO_BUF_SIZE = 128;
 
 volatile uint32_t currentTime = 0;
 
-enum class AnalyserDataSource : uint8_t { LOG_PROBE, LIN_PROBE, VNA };
+enum class AnalyserDataSource : uint8_t {
+    LOG_PROBE, LIN_PROBE, VNA
+};
 
-enum class AnalyserState : uint8_t { READY, PROCESSING, INVALID_REQUEST };
+enum class AnalyserState : uint8_t {
+    READY, PROCESSING, INVALID_REQUEST
+};
 
-enum class VfoOut : uint8_t { DIRECT, VNA };
+enum class VfoOut : uint8_t {
+    DIRECT, VNA
+};
 
-enum class HardwareRevision : uint8_t { AUTODETECT, VERSION_1, VERSION_2 };
+enum class HardwareRevision : uint8_t {
+    AUTODETECT, VERSION_1, VERSION_2
+};
 
-enum class VfoAttenuator : uint8_t { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7 };
+enum class VfoAttenuator : uint8_t {
+    LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7
+};
 
-enum class VfoAmplifier : uint8_t { OFF, ON };
+enum class VfoAmplifier : uint8_t {
+    OFF, ON
+};
 
-enum class VnaMode : uint8_t { DIRECTIONAL_COUPLER, BRIDGE };
+enum class VnaMode : uint8_t {
+    DIRECTIONAL_COUPLER, BRIDGE
+};
 
-enum class LogLevel : uint8_t { DEBUG, INFO, ERROR };
+enum class LogLevel : uint8_t {
+    DEBUG, INFO, ERROR
+};
 
 struct Complex {
     uint16_t value;
@@ -97,7 +113,6 @@ struct Complex {
 
 struct DeviceState {
     uint32_t timeMs;
-    AnalyserState analyser;
     VfoOut vfoOut;
     VfoAmplifier vfoAmplifier;
     VfoAttenuator vfoAttenuator;
@@ -127,7 +142,7 @@ struct AnalyserRequest {
     uint8_t avgMode;
 
     bool isValid() {
-        return numSteps>0 && freqStep>0;
+        return numSteps > 0 && freqStep > 0;
     }
 
     uint8_t getAvgSamples() {
@@ -135,12 +150,13 @@ struct AnalyserRequest {
     }
 
     uint8_t getAvgPasses() {
-        return (uint8_t ) ((avgMode >> 4) + 1);
+        return (uint8_t) ((avgMode >> 4) + 1);
     }
 
 } __packed;
 
 struct AnalyserData {
+    AnalyserState state;
     uint32_t freqStart;
     uint32_t freqStep;
     uint16_t steps;
@@ -148,8 +164,8 @@ struct AnalyserData {
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
 } __packed;
 
-static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851 };
-static DeviceState deviceState = { 0, AnalyserState::READY, VfoOut::DIRECT , VfoAmplifier::OFF, VfoAttenuator::LEVEL_0, LogLevel::ERROR };
+static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851};
+static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0, LogLevel::ERROR};
 static AnalyserData analyserData;
 static char stdioBuf[STDIO_BUF_SIZE];
 
@@ -163,12 +179,9 @@ static void sendData(uint16_t command, void *payload, uint16_t size) {
     waitMs(50);
 }
 
-inline static void sendError(uint16_t command) {
-    sendData(command, 0, 0);
-}
-
 static uint16_t calculateAnalyserDataSteps() {
-    return (uint16_t) (analyserData.source == AnalyserDataSource::VNA ? (analyserData.steps + 1) * 2 : (analyserData.steps + 1));
+    return (uint16_t) (analyserData.source == AnalyserDataSource::VNA ? (analyserData.steps + 1) * 2 : (
+            analyserData.steps + 1));
 }
 
 static void sendAnalyserData() {
@@ -176,7 +189,7 @@ static void sendAnalyserData() {
 }
 
 static void logPrintf(LogLevel msgLevel, const char *format, ...) {
-    if(deviceState.logLevel > msgLevel) { return; }
+    if (deviceState.logLevel > msgLevel) { return; }
 
     va_list va;
     va_start(va, format);
@@ -199,7 +212,8 @@ static void vfoOutput_vna() {
         case HardwareRevision::VERSION_2:
             board_vfoOut(true);
             break;
-        default: return;
+        default:
+            return;
     }
     deviceState.vfoOut = VfoOut::VNA;
 }
@@ -213,13 +227,14 @@ static void vfoOutput_direct() {
         case HardwareRevision::VERSION_2:
             board_vfoOut(false);
             break;
-        default: return;
+        default:
+            return;
     }
     deviceState.vfoOut = VfoOut::DIRECT;
 }
 
 static void vfoRelay_set(AnalyserDataSource source) {
-    switch(source) {
+    switch (source) {
         case AnalyserDataSource::LOG_PROBE:
         case AnalyserDataSource::LIN_PROBE:
             vfoOutput_direct();
@@ -238,7 +253,7 @@ static void sweepAndAccumulate(uint16_t numSteps, uint8_t avgSamples) {
 
     while (step <= numSteps) {
         vfo_setFrequency(freq);
-        delayUs(10);
+        delayUs(5);
         switch (analyserData.source) {
             case AnalyserDataSource::LOG_PROBE:
                 analyserData.data[step++] += adc_readLogarithmicProbe(avgSamples);
@@ -255,15 +270,15 @@ static void sweepAndAccumulate(uint16_t numSteps, uint8_t avgSamples) {
 }
 
 static void resetSweepData(uint16_t numSteps) {
-    for(uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] = 0; }
+    for (uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] = 0; }
 }
 
 static void divideAccumulatedData(uint16_t numSteps, uint8_t divider) {
-    for(uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] /= divider; }
+    for (uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] /= divider; }
 }
 
 static void performAnalysis(AnalyserRequest *req) {
-    if(!req->isValid()) return;
+    if (!req->isValid()) return;
 
     analyserData.freqStart = req->freqStart;
     analyserData.freqStep = req->freqStep;
@@ -273,13 +288,17 @@ static void performAnalysis(AnalyserRequest *req) {
     resetSweepData(numSteps);
     const auto avgPasses = req->getAvgPasses();
     const auto avgSamples = req->getAvgSamples();
-    for(uint8_t i=0; i<req->getAvgPasses(); i++) { sweepAndAccumulate(numSteps, avgSamples); }
+    for (uint8_t i = 0; i < req->getAvgPasses(); i++) { sweepAndAccumulate(numSteps, avgSamples); }
     divideAccumulatedData(numSteps, avgPasses);
     vfo_setFrequency(0);
 }
 
-static void cmdGetDeviceInfo(void) {
-    deviceInfo.baudRate =   iodev_baudRate();
+static void sendPing() {
+    datalink_writeFrame(PING, nullptr, 0);
+}
+
+static void sendDeviceInfo() {
+    deviceInfo.baudRate = iodev_baudRate();
     datalink_writeFrame(DEVICE_INFO, &deviceInfo, sizeof(deviceInfo));
 }
 
@@ -292,28 +311,29 @@ static void cmdSetVfoFrequency(uint8_t *payload) {
     vfo_setFrequency(*((uint32_t *) payload));
 }
 
-static void cmdAnalyserStart(uint8_t *payload) {
-    if (deviceState.analyser != AnalyserState::PROCESSING) {
-        AnalyserRequest *req = (AnalyserRequest *) payload;
-        uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf(LogLevel::DEBUG, "sweep range: %lu-%lu Hz quality: %d steps %d passes %d samples, source: %d", req->freqStart, freqEnd, req->numSteps, req->getAvgPasses(), req->getAvgSamples(), req->source);
-        if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
-            deviceState.analyser = AnalyserState::PROCESSING;
-            vfoRelay_set(req->source);
-            performAnalysis(req);
-            sendAnalyserData();
-            deviceState.analyser = AnalyserState::READY;
-        } else {
-            deviceState.analyser = AnalyserState::INVALID_REQUEST;
-        }
-    }
-    waitMs(200);
-    sendDeviceState();
-}
-
 static void cmdGetVfoFrequency() {
     uint32_t frequency = vfo_frequency();
     datalink_writeFrame(VFO_GET_FREQ, &frequency, sizeof(frequency));
+}
+
+static void cmdAnalyserStart(uint8_t *payload) {
+    if (analyserData.state != AnalyserState::PROCESSING) {
+        AnalyserRequest *req = (AnalyserRequest *) payload;
+        uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
+        logPrintf(LogLevel::DEBUG, "sweep range: %lu-%lu Hz quality: %d steps %d passes %d samples, source: %d",
+                  req->freqStart, freqEnd, req->numSteps, req->getAvgPasses(), req->getAvgSamples(), req->source);
+
+        if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
+            analyserData.state = AnalyserState::PROCESSING;
+            vfoRelay_set(req->source);
+            performAnalysis(req);
+            analyserData.state = AnalyserState::READY;
+        } else {
+            analyserData.state = AnalyserState::INVALID_REQUEST;
+        }
+
+        sendAnalyserData();
+    }
 }
 
 static void cmdSampleFMeter() {
@@ -338,7 +358,7 @@ static void cmdVfoType(uint8_t *payload) {
 }
 
 static void cmdVfoAttenuator(uint8_t *payload) {
-    if(deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
+    if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
         board_vfoAtt1((bool) (*payload & 0b001));
         board_vfoAtt2((bool) (*payload & 0b010));
@@ -347,7 +367,7 @@ static void cmdVfoAttenuator(uint8_t *payload) {
 }
 
 static void cmdVfoAmplifier(uint8_t *payload) {
-    if(deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
+    if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAmplifier = (VfoAmplifier) *payload;
         board_vfoAmplifier((bool) *payload);
     }
@@ -359,11 +379,12 @@ static void cmdVnaMode(uint8_t *payload) {
 }
 
 inline static Complex readVnaProbe() {
-    return { adc_readVnaGainValue(DEFAULT_AVG_SAMPLES), adc_readVnaPhaseValue(DEFAULT_AVG_SAMPLES) };
+    return {adc_readVnaGainValue(DEFAULT_AVG_SAMPLES), adc_readVnaPhaseValue(DEFAULT_AVG_SAMPLES)};
 }
 
 inline static Probes readAllProbes() {
-    return { adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES), adc_readLinearProbe(DEFAULT_AVG_SAMPLES), readVnaProbe(), fmeter_read() };
+    return {adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES), adc_readLinearProbe(DEFAULT_AVG_SAMPLES), readVnaProbe(),
+            fmeter_read()};
 }
 
 static void cmdSampleComplexProbe() {
@@ -371,13 +392,13 @@ static void cmdSampleComplexProbe() {
     datalink_writeFrame(CMPPROBE_GET, &gp, sizeof(gp));
 }
 
-static void cmdSampleProbes() {
+static void cmdSampleAllProbes() {
     Probes data = readAllProbes();
     datalink_writeFrame(PROBES_GET, &data, sizeof(data));
 }
 
 static void cmdHardwareRevision(HardwareRevision hardwareRevision) {
-    if(hardwareRevision == HardwareRevision::AUTODETECT) {
+    if (hardwareRevision == HardwareRevision::AUTODETECT) {
         deviceInfo.hardwareRevision = board_isRevision2() ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_1;
     } else {
         deviceInfo.hardwareRevision = hardwareRevision;
@@ -415,13 +436,12 @@ static void handleIncomingFrame() {
     if (datalink_error()) { return; }
 
     switch (frame.command) {
-        case DEVICE_RESET:
-            deviceState.timeMs = 0;
-            logPrintf(LogLevel::INFO, "reset performed");
+        case PING:
+            sendPing();
             break;
 
         case DEVICE_INFO:
-            cmdGetDeviceInfo();
+            sendDeviceInfo();
             break;
 
         case DEVICE_STATE:
@@ -434,6 +454,7 @@ static void handleIncomingFrame() {
 
         case VFO_SET_FREQ:
             cmdSetVfoFrequency(payload);
+            sendPing();
             break;
 
         case LOGPROBE_GET:
@@ -453,15 +474,17 @@ static void handleIncomingFrame() {
             break;
 
         case PROBES_GET:
-            cmdSampleProbes();
+            cmdSampleAllProbes();
             break;
 
         case VFO_OUT_DIRECT:
             vfoOutput_direct();
+            sendPing();
             break;
 
         case VFO_OUT_VNA:
             vfoOutput_vna();
+            sendPing();
             break;
 
         case ANALYSER_REQUEST:
@@ -470,26 +493,32 @@ static void handleIncomingFrame() {
 
         case DEVICE_HARDWARE_REVISION:
             cmdHardwareRevision((HardwareRevision) payload[0]);
+            sendDeviceInfo();
             break;
 
         case VFO_TYPE:
             cmdVfoType(payload);
+            sendDeviceInfo();
             break;
 
         case VFO_ATTENUATOR:
             cmdVfoAttenuator(payload);
+            sendDeviceState();
             break;
 
         case VFO_AMPLIFIER:
             cmdVfoAmplifier(payload);
+            sendDeviceState();
             break;
 
         case VNA_MODE:
             cmdVnaMode(payload);
+            sendDeviceState();
             break;
 
         case LOG_LEVEL:
             deviceState.logLevel = (LogLevel) payload[0];
+            sendDeviceState();
             break;
 
         default:
@@ -498,6 +527,8 @@ static void handleIncomingFrame() {
 }
 
 void radio3_start() {
+    analyserData.state = AnalyserState::READY;
+
     while (true) {
         board_indicator(true);
         if (datalink_isIncomingData()) {
