@@ -463,3 +463,7 @@ void iodev_readBuf(void *buf, uint16_t size) {
         if (iodev_error()) { return; }
     }
 }
+
+uint32_t iodev_baudRate() {
+    return rs232coding.dwDTERate;
+}

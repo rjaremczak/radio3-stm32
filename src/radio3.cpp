@@ -109,6 +109,7 @@ struct DeviceInfo {
     const char buildId[32];
     HardwareRevision hardwareRevision;
     VfoType vfoType;
+    uint32_t baudRate;
 } __packed;
 
 struct Probes {
@@ -278,6 +279,7 @@ static void performAnalysis(AnalyserRequest *req) {
 }
 
 static void cmdGetDeviceInfo(void) {
+    deviceInfo.baudRate =   iodev_baudRate();
     datalink_writeFrame(DEVICE_INFO, &deviceInfo, sizeof(deviceInfo));
 }
 

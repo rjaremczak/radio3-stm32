@@ -13,15 +13,16 @@ extern "C" {
 
 // methods must be provided by a concrete implementation
 
-void iodev_init(void);
-uint8_t iodev_incomingData(void);
-uint8_t iodev_error(void);
+void iodev_init();
+uint8_t iodev_incomingData();
+uint8_t iodev_error();
 void iodev_write(uint8_t);
-uint8_t iodev_read(void);
+uint8_t iodev_read();
+uint32_t iodev_baudRate();
 
 // methods implemented in generic way
 
-uint16_t iodev_readWord(void);
+uint16_t iodev_readWord();
 void iodev_readBuf(void *, uint16_t);
 void iodev_writeWord(uint16_t);
 void iodev_writeBuf(void *, uint16_t);
