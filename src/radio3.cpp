@@ -116,7 +116,6 @@ struct DeviceState {
     VfoOut vfoOut;
     VfoAmplifier vfoAmplifier;
     VfoAttenuator vfoAttenuator;
-    LogLevel logLevel;
 } __packed;
 
 struct DeviceInfo {
@@ -164,10 +163,9 @@ struct AnalyserData {
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
 } __packed;
 
-static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851};
-static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0, LogLevel::ERROR};
+static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
+static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
 static AnalyserData analyserData;
-static char stdioBuf[STDIO_BUF_SIZE];
 
 static void waitMs(uint16_t ms) {
     uint32_t t = currentTime + ms;
@@ -186,16 +184,6 @@ static uint16_t calculateAnalyserDataSteps() {
 
 static void sendAnalyserData() {
     sendData(ANALYSER_DATA, &analyserData, ANALYSER_HEADER_SIZE + calculateAnalyserDataSteps() * sizeof(uint16_t));
-}
-
-static void logPrintf(LogLevel msgLevel, const char *format, ...) {
-    if (deviceState.logLevel > msgLevel) { return; }
-
-    va_list va;
-    va_start(va, format);
-    u_int16_t len = (u_int16_t) vsnprintf(stdioBuf, STDIO_BUF_SIZE, format, va);
-    va_end(va);
-    sendData(LOG_MESSAGE, stdioBuf, len);
 }
 
 static void vfoRelayCommit() {
@@ -319,10 +307,6 @@ static void cmdGetVfoFrequency() {
 static void cmdAnalyserStart(uint8_t *payload) {
     if (analyserData.state != AnalyserState::PROCESSING) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
-        uint32_t freqEnd = req->freqStart + (req->freqStep * req->numSteps);
-        logPrintf(LogLevel::DEBUG, "sweep range: %lu-%lu Hz quality: %d steps %d passes %d samples, source: %d",
-                  req->freqStart, freqEnd, req->numSteps, req->getAvgPasses(), req->getAvgSamples(), req->source);
-
         if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
             analyserData.state = AnalyserState::PROCESSING;
             vfoRelay_set(req->source);
@@ -425,7 +409,6 @@ void radio3_init() {
     systick_init();
     fmeter_init();
     adc_init();
-    logPrintf(LogLevel::DEBUG, "started!");
 }
 
 static void handleIncomingFrame() {
@@ -493,36 +476,28 @@ static void handleIncomingFrame() {
 
         case DEVICE_HARDWARE_REVISION:
             cmdHardwareRevision((HardwareRevision) payload[0]);
-            sendDeviceInfo();
+            sendPing();
             break;
 
         case VFO_TYPE:
             cmdVfoType(payload);
-            sendDeviceInfo();
+            sendPing();
             break;
 
         case VFO_ATTENUATOR:
             cmdVfoAttenuator(payload);
-            sendDeviceState();
+            sendPing();
             break;
 
         case VFO_AMPLIFIER:
             cmdVfoAmplifier(payload);
-            sendDeviceState();
+            sendPing();
             break;
 
         case VNA_MODE:
             cmdVnaMode(payload);
-            sendDeviceState();
+            sendPing();
             break;
-
-        case LOG_LEVEL:
-            deviceState.logLevel = (LogLevel) payload[0];
-            sendDeviceState();
-            break;
-
-        default:
-            logPrintf(LogLevel::ERROR, "command not supported: 0x%03X", frame.command);
     }
 }
 

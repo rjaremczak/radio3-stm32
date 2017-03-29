@@ -24,7 +24,7 @@ struct DataLinkFrame {
 };
 
 void datalink_init();
-int datalink_writeFrame(uint16_t type, void *payload, uint16_t size);
+void datalink_writeFrame(uint16_t type, void *payload, uint16_t size);
 void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayloadSize);
 bool datalink_isIncomingData();
 bool datalink_error();

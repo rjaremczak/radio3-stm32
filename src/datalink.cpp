@@ -47,7 +47,7 @@ bool datalink_error() {
 	return status != DATALINK_STATUS_OK;
 }
 
-int datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
+void datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
 	uint8_t crc = 0;
 	if(size <= 13) {
 		write_word(&crc, (size << 12) | type);
@@ -63,8 +63,8 @@ int datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
 		iodev_writeBuf(payload, size);
 		crc8_buf(&crc, payload, size);
 	}
+
 	iodev_write(crc);
-	return 0;
 }
 
 void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayloadSize) {
