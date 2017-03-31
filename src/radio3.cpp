@@ -7,7 +7,6 @@
  */
 
 #include <stdio.h>
-#include <stdarg.h>
 #include <stm32f10x.h>
 
 
@@ -35,42 +34,29 @@ static const auto DEVICE_HARDWARE_REVISION = 0x003;
 
 static const auto VFO_GET_FREQ = 0x008;
 static const auto VFO_SET_FREQ = 0x009;
-static const auto VFO_ERROR = 0x00f;
 
-static const auto LOGPROBE_GET = 0x010;
-static const auto LOGPROBE_INFO = 0x016;
-static const auto LOGPROBE_ERROR = 0x017;
+static const auto LOGPROBE_DATA = 0x010;
 
-static const auto LINPROBE_GET = 0x018;
-static const auto LINPROBE_ERROR = 0x01f;
+static const auto LINPROBE_DATA = 0x018;
 
-static const auto CMPPROBE_GET = 0x020;
-static const auto CMPPROBE_ERROR = 0x027;
+static const auto CMPPROBE_DATA = 0x020;
 
-static const auto FMETER_GET = 0x028;
-static const auto FMETER_ERROR = 0x02f;
+static const auto FMETER_DATA = 0x028;
 
-static const auto PROBES_GET = 0x030;
+static const auto PROBES_DATA = 0x030;
 static const auto VFO_OUT_DIRECT = 0x033;
 static const auto VFO_OUT_VNA = 0x034;
 static const auto VFO_TYPE = 0x035;
 static const auto VFO_ATTENUATOR = 0x036;
 static const auto VFO_AMPLIFIER = 0x037;
 static const auto VNA_MODE = 0x038;
-static const auto LOG_LEVEL = 0x039;
 
 static const auto ANALYSER_REQUEST = 0x040;
-static const auto ANALYSER_STOP = 0x041;
-static const auto ANALYSER_DATA = 0x042;
+static const auto ANALYSER_RESPONSE = 0x041;
 
 static const auto ANALYSER_HEADER_SIZE = 12;
 static const auto ANALYSER_MAX_STEPS = 1000;
 static const auto ANALYSER_MAX_SERIES = 2;
-
-static const auto ERROR_INVALID_FRAME = 0x3fe;
-static const auto LOG_MESSAGE = 0x3ff;
-
-static const auto STDIO_BUF_SIZE = 128;
 
 volatile uint32_t currentTime = 0;
 
@@ -136,12 +122,12 @@ struct Probes {
 struct AnalyserRequest {
     uint32_t freqStart;
     uint32_t freqStep;
-    uint16_t numSteps;
+    uint16_t steps;
     AnalyserDataSource source;
     uint8_t avgMode;
 
     bool isValid() {
-        return numSteps > 0 && freqStep > 0;
+        return steps > 0 && steps <= ANALYSER_MAX_STEPS && freqStep > 0;
     }
 
     uint8_t getAvgSamples() {
@@ -149,45 +135,43 @@ struct AnalyserRequest {
     }
 
     uint8_t getAvgPasses() {
-        return (uint8_t) ((avgMode >> 4) + 1);
+        return (uint8_t) ((avgMode >> 4 & 0x0f) + 1);
     }
 
 } __packed;
 
-struct AnalyserData {
+struct AnalyserResponse {
     AnalyserState state;
     uint32_t freqStart;
     uint32_t freqStep;
     uint16_t steps;
     AnalyserDataSource source;
     uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
+
+    uint16_t totalSamples() {
+        const uint16_t ns = (uint16_t) (steps + 1);
+        return (uint16_t) (source == AnalyserDataSource::VNA ? ns * 2 : ns);
+    }
+
+    uint16_t size() {
+        return ANALYSER_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
+    }
+
 } __packed;
 
-static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
+static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
 static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
-static AnalyserData analyserData;
-
-static void waitMs(uint16_t ms) {
-    uint32_t t = currentTime + ms;
-    while (currentTime < t) {}
-}
+static AnalyserResponse analyserResponse;
 
 static void sendData(uint16_t command, void *payload, uint16_t size) {
     datalink_writeFrame(command, payload, size);
-    waitMs(50);
 }
 
-static uint16_t calculateAnalyserDataSteps() {
-    return (uint16_t) (analyserData.source == AnalyserDataSource::VNA ? (analyserData.steps + 1) * 2 : (
-            analyserData.steps + 1));
-}
-
-static void sendAnalyserData() {
-    sendData(ANALYSER_DATA, &analyserData, ANALYSER_HEADER_SIZE + calculateAnalyserDataSteps() * sizeof(uint16_t));
+static void sendAnalyserResponse() {
+    sendData(ANALYSER_RESPONSE, &analyserResponse, analyserResponse.size());
 }
 
 static void vfoRelayCommit() {
-    waitMs(100);
     board_vfoOutBistable(false, false);
 }
 
@@ -233,51 +217,51 @@ static void vfoRelay_set(AnalyserDataSource source) {
     }
 }
 
-static void sweepAndAccumulate(uint16_t numSteps, uint8_t avgSamples) {
-    uint32_t freq = analyserData.freqStart;
+static void resetSweepData(const uint16_t totalSamples) {
+    for (uint16_t i = 0; i < totalSamples; i++) { analyserResponse.data[i] = 0; }
+}
+
+static void divideAccumulatedData(const uint16_t totalSamples, const uint8_t divider) {
+    for (uint16_t step = 0; step < totalSamples; step++) { analyserResponse.data[step] /= divider; }
+}
+
+static void sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSamples) {
+    uint32_t freq = analyserResponse.freqStart;
     uint16_t step = 0;
     vfo_setFrequency(freq);
     delayUs(100000);
 
-    while (step <= numSteps) {
+    while (step < totalSamples) {
         vfo_setFrequency(freq);
         delayUs(5);
-        switch (analyserData.source) {
+        switch (analyserResponse.source) {
             case AnalyserDataSource::LOG_PROBE:
-                analyserData.data[step++] += adc_readLogarithmicProbe(avgSamples);
+                analyserResponse.data[step++] += adc_readLogarithmicProbe(avgSamples);
                 break;
             case AnalyserDataSource::LIN_PROBE:
-                analyserData.data[step++] += adc_readLinearProbe(avgSamples);
+                analyserResponse.data[step++] += adc_readLinearProbe(avgSamples);
                 break;
             case AnalyserDataSource::VNA:
-                analyserData.data[step++] += adc_readVnaGainValue(avgSamples);
-                analyserData.data[step++] += adc_readVnaPhaseValue(avgSamples);
+                analyserResponse.data[step++] += adc_readVnaGainValue(avgSamples);
+                analyserResponse.data[step++] += adc_readVnaPhaseValue(avgSamples);
         }
-        freq += analyserData.freqStep;
+        freq += analyserResponse.freqStep;
     }
 }
 
-static void resetSweepData(uint16_t numSteps) {
-    for (uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] = 0; }
-}
+static void performSweep(AnalyserRequest *req) {
+    analyserResponse.freqStart = req->freqStart;
+    analyserResponse.freqStep = req->freqStep;
+    analyserResponse.steps = req->steps;
+    analyserResponse.source = req->source;
 
-static void divideAccumulatedData(uint16_t numSteps, uint8_t divider) {
-    for (uint16_t step = 0; step <= numSteps; step++) { analyserData.data[step] /= divider; }
-}
-
-static void performAnalysis(AnalyserRequest *req) {
-    if (!req->isValid()) return;
-
-    analyserData.freqStart = req->freqStart;
-    analyserData.freqStep = req->freqStep;
-    analyserData.steps = req->numSteps;
-    analyserData.source = req->source;
-    uint16_t numSteps = calculateAnalyserDataSteps();
-    resetSweepData(numSteps);
     const auto avgPasses = req->getAvgPasses();
     const auto avgSamples = req->getAvgSamples();
-    for (uint8_t i = 0; i < req->getAvgPasses(); i++) { sweepAndAccumulate(numSteps, avgSamples); }
-    divideAccumulatedData(numSteps, avgPasses);
+    const auto totalSamples = analyserResponse.totalSamples();
+
+    resetSweepData(totalSamples);
+    for (uint8_t i = 0; i < avgPasses; i++) { sweepAndAccumulate(totalSamples, avgSamples); }
+    divideAccumulatedData(totalSamples, avgPasses);
     vfo_setFrequency(0);
 }
 
@@ -305,34 +289,35 @@ static void cmdGetVfoFrequency() {
 }
 
 static void cmdAnalyserStart(uint8_t *payload) {
-    if (analyserData.state != AnalyserState::PROCESSING) {
+    if (analyserResponse.state != AnalyserState::PROCESSING) {
         AnalyserRequest *req = (AnalyserRequest *) payload;
-        if (req->numSteps > 0 && req->numSteps <= ANALYSER_MAX_STEPS) {
-            analyserData.state = AnalyserState::PROCESSING;
+        if (req->isValid() && req->steps <= ANALYSER_MAX_STEPS) {
+            analyserResponse.state = AnalyserState::PROCESSING;
             vfoRelay_set(req->source);
-            performAnalysis(req);
-            analyserData.state = AnalyserState::READY;
+            performSweep(req);
+            analyserResponse.state = AnalyserState::READY;
         } else {
-            analyserData.state = AnalyserState::INVALID_REQUEST;
+            analyserResponse.steps = 0;
+            analyserResponse.state = AnalyserState::INVALID_REQUEST;
         }
 
-        sendAnalyserData();
+        sendAnalyserResponse();
     }
 }
 
 static void cmdSampleFMeter() {
     uint32_t frequency = fmeter_read();
-    datalink_writeFrame(FMETER_GET, &frequency, sizeof(frequency));
+    datalink_writeFrame(FMETER_DATA, &frequency, sizeof(frequency));
 }
 
 static void cmdSampleLogarithmicProbe() {
     uint16_t value = adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES);
-    datalink_writeFrame(LOGPROBE_GET, &value, sizeof(value));
+    datalink_writeFrame(LOGPROBE_DATA, &value, sizeof(value));
 }
 
 static void cmdSampleLinearProbe() {
     uint16_t value = adc_readLinearProbe(DEFAULT_AVG_SAMPLES);
-    datalink_writeFrame(LINPROBE_GET, &value, sizeof(value));
+    datalink_writeFrame(LINPROBE_DATA, &value, sizeof(value));
 }
 
 static void cmdVfoType(uint8_t *payload) {
@@ -373,12 +358,12 @@ inline static Probes readAllProbes() {
 
 static void cmdSampleComplexProbe() {
     Complex gp = readVnaProbe();
-    datalink_writeFrame(CMPPROBE_GET, &gp, sizeof(gp));
+    datalink_writeFrame(CMPPROBE_DATA, &gp, sizeof(gp));
 }
 
 static void cmdSampleAllProbes() {
     Probes data = readAllProbes();
-    datalink_writeFrame(PROBES_GET, &data, sizeof(data));
+    datalink_writeFrame(PROBES_DATA, &data, sizeof(data));
 }
 
 static void cmdHardwareRevision(HardwareRevision hardwareRevision) {
@@ -440,23 +425,23 @@ static void handleIncomingFrame() {
             sendPing();
             break;
 
-        case LOGPROBE_GET:
+        case LOGPROBE_DATA:
             cmdSampleLogarithmicProbe();
             break;
 
-        case LINPROBE_GET:
+        case LINPROBE_DATA:
             cmdSampleLinearProbe();
             break;
 
-        case CMPPROBE_GET:
+        case CMPPROBE_DATA:
             cmdSampleComplexProbe();
             break;
 
-        case FMETER_GET:
+        case FMETER_DATA:
             cmdSampleFMeter();
             break;
 
-        case PROBES_GET:
+        case PROBES_DATA:
             cmdSampleAllProbes();
             break;
 
@@ -502,7 +487,7 @@ static void handleIncomingFrame() {
 }
 
 void radio3_start() {
-    analyserData.state = AnalyserState::READY;
+    analyserResponse.state = AnalyserState::READY;
 
     while (true) {
         board_indicator(true);

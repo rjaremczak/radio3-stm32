@@ -20,8 +20,8 @@ static void write_word(uint8_t *crc, uint16_t word) {
 }
 
 static void write_byte(uint8_t *crc, uint8_t byte) {
-	iodev_writeWord(byte);
-	crc8_word(crc, byte);
+	iodev_write(byte);
+	crc8_byte(crc, byte);
 }
 
 static uint16_t read_word(uint8_t *crc) {
