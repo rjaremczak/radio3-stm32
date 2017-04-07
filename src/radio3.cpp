@@ -51,20 +51,20 @@ static const auto VFO_ATTENUATOR = 0x036;
 static const auto VFO_AMPLIFIER = 0x037;
 static const auto VNA_MODE = 0x038;
 
-static const auto ANALYSER_REQUEST = 0x040;
-static const auto ANALYSER_RESPONSE = 0x041;
+static const auto SWEEP_REQUEST = 0x040;
+static const auto SWEEP_RESPONSE = 0x041;
 
-static const auto ANALYSER_HEADER_SIZE = 12;
-static const auto ANALYSER_MAX_STEPS = 1000;
-static const auto ANALYSER_MAX_SERIES = 2;
+static const auto SWEEP_HEADER_SIZE = 12;
+static const auto SWEEP_MAX_STEPS = 1000;
+static const auto SWEEP_MAX_SERIES = 2;
 
 volatile uint32_t currentTime = 0;
 
-enum class AnalyserDataSource : uint8_t {
+enum class SweepSignalSource : uint8_t {
     LOG_PROBE, LIN_PROBE, VNA
 };
 
-enum class AnalyserState : uint8_t {
+enum class SweepState : uint8_t {
     READY, PROCESSING, INVALID_REQUEST
 };
 
@@ -119,15 +119,15 @@ struct Probes {
     uint32_t fMeter;
 } __packed;
 
-struct AnalyserRequest {
+struct SweepRequest {
     uint32_t freqStart;
     uint32_t freqStep;
     uint16_t steps;
-    AnalyserDataSource source;
+    SweepSignalSource source;
     uint8_t avgMode;
 
     bool isValid() {
-        return steps > 0 && steps <= ANALYSER_MAX_STEPS && freqStep > 0;
+        return steps > 0 && steps <= SWEEP_MAX_STEPS && freqStep > 0;
     }
 
     uint8_t getAvgSamples() {
@@ -140,35 +140,35 @@ struct AnalyserRequest {
 
 } __packed;
 
-struct AnalyserResponse {
-    AnalyserState state;
+struct SweepResponse {
+    SweepState state;
     uint32_t freqStart;
     uint32_t freqStep;
     uint16_t steps;
-    AnalyserDataSource source;
-    uint16_t data[ANALYSER_MAX_SERIES * (ANALYSER_MAX_STEPS + 1)];
+    SweepSignalSource source;
+    uint16_t data[SWEEP_MAX_SERIES * (SWEEP_MAX_STEPS + 1)];
 
     uint16_t totalSamples() {
         const uint16_t ns = (uint16_t) (steps + 1);
-        return (uint16_t) (source == AnalyserDataSource::VNA ? ns * 2 : ns);
+        return (uint16_t) (source == SweepSignalSource::VNA ? ns * 2 : ns);
     }
 
     uint16_t size() {
-        return ANALYSER_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
+        return SWEEP_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
     }
 
 } __packed;
 
 static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
 static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
-static AnalyserResponse analyserResponse;
+static SweepResponse sweepResponse;
 
 static void sendData(uint16_t command, void *payload, uint16_t size) {
     datalink_writeFrame(command, payload, size);
 }
 
-static void sendAnalyserResponse() {
-    sendData(ANALYSER_RESPONSE, &analyserResponse, analyserResponse.size());
+static void sendSweepResponse() {
+    sendData(SWEEP_RESPONSE, &sweepResponse, sweepResponse.size());
 }
 
 static void vfoRelayCommit() {
@@ -205,28 +205,28 @@ static void vfoOutput_direct() {
     deviceState.vfoOut = VfoOut::DIRECT;
 }
 
-static void vfoRelay_set(AnalyserDataSource source) {
+static void vfoRelay_set(SweepSignalSource source) {
     switch (source) {
-        case AnalyserDataSource::LOG_PROBE:
-        case AnalyserDataSource::LIN_PROBE:
+        case SweepSignalSource::LOG_PROBE:
+        case SweepSignalSource::LIN_PROBE:
             vfoOutput_direct();
             break;
-        case AnalyserDataSource::VNA:
+        case SweepSignalSource::VNA:
             vfoOutput_vna();
             break;
     }
 }
 
 static void resetSweepData(const uint16_t totalSamples) {
-    for (uint16_t i = 0; i < totalSamples; i++) { analyserResponse.data[i] = 0; }
+    for (uint16_t i = 0; i < totalSamples; i++) { sweepResponse.data[i] = 0; }
 }
 
 static void divideAccumulatedData(const uint16_t totalSamples, const uint8_t divider) {
-    for (uint16_t step = 0; step < totalSamples; step++) { analyserResponse.data[step] /= divider; }
+    for (uint16_t step = 0; step < totalSamples; step++) { sweepResponse.data[step] /= divider; }
 }
 
 static void sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSamples) {
-    uint32_t freq = analyserResponse.freqStart;
+    uint32_t freq = sweepResponse.freqStart;
     uint16_t step = 0;
     vfo_setFrequency(freq);
     delayUs(100000);
@@ -234,30 +234,30 @@ static void sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSam
     while (step < totalSamples) {
         vfo_setFrequency(freq);
         delayUs(5);
-        switch (analyserResponse.source) {
-            case AnalyserDataSource::LOG_PROBE:
-                analyserResponse.data[step++] += adc_readLogarithmicProbe(avgSamples);
+        switch (sweepResponse.source) {
+            case SweepSignalSource::LOG_PROBE:
+                sweepResponse.data[step++] += adc_readLogarithmicProbe(avgSamples);
                 break;
-            case AnalyserDataSource::LIN_PROBE:
-                analyserResponse.data[step++] += adc_readLinearProbe(avgSamples);
+            case SweepSignalSource::LIN_PROBE:
+                sweepResponse.data[step++] += adc_readLinearProbe(avgSamples);
                 break;
-            case AnalyserDataSource::VNA:
-                analyserResponse.data[step++] += adc_readVnaGainValue(avgSamples);
-                analyserResponse.data[step++] += adc_readVnaPhaseValue(avgSamples);
+            case SweepSignalSource::VNA:
+                sweepResponse.data[step++] += adc_readVnaGainValue(avgSamples);
+                sweepResponse.data[step++] += adc_readVnaPhaseValue(avgSamples);
         }
-        freq += analyserResponse.freqStep;
+        freq += sweepResponse.freqStep;
     }
 }
 
-static void performSweep(AnalyserRequest *req) {
-    analyserResponse.freqStart = req->freqStart;
-    analyserResponse.freqStep = req->freqStep;
-    analyserResponse.steps = req->steps;
-    analyserResponse.source = req->source;
+static void performSweep(SweepRequest *req) {
+    sweepResponse.freqStart = req->freqStart;
+    sweepResponse.freqStep = req->freqStep;
+    sweepResponse.steps = req->steps;
+    sweepResponse.source = req->source;
 
     const auto avgPasses = req->getAvgPasses();
     const auto avgSamples = req->getAvgSamples();
-    const auto totalSamples = analyserResponse.totalSamples();
+    const auto totalSamples = sweepResponse.totalSamples();
 
     resetSweepData(totalSamples);
     for (uint8_t i = 0; i < avgPasses; i++) { sweepAndAccumulate(totalSamples, avgSamples); }
@@ -288,20 +288,20 @@ static void cmdGetVfoFrequency() {
     datalink_writeFrame(VFO_GET_FREQ, &frequency, sizeof(frequency));
 }
 
-static void cmdAnalyserStart(uint8_t *payload) {
-    if (analyserResponse.state != AnalyserState::PROCESSING) {
-        AnalyserRequest *req = (AnalyserRequest *) payload;
-        if (req->isValid() && req->steps <= ANALYSER_MAX_STEPS) {
-            analyserResponse.state = AnalyserState::PROCESSING;
+static void cmdSweepStart(uint8_t *payload) {
+    if (sweepResponse.state != SweepState::PROCESSING) {
+        SweepRequest *req = (SweepRequest *) payload;
+        if (req->isValid() && req->steps <= SWEEP_MAX_STEPS) {
+            sweepResponse.state = SweepState::PROCESSING;
             vfoRelay_set(req->source);
             performSweep(req);
-            analyserResponse.state = AnalyserState::READY;
+            sweepResponse.state = SweepState::READY;
         } else {
-            analyserResponse.steps = 0;
-            analyserResponse.state = AnalyserState::INVALID_REQUEST;
+            sweepResponse.steps = 0;
+            sweepResponse.state = SweepState::INVALID_REQUEST;
         }
 
-        sendAnalyserResponse();
+        sendSweepResponse();
     }
 }
 
@@ -455,8 +455,8 @@ static void handleIncomingFrame() {
             sendPing();
             break;
 
-        case ANALYSER_REQUEST:
-            cmdAnalyserStart(payload);
+        case SWEEP_REQUEST:
+            cmdSweepStart(payload);
             break;
 
         case DEVICE_HARDWARE_REVISION:
@@ -487,7 +487,7 @@ static void handleIncomingFrame() {
 }
 
 void radio3_start() {
-    analyserResponse.state = AnalyserState::READY;
+    sweepResponse.state = SweepState::READY;
 
     while (true) {
         board_indicator(true);
