@@ -5,6 +5,6 @@ void delay(volatile unsigned count) {
 }
 
 void delayUs(unsigned us) {
-  volatile unsigned counter = 7*us;
+  volatile unsigned counter = 8*us;
   while(counter--);
 }

@@ -172,6 +172,7 @@ static void sendSweepResponse() {
 }
 
 static void vfoRelayCommit() {
+    delayUs(100000);
     board_vfoOutBistable(false, false);
 }
 

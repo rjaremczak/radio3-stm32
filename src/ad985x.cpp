@@ -7,7 +7,7 @@
  */
 
 #include "vfo.h"
-
+#include "delay.h"
 #include <stm32f10x.h>
 
 // all pins must be in the same port
@@ -27,16 +27,11 @@ static uint32_t calcFreq(uint32_t hz) {
 
 static volatile uint32_t current_frequency = 0;
 
-static void wait() {
-	volatile int i=4;
-	while(i) { i--; }
-}
-
 static void pulse(uint16_t pin) {
 	GPIO_WriteBit(GPIO_PORT, pin, Bit_SET);
-	wait();
+	delayUs(1);
 	GPIO_WriteBit(GPIO_PORT, pin, Bit_RESET);
-	wait();
+	delayUs(1);
 }
 
 static void send_byte(uint8_t data) {
