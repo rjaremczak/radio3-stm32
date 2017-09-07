@@ -25,7 +25,7 @@ static uint32_t calcFreq(uint32_t hz) {
     return (uint32_t)((hz * 4294967296U) / XTAL);
 }
 
-static volatile uint32_t current_frequency = 0;
+static uint32_t current_frequency = 0;
 
 static void pulse(uint16_t pin) {
 	GPIO_WriteBit(GPIO_PORT, pin, Bit_SET);
@@ -43,6 +43,7 @@ static void send_byte(uint8_t data) {
 }
 
 void vfo_setFrequency(uint32_t frequency) {
+    current_frequency = frequency;
     uint32_t value = calcFreq(frequency);
 	for(int i=0; i<4; i++) {
 		send_byte((uint8_t) (value & 0xff));
@@ -50,7 +51,6 @@ void vfo_setFrequency(uint32_t frequency) {
 	}
 	send_byte(CONTROL_W0);
 	pulse(PIN_FQUD);
-	current_frequency = frequency;
 }
 
 uint32_t vfo_frequency() {
