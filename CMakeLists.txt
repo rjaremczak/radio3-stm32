@@ -10,20 +10,12 @@ include_directories(system/include)
 include_directories(system/include/newlib)
 include_directories(system/include/cmsis)
 include_directories(system/include/stm32f1-stdperiph)
-include_directories(lib/usb/include)
+include_directories(lib/usb)
+include_directories(lib/io)
 
-set(USER_SOURCES
-        src/datalink.cpp
-        src/adc.cpp
-        src/ad985x.cpp
-        src/board.cpp
-        src/crc.cpp
-        src/delay.cpp
-        src/fmeter.cpp
-        src/radio3.cpp)
-
-file(GLOB_RECURSE SYSTEM_SOURCES "system/src/*.c*")
-file(GLOB_RECURSE LIB_SOURCES "lib/*.c*")
+file(GLOB_RECURSE USER_SOURCES "src/*.c**" "include/*.h")
+file(GLOB_RECURSE SYSTEM_SOURCES "system/src/*.c*" "system/include/*.h")
+file(GLOB_RECURSE LIB_SOURCES "lib/*.c*" "lib/*.h")
 
 set(PROJECT_BUILD_DIR ${PROJECT_SOURCE_DIR}/build)
 set(HEX_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.hex)
