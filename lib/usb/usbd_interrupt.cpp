@@ -1,6 +1,6 @@
-#include <usb_regs.h>
-#include <usbd_api.h>
-#include <usbd_core.h>
+#include "usb_regs.h"
+#include "usbd_api.h"
+#include "usbd_core.h"
 
 /** USB device interrupt handlers for STM32F102, STM32F103, STM32L1xx **/
 

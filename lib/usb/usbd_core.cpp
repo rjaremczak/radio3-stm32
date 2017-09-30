@@ -1,7 +1,7 @@
 #include <string.h>
-#include <usbd_api.h>
-#include <usbd_callbacks.h>
-#include <usbd_core.h>
+#include "usbd_api.h"
+#include "usbd_callbacks.h"
+#include "usbd_core.h"
 
 /* Some useful abbreviations */
 #define IN_REQ   (DEVICE_TO_HOST)

@@ -1,7 +1,7 @@
 #ifndef _USBD_CONFIGURE_H
 #define _USBD_CONFIGURE_H 1
 
-#include <usb_def.h>
+#include "usb_def.h"
 
 /** USB device initialization API **/
 

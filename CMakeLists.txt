@@ -22,8 +22,8 @@ set(USER_SOURCES
         src/fmeter.cpp
         src/radio3.cpp)
 
-file(GLOB_RECURSE SYSTEM_SRC "system/src/*.c*")
-file(GLOB_RECURSE USB_SRC "lib/usb/src/*.c*")
+file(GLOB_RECURSE SYSTEM_SOURCES "system/src/*.c*")
+file(GLOB_RECURSE LIB_SOURCES "lib/*.c*")
 
 set(PROJECT_BUILD_DIR ${PROJECT_SOURCE_DIR}/build)
 set(HEX_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.hex)
@@ -31,7 +31,7 @@ set(MAP_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.map)
 set(DUMP_FILE ${PROJECT_BUILD_DIR}/${PROJECT_NAME}.txt)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Map=${MAP_FILE}")
 
-add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${SYSTEM_SRC} ${USB_SRC} ${LINKER_SCRIPT})
+add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${SYSTEM_SOURCES} ${LIB_SOURCES} ${LINKER_SCRIPT})
 
 add_custom_command(TARGET ${PROJECT_NAME}.elf PRE_BUILD
         COMMAND ${PROJECT_SOURCE_DIR}/buildid-updater.sh ${PROJECT_SOURCE_DIR}/include/buildid.h

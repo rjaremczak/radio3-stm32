@@ -1,6 +1,6 @@
-#include <usb_regs.h>
-#include <usbd_configure.h>
-#include <usbd_core.h>
+#include "usb_regs.h"
+#include "usbd_configure.h"
+#include "usbd_core.h"
 
 /** Low level USB device initialization for STM32F102 and STM32F103 **/
 

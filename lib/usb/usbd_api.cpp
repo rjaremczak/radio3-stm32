@@ -1,5 +1,5 @@
-#include <usb_regs.h>
-#include <usbd_api.h>
+#include "usb_regs.h"
+#include "usbd_api.h"
 
 /** USB device API for STM32F102, STM32F103 and STM32L1xx **/
 
