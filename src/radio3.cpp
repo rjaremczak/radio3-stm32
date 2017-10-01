@@ -499,7 +499,7 @@ void radio3_start() {
     }
 }
 
-void main() {
+void main2() {
     board_preInit();
     iodev_init();
     datalink_init();
