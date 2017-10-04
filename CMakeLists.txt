@@ -13,6 +13,7 @@ include_directories(system/include/stm32f1-stdperiph)
 include_directories(lib/usb_fs_driver)
 include_directories(lib/usb_vcom)
 include_directories(lib/io)
+include_directories(lib/timer)
 include_directories(lib/debug)
 
 file(GLOB_RECURSE USER_SOURCES "src/*.c**" "include/*.h")

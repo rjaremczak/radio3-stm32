@@ -1,61 +1,24 @@
-/**
-  ******************************************************************************
-  * @file    usb_istr.c
-  * @author  MCD Application Team
-  * @version V4.1.0
-  * @date    26-May-2017
-  * @brief   ISTR events interrupt service routines
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */
-
-
-/* Includes ------------------------------------------------------------------*/
 #include "usb_lib.h"
-#include "usb_prop.h"
 #include "usb_pwr.h"
 #include "usb_istr.h"
+#include "UsbVCom.h"
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
 __IO uint16_t wIstr;  /* ISTR register last read value */
 __IO uint8_t bIntPackSOF = 0;  /* SOFs received between 2 consecutive packets */
 __IO uint32_t esof_counter = 0; /* expected SOF counter */
 __IO uint32_t wCNTR = 0;
 
-/* Extern variables ----------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-/* function pointers to non-control endpoints service routines */
-void (*pEpInt_IN[7])(void) =
+extern UsbVCom *_usbVCom;
+
+void EP1_IN_Callback() {
+    _usbVCom->ep1in();
+}
+
+void EP3_OUT_Callback() {
+    _usbVCom->ep3out();
+}
+
+void (*pEpInt_IN[7])() =
         {
                 EP1_IN_Callback,
                 EP2_IN_Callback,
@@ -66,7 +29,7 @@ void (*pEpInt_IN[7])(void) =
                 EP7_IN_Callback,
         };
 
-void (*pEpInt_OUT[7])(void) =
+void (*pEpInt_OUT[7])() =
         {
                 EP1_OUT_Callback,
                 EP2_OUT_Callback,
@@ -80,9 +43,9 @@ void (*pEpInt_OUT[7])(void) =
 /*******************************************************************************
 * Function Name  : USB_Istr
 * Description    : ISTR events interrupt service routine
-* Input          :
-* Output         :
-* Return         :
+* Input          : None.
+* Output         : None.
+* Return         : None.
 *******************************************************************************/
 void USB_Istr(void) {
     uint32_t i = 0;
@@ -200,6 +163,7 @@ void USB_Istr(void) {
 
                 /*poll for RESET flag in ISTR*/
                 while ((_GetISTR() & ISTR_RESET) == 0);
+
                 /* clear RESET flag in ISTR */
                 _SetISTR((uint16_t) CLR_RESET);
 
@@ -222,6 +186,3 @@ void USB_Istr(void) {
     }
 #endif
 } /* USB_Istr */
-
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

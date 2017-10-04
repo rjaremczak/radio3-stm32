@@ -8,6 +8,9 @@
 
 #include <stdio.h>
 #include <stm32f10x.h>
+#include <Timer.h>
+#include <UsbVCom.h>
+#include <swo.h>
 
 
 #include "vfo.h"
@@ -499,11 +502,26 @@ void radio3_start() {
     }
 }
 
-void main2() {
+static Timer timer;
+static UsbVCom usbVCom(timer);
+UsbVCom *_usbVCom;
+
+void main() {
+    _usbVCom = &usbVCom;
+
+    SWO_printf("radio3 started\n");
+
     board_preInit();
-    iodev_init();
-    datalink_init();
-    radio3_init();
-    vfoOutput_direct();
-    radio3_start();
+
+    //iodev_init();
+    usbVCom.init();
+
+    //datalink_init();
+    //radio3_init();
+    //vfoOutput_direct();
+
+    while (1) {
+    }
+
+    //radio3_start();
 }

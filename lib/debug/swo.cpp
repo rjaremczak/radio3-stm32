@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <cstdarg>
 #include "swo.h"
 
 /*********************************************************************
@@ -59,4 +61,13 @@ void SWO_PrintString(const char *s) {
     while (*s) {
         SWO_PrintChar(*s++);
     }
+}
+
+void SWO_printf(const char *fmt, ...) {
+    static char buf[48];
+    va_list va;
+    va_start(va, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, va);
+    va_end(va);
+    SWO_PrintString(buf);
 }

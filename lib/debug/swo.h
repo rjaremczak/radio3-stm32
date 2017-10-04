@@ -3,5 +3,6 @@
 
 void SWO_PrintChar  (char c);
 void SWO_PrintString(const char *s);
+void SWO_printf(const char *fmt, ...);
 
 #endif /* SWO_H_ */
