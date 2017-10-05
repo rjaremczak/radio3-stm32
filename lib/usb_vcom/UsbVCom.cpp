@@ -6,7 +6,7 @@
 #include <swo.h>
 #include "UsbVCom.h"
 
-UsbVCom::UsbVCom(Timer &timer) : timer(timer) {
+UsbVCom::UsbVCom(Timer &timer) : UsbDevice(), timer(timer) {
 
 }
 
@@ -27,8 +27,4 @@ void UsbVCom::ep3out() {
 
 void UsbVCom::ep1in() {
     SetEPRxValid(ENDP3);
-}
-
-void UsbVCom::sof() {
-
 }

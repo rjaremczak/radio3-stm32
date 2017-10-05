@@ -10,36 +10,6 @@ __IO uint32_t wCNTR = 0;
 
 extern UsbVCom *_usbVCom;
 
-void EP1_IN_Callback() {
-    _usbVCom->ep1in();
-}
-
-void EP3_OUT_Callback() {
-    _usbVCom->ep3out();
-}
-
-void (*pEpInt_IN[7])() =
-        {
-                EP1_IN_Callback,
-                EP2_IN_Callback,
-                EP3_IN_Callback,
-                EP4_IN_Callback,
-                EP5_IN_Callback,
-                EP6_IN_Callback,
-                EP7_IN_Callback,
-        };
-
-void (*pEpInt_OUT[7])() =
-        {
-                EP1_OUT_Callback,
-                EP2_OUT_Callback,
-                EP3_OUT_Callback,
-                EP4_OUT_Callback,
-                EP5_OUT_Callback,
-                EP6_OUT_Callback,
-                EP7_OUT_Callback,
-        };
-
 /*******************************************************************************
 * Function Name  : USB_Istr
 * Description    : ISTR events interrupt service routine
@@ -69,7 +39,9 @@ void USB_Istr(void) {
     if (wIstr & ISTR_CTR & wInterrupt_Mask) {
         /* servicing of the endpoint correct transfer interrupt */
         /* clear of the CTR flag into the sub */
-        CTR_LP();
+        //CTR_LP();
+        _usbVCom->ctrLp();
+
 #ifdef CTR_CALLBACK
         CTR_Callback();
 #endif
