@@ -16,7 +16,7 @@ namespace {
 class UsbVCom : public UsbDevice {
     const Timer& timer;
     uint8_t rxBuf[BLK_BUFF_SIZE];
-    volatile uint8_t rxBufSize = 0;
+    volatile uint8_t rxBytes = 0;
 
 protected:
     void ep3out() override;
