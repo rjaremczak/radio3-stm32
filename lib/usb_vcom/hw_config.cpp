@@ -2,33 +2,7 @@
 #include "usb_desc.h"
 #include "usb_pwr.h"
 
-ErrorStatus HSEStartUpStatus;
-EXTI_InitTypeDef EXTI_InitStructure;
-
 static void IntToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
-
-/*******************************************************************************
-* Function Name  : Set_System
-* Description    : Configures Main system clocks & power
-* Input          : None.
-* Return         : None.
-*******************************************************************************/
-void Set_System(void) {
-    GPIO_InitTypeDef GPIO_InitStructure;
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-
-    /********************************************/
-    /*  Configure USB DM/DP pins                */
-    /********************************************/
-
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    /* Enable all GPIOs Clock*/
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ALLGPIO, ENABLE);
-}
 
 /*******************************************************************************
 * Function Name  : Set_USBClock

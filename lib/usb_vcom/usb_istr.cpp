@@ -10,6 +10,14 @@ __IO uint32_t wCNTR = 0;
 
 extern UsbVCom *_usbVCom;
 
+extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) {
+    USB_Istr();
+}
+
+extern "C" void USBWakeUp_IRQHandler(void) {
+    EXTI_ClearITPendingBit(EXTI_Line18);
+}
+
 /*******************************************************************************
 * Function Name  : USB_Istr
 * Description    : ISTR events interrupt service routine
