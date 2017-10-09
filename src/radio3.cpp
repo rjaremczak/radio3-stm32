@@ -14,7 +14,6 @@
 
 
 #include "vfo.h"
-#include "iodev.h"
 #include "buildid.h"
 #include "radio3.h"
 #include "fmeter.h"
@@ -165,13 +164,16 @@ struct SweepResponse {
 static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
 static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
 static SweepResponse sweepResponse;
+static Timer timer;
+static UsbVCom usbVCom(timer);
+UsbVCom *_usbVCom;
 
-static void sendData(uint16_t command, void *payload, uint16_t size) {
+static void sendData(uint16_t command, uint8_t *payload, uint16_t size) {
     datalink_writeFrame(command, payload, size);
 }
 
 static void sendSweepResponse() {
-    sendData(SWEEP_RESPONSE, &sweepResponse, sweepResponse.size());
+    sendData(SWEEP_RESPONSE, (uint8_t *)&sweepResponse, sweepResponse.size());
 }
 
 static void vfoRelayCommit() {
@@ -274,7 +276,7 @@ static void sendPing() {
 }
 
 static void sendDeviceInfo() {
-    deviceInfo.baudRate = iodev_baudRate();
+    deviceInfo.baudRate = 0;//usbVCom.baudRate(); // iodev_baudRate();
     datalink_writeFrame(DEVICE_INFO, &deviceInfo, sizeof(deviceInfo));
 }
 
@@ -392,6 +394,8 @@ extern "C" void SysTick_Handler(void) {
         fmeter_timebase();
         fmeter_timebaseCounter = TICKS_PER_SECOND;
     }
+
+    timer.tick(MS_PER_TICK);
 }
 
 void radio3_init() {
@@ -502,26 +506,27 @@ void radio3_start() {
     }
 }
 
-static Timer timer;
-static UsbVCom usbVCom(timer);
-UsbVCom *_usbVCom;
-
 void main() {
     _usbVCom = &usbVCom;
 
     SWO_printf("radio3 started\n");
 
     board_preInit();
-
-    //iodev_init();
     usbVCom.init();
+
+    while(true) {
+        if(usbVCom.available()>0) {
+            uint8_t b = usbVCom.read();
+
+            if(!usbVCom.error()) {
+                SWO_printf("received: %c\n", b);
+                usbVCom.write(b);
+            }
+        }
+    }
 
     //datalink_init();
     //radio3_init();
     //vfoOutput_direct();
-
-    while (1) {
-    }
-
     //radio3_start();
 }

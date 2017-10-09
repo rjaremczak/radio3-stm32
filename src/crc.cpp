@@ -27,10 +27,9 @@ void crc8_word(uint8_t *crc, uint16_t word) {
 	crc8_byte(crc, (uint8_t) (word >> 8));
 }
 
-void crc8_buf(uint8_t *crc, void *buf, uint16_t size) {
-    uint8_t *bytePtr = (uint8_t *)buf;
+void crc8_buf(uint8_t *crc, uint8_t *buf, uint16_t size) {
 	while(size--) {
-		crc8_byte(crc, *(bytePtr++));
+		crc8_byte(crc, *(buf++));
 	}
 }
 

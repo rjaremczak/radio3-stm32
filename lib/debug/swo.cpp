@@ -64,7 +64,7 @@ void SWO_PrintString(const char *s) {
 }
 
 void SWO_printf(const char *fmt, ...) {
-    static char buf[48];
+    static char buf[100];
     va_list va;
     va_start(va, fmt);
     vsnprintf(buf, sizeof(buf), fmt, va);

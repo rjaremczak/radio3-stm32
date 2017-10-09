@@ -21,6 +21,6 @@ uint32_t Timer::getMillis() const {
 bool Timer::isAfter(uint32_t timeMs) const {
     return millis > timeMs;
 }
-void Timer::tick() {
-    millis++;
+void Timer::tick(uint32_t msPerTick) {
+    millis += msPerTick;
 }

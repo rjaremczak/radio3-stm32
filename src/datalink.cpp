@@ -8,36 +8,38 @@
  *
  */
 
+#include <UsbVCom.h>
 #include "datalink.h"
-#include "iodev.h"
 #include "crc.h"
+
+extern UsbVCom *_usbVCom;
 
 static volatile uint8_t status = DATALINK_STATUS_OK;
 
-static void write_word(uint8_t *crc, uint16_t word) {
-	iodev_writeWord(word);
-	crc8_word(crc, word);
-}
-
 static void write_byte(uint8_t *crc, uint8_t byte) {
-	iodev_write(byte);
-	crc8_byte(crc, byte);
+    if(_usbVCom->error()) return;
+
+    _usbVCom->write(byte); // iodev_write(byte);
+    crc8_byte(crc, byte);
 }
 
-static uint16_t read_word(uint8_t *crc) {
-	uint16_t word = iodev_readWord();
-	if(iodev_error()) { return 0; }
-
-	crc8_word(crc, word);
-	return word;
+static void write_word(uint8_t *crc, uint16_t word) {
+    write_byte(crc, (uint8_t) (word & 0xFF));
+    write_byte(crc, (uint8_t) ((word >> 8) & 0xFF));
 }
 
 static uint8_t read_byte(uint8_t *crc) {
-	uint8_t byte = iodev_read();
-	if(iodev_error()) { return 0; }
+    if(_usbVCom->error()) return 0;
 
-	crc8_byte(crc, byte);
-	return byte;
+    uint8_t byte = _usbVCom->read();
+    crc8_byte(crc, byte);
+    return byte;
+}
+
+static uint16_t read_word(uint8_t *crc) {
+    uint8_t low = read_byte(crc);
+    uint8_t high = read_byte(crc);
+    return (high << 8) + low;
 }
 
 void datalink_init() {
@@ -58,21 +60,24 @@ void datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
 		write_word(&crc, (uint16_t) ((15 << 12) | type));
 		write_word(&crc, (uint16_t) (size - 270));
 	}
+    if(_usbVCom->error()) return;
 
 	if(size > 0) {
-		iodev_writeBuf(payload, size);
-		crc8_buf(&crc, payload, size);
+		_usbVCom->write((uint8_t *) payload, size); // iodev_writeBuf(payload, size);
+        if(_usbVCom->error()) return;
+		crc8_buf(&crc, (uint8_t *)payload, size);
 	}
 
-	iodev_write(crc);
+	_usbVCom->write(crc); // iodev_write(crc);
+	_usbVCom->flush();
 }
 
-void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayloadSize) {
+void datalink_readFrame(DataLinkFrame *frame, uint8_t *payloadBuf, uint16_t maxPayloadSize) {
 	status = DATALINK_STATUS_OK;
 
 	uint8_t crc = 0;
 	uint16_t header = read_word(&crc);
-	if(iodev_error()) {
+	if(_usbVCom->error()) {
 		status = DATALINK_IODEV_ERROR;
 		return;
 	}
@@ -87,19 +92,19 @@ void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayl
 	} else {
 		frame->payloadSize = read_word(&crc) + 270;
 	}
-	if(iodev_error()) {
+	if(_usbVCom->error()) {
 		status = DATALINK_IODEV_ERROR;
 		return;
 	}
 
 	uint16_t size = frame->payloadSize > maxPayloadSize ? maxPayloadSize : frame->payloadSize;
 	if(size > 0) {
-        iodev_readBuf(payloadBuf, size);
-		if(iodev_error()) { return; }
+        _usbVCom->read(payloadBuf, size);
+		if(_usbVCom->error()) { return; }
 		crc8_buf(&crc, payloadBuf, size);
 	}
-	uint8_t receivedCrc = iodev_read();
-	if(iodev_error()) {
+	uint8_t receivedCrc = _usbVCom->read();
+	if(_usbVCom->error()) {
 		status = DATALINK_IODEV_ERROR;
 		return;
 	}
@@ -113,5 +118,5 @@ void datalink_readFrame(DataLinkFrame *frame, void *payloadBuf, uint16_t maxPayl
 }
 
 bool datalink_isIncomingData() {
-	return static_cast<bool>(iodev_incomingData());
+    return _usbVCom->available()>0;
 }

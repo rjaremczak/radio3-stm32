@@ -10,7 +10,7 @@
 class Timer {
 public:
     Timer();
-    void tick();
+    void tick(uint32_t msPerTick);
     void sleep(uint32_t durationMs) const;
     uint32_t getMillis() const;
     bool isAfter(uint32_t timeMs) const;

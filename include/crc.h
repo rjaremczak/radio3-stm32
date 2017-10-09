@@ -14,7 +14,7 @@ extern "C" {
 
 void crc8_byte(uint8_t *, uint8_t);
 void crc8_word(uint8_t *, uint16_t);
-void crc8_buf(uint8_t *, void *, uint16_t);
+void crc8_buf(uint8_t *, uint8_t *, uint16_t);
 
 #ifdef __cplusplus
 }
