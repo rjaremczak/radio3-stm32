@@ -3,31 +3,30 @@
 //
 
 #include <usb_lib.h>
-#include <swo.h>
+#include <log.h>
 #include "UsbVCom.h"
 
 UsbVCom::UsbVCom(Timer &timer) : UsbDevice(), timer(timer) {
-
 }
 
 void UsbVCom::init() {
     Set_USBClock();
     USB_Interrupts_Config();
     USB_Init();
+    log("USB VCOM initialized");
 }
 
 void UsbVCom::ep3out() {
-    SWO_printf("ep3out\n");
     if(rxBuf.empty()) {
         uint16_t count = GetEPRxCount(EP3_OUT & 0x7F);
         PMAToUserBufferCopy(rxBuf.data, GetEPRxAddr(EP3_OUT & 0x7F), count);
         rxBuf.inPos = count;
-        SWO_printf("ep3out: received %d bytes\n", rxBuf.count());
+        log("ep3out: received %d bytes", rxBuf.count());
     }
 }
 
 void UsbVCom::ep1in() {
-    SWO_printf("ep1in: write of %d B completed\n", txBuf.count());
+    log("ep1in: write of %d B completed", txBuf.count());
     txBuf.clear();
     writeInProgress = false;
 }
@@ -48,7 +47,7 @@ void UsbVCom::readPacket() {
     rxBuf.clear();
     SetEPRxValid(ENDP3);
 
-    SWO_printf("waiting for packet ...\n");
+    log("waiting for packet ...");
 
     auto time = timer.getMillis() + IO_TIMEOUT_MS;
     while(rxBuf.empty()) {
@@ -57,34 +56,34 @@ void UsbVCom::readPacket() {
             break;
         }
     };
-    SWO_printf("status: %d\n", status);
+
+    log("received: %d B, status: %d\n", rxBuf.count(), status);
 }
 
 uint8_t UsbVCom::read() {
     clearError();
     if(rxBuf.empty()) {
-        SWO_printf("rxBuf is empty, request read now\n", rxBuf.inPos, rxBuf.outPos);
+        log("rxBuf empty, read more...");
         readPacket();
     }
     if(error()) return 0;
 
     uint8_t byte = rxBuf.get();
     if(rxBuf.empty()) {
-        SWO_printf("rxBuf is empty, enable next read\n");
+        log("rxBuf empty, schedule next read");
         rxBuf.clear();
         SetEPRxValid(ENDP3);
     }
 
-    SWO_printf("status: %d, received: %c\n", status, byte);
     return byte;
 }
 
 void UsbVCom::read(uint8_t *buf, uint16_t size) {
+    log("read %d B", txBuf.count());
     while (size-- > 0 && !error()) { *buf++ = read(); }
 }
 
 void UsbVCom::write(uint8_t byte) {
-    SWO_printf("write %c, txBuf.count: %d B\n", byte, txBuf.count());
     if(txBuf.full()) {
         flush();
         txBuf.put(byte);
@@ -95,17 +94,17 @@ void UsbVCom::write(uint8_t byte) {
 }
 
 void UsbVCom::write(uint8_t *buf, uint16_t size) {
+    log("write %d B", txBuf.count());
     while(size-- > 0 && !error()) { write(*buf++); }
 }
 
 void UsbVCom::flush() {
     clearError();
-    SWO_printf("flushing %d B ...\n", txBuf.count());
+    log("flushing %d B...", txBuf.count());
     writeInProgress = true;
     //char str[] = "test\n";
     //UserToPMABufferCopy(reinterpret_cast<uint8_t *>(str), ENDP1_TXADDR, 5);
     //SetEPTxCount(ENDP1, 5);
-    SWO_printf("buf:[%.*s]\n", txBuf.count(), txBuf.data);
     UserToPMABufferCopy(txBuf.data, ENDP1_TXADDR, txBuf.count());
     SetEPTxCount(ENDP1, txBuf.count());
     SetEPTxValid(ENDP1);
@@ -117,30 +116,36 @@ void UsbVCom::flush() {
             break;
         }
     };
-    SWO_printf("status: %d\n", status);
+    log("done, status: %d", status);
 }
 
-void UsbVCom::Buffer::clear() {
+template <int S>
+void UsbVCom::Buffer<S>::clear() {
     inPos = 0;
     outPos = 0;
 }
 
-uint8_t UsbVCom::Buffer::count() {
+template <int S>
+uint8_t UsbVCom::Buffer<S>::count() {
     return inPos - outPos;
 }
 
-bool UsbVCom::Buffer::empty() {
+template <int S>
+bool UsbVCom::Buffer<S>::empty() {
     return outPos >= inPos;
 }
 
-uint8_t UsbVCom::Buffer::get() {
+template <int S>
+uint8_t UsbVCom::Buffer<S>::get() {
     return data[outPos++];
 }
 
-bool UsbVCom::Buffer::full() {
-    return inPos >= sizeof(data);
+template <int S>
+bool UsbVCom::Buffer<S>::full() {
+    return inPos >= S;
 }
 
-void UsbVCom::Buffer::put(uint8_t byte) {
+template <int S>
+void UsbVCom::Buffer<S>::put(uint8_t byte) {
     data[inPos++] = byte;
 }

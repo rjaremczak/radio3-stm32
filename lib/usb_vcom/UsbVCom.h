@@ -10,15 +10,19 @@
 #include <UsbDevice.h>
 
 namespace {
-    const auto BLK_BUFF_SIZE = 64;
+    const auto RX_BUF_SIZE = 64;
+    const auto TX_BUF_SIZE = 63;
     const auto IO_TIMEOUT_MS = 200;
 }
 
 class UsbVCom : public UsbDevice {
-    enum class Status { OK, TIMEOUT };
+    enum class Status {
+        OK, TIMEOUT
+    };
 
+    template<int S>
     struct Buffer {
-        uint8_t data[BLK_BUFF_SIZE]{};
+        uint8_t data[S]{};
         volatile uint8_t inPos = 0;
         volatile uint8_t outPos = 0;
         void clear();
@@ -29,11 +33,11 @@ class UsbVCom : public UsbDevice {
         void put(uint8_t byte);
     };
 
-    const Timer& timer;
-    volatile Status status = Status::OK;
+    const Timer &timer;
+    Status status = Status::OK;
     volatile bool writeInProgress = false;
-    Buffer rxBuf;
-    Buffer txBuf;
+    Buffer<RX_BUF_SIZE> rxBuf;
+    Buffer<TX_BUF_SIZE> txBuf;
 
     void clearError();
     void readPacket();
@@ -43,7 +47,7 @@ protected:
     void ep1in() override;
 
 public:
-    explicit UsbVCom(Timer& timer);
+    explicit UsbVCom(Timer &timer);
     void init();
     bool error();
 

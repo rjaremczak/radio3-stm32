@@ -10,10 +10,12 @@
 class Timer {
 public:
     Timer();
+
     void tick(uint32_t msPerTick);
     void sleep(uint32_t durationMs) const;
     uint32_t getMillis() const;
     bool isAfter(uint32_t timeMs) const;
+    void tickMs();
 };
 
 #endif //STM32F103_MD_TEMPLATE_TIMER_H

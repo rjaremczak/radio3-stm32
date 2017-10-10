@@ -19,7 +19,7 @@ static volatile uint8_t status = DATALINK_STATUS_OK;
 static void write_byte(uint8_t *crc, uint8_t byte) {
     if(_usbVCom->error()) return;
 
-    _usbVCom->write(byte); // iodev_write(byte);
+    _usbVCom->write(byte);
     crc8_byte(crc, byte);
 }
 
@@ -63,12 +63,12 @@ void datalink_writeFrame(uint16_t type, void *payload, uint16_t size) {
     if(_usbVCom->error()) return;
 
 	if(size > 0) {
-		_usbVCom->write((uint8_t *) payload, size); // iodev_writeBuf(payload, size);
+		_usbVCom->write((uint8_t *) payload, size);
         if(_usbVCom->error()) return;
 		crc8_buf(&crc, (uint8_t *)payload, size);
 	}
 
-	_usbVCom->write(crc); // iodev_write(crc);
+	_usbVCom->write(crc);
 	_usbVCom->flush();
 }
 

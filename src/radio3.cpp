@@ -10,7 +10,7 @@
 #include <stm32f10x.h>
 #include <Timer.h>
 #include <UsbVCom.h>
-#include <swo.h>
+#include <log.h>
 
 
 #include "vfo.h"
@@ -26,8 +26,7 @@
 static const auto DEFAULT_AVG_SAMPLES = 3;
 
 static const auto MAX_PAYLOAD_SIZE = 16;
-static const auto TICKS_PER_SECOND = 100;
-static const auto MS_PER_TICK = 10;
+static const auto TICKS_PER_SECOND = 1000;
 
 static const auto PING = 0x000;
 static const auto DEVICE_INFO = 0x001;
@@ -59,8 +58,6 @@ static const auto SWEEP_RESPONSE = 0x041;
 static const auto SWEEP_HEADER_SIZE = 12;
 static const auto SWEEP_MAX_STEPS = 1000;
 static const auto SWEEP_MAX_SERIES = 2;
-
-volatile uint32_t currentTime = 0;
 
 enum class SweepSignalSource : uint8_t {
     LOG_PROBE, LIN_PROBE, VNA
@@ -281,7 +278,7 @@ static void sendDeviceInfo() {
 }
 
 static void sendDeviceState() {
-    deviceState.timeMs = currentTime;
+    deviceState.timeMs = timer.getMillis();
     datalink_writeFrame(DEVICE_STATE, &deviceState, sizeof(deviceState));
 }
 
@@ -387,15 +384,14 @@ static void systick_init() {
 }
 
 extern "C" void SysTick_Handler(void) {
-    static uint8_t fmeter_timebaseCounter = TICKS_PER_SECOND;
+    static auto fmeter_timebaseCounter = TICKS_PER_SECOND;
+    timer.tickMs();
 
-    currentTime += MS_PER_TICK;
     if (!(--fmeter_timebaseCounter)) {
         fmeter_timebase();
         fmeter_timebaseCounter = TICKS_PER_SECOND;
     }
 
-    timer.tick(MS_PER_TICK);
 }
 
 void radio3_init() {
@@ -509,11 +505,13 @@ void radio3_start() {
 void main() {
     _usbVCom = &usbVCom;
 
-    SWO_printf("radio3 started\n");
+    log_init(&timer);
+    log("radio3 started");
 
     board_preInit();
     usbVCom.init();
 
+    /*
     while(true) {
         if(usbVCom.available()>0) {
             uint8_t b = usbVCom.read();
@@ -524,9 +522,10 @@ void main() {
             }
         }
     }
+     */
 
-    //datalink_init();
-    //radio3_init();
-    //vfoOutput_direct();
-    //radio3_start();
+    datalink_init();
+    radio3_init();
+    vfoOutput_direct();
+    radio3_start();
 }

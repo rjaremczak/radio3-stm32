@@ -5,6 +5,8 @@ add_definitions(-DSTM32F10X_MD)
 add_definitions(-DUSE_STDPERIPH_DRIVER)
 add_definitions(-DHSE_VALUE=8000000)
 
+set (CMAKE_CXX_STANDARD 14)
+
 include_directories(include)
 include_directories(system/include)
 include_directories(system/include/newlib)

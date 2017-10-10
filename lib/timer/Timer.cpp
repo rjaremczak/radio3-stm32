@@ -18,9 +18,16 @@ void Timer::sleep(uint32_t durationMs) const {
 uint32_t Timer::getMillis() const {
     return millis;
 }
+
 bool Timer::isAfter(uint32_t timeMs) const {
     return millis > timeMs;
 }
+
 void Timer::tick(uint32_t msPerTick) {
     millis += msPerTick;
 }
+
+void Timer::tickMs() {
+    millis++;
+}
+
