@@ -1,7 +1,7 @@
 #ifndef __USB_PWR_H
 #define __USB_PWR_H
 
-typedef enum _RESUME_STATE {
+enum RESUME_STATE {
     RESUME_EXTERNAL,
     RESUME_INTERNAL,
     RESUME_LATER,
@@ -10,22 +10,22 @@ typedef enum _RESUME_STATE {
     RESUME_ON,
     RESUME_OFF,
     RESUME_ESOF
-} RESUME_STATE;
+};
 
-typedef enum _DEVICE_STATE {
+enum DEVICE_STATE {
     UNCONNECTED,
     ATTACHED,
     POWERED,
     SUSPENDED,
     ADDRESSED,
     CONFIGURED
-} DEVICE_STATE;
+};
 
-void Suspend(void);
-void Resume_Init(void);
+void Suspend();
+void Resume_Init();
 void Resume(RESUME_STATE eResumeSetVal);
-RESULT PowerOn(void);
-RESULT PowerOff(void);
+RESULT PowerOn();
+RESULT PowerOff();
 
 /* External variables --------------------------------------------------------*/
 extern __IO uint32_t bDeviceState; /* USB device status */

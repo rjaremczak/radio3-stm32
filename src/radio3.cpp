@@ -236,7 +236,7 @@ static void sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSam
 
     while (step < totalSamples) {
         vfo_setFrequency(freq);
-        delayUs(5);
+        delayUs(3);
         switch (sweepResponse.source) {
             case SweepSignalSource::LOG_PROBE:
                 sweepResponse.data[step++] += adc_readLogarithmicProbe(avgSamples);
