@@ -6,7 +6,7 @@
  * by redirecting them as TIM-er clock source.
  */
 
-#include <fmeter.h>
+#include "fmeter.h"
 #include <stm32f10x.h>
 
 static uint32_t counter = 0;

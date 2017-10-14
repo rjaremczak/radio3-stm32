@@ -5,17 +5,6 @@
 static void IntToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
 
 /*******************************************************************************
-* Function Name  : Set_USBClock
-* Description    : Configures USB Clock input (48MHz)
-* Input          : None.
-* Return         : None.
-*******************************************************************************/
-void Set_USBClock(void) {
-    RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
-}
-
-/*******************************************************************************
 * Function Name  : Leave_LowPowerMode
 * Description    : Restores system clocks and power while exiting suspend mode
 * Input          : None.
@@ -32,27 +21,6 @@ void Leave_LowPowerMode(void) {
     }
     /*Enable SystemCoreClock*/
     SystemInit();
-}
-
-/*******************************************************************************
-* Function Name  : USB_Interrupts_Config
-* Description    : Configures the USB interrupts
-* Input          : None.
-* Return         : None.
-*******************************************************************************/
-void USB_Interrupts_Config(void) {
-    NVIC_InitTypeDef NVIC_InitStructure;
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-    NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    /* Enable the USB Wake-up interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_Init(&NVIC_InitStructure);
 }
 
 /*******************************************************************************

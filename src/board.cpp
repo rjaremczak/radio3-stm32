@@ -7,7 +7,7 @@
  */
 
 #include <stm32f10x.h>
-#include <board.h>
+#include "board.h"
 
 inline static BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
 

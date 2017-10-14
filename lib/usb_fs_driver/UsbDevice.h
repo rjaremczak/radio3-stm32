@@ -10,6 +10,9 @@
 
 class UsbDevice {
 protected:
+    void initClock();
+    void initInterrupts();
+
     void (UsbDevice::*epIn[7])();
     void (UsbDevice::*epOut[7])();
 
@@ -29,10 +32,22 @@ protected:
     virtual void ep6out();
     virtual void ep7out();
 
+    // virtual void init();
+    // virtual void reset();
+    // virtual void processStatusIn();
+    // virtual void processStatusOut();
+    // virtual RESULT classDataSetup(uint8_t requestNo);
+    // virtual RESULT classNoDataSetup(uint8_t requestNo);
+    // virtual RESULT classGetInterfaceSetting(uint8_t interface, uint8_t alternateSetting);
+    // virtual uint8_t *getDeviceDescriptor();
+    // virtual uint8_t *getConfigDescriptor();
+    // virtual uint8_t *getStringDescriptor();
+    // virtual uint8_t getMaxPacketSize();
+
+
 public:
     UsbDevice();
     void ctrLp();
 };
-
 
 #endif //RADIO3_STM32_USBDEVICE_H

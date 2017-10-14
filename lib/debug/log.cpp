@@ -4,37 +4,17 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include <cstdint>
+#include <cstring>
 #include "log.h"
 
-/** Defines for Cortex-M debug unit **/
+namespace {
+    Timer *timer = nullptr;
+    bool enabled = false;
 
-#define ITM_STIM_U32 (*(volatile unsigned int*)0xE0000000)    // Stimulus Port Register word acces
-#define ITM_STIM_U8  (*(volatile         char*)0xE0000000)    // Stimulus Port Register byte acces
-#define ITM_ENA      (*(volatile unsigned int*)0xE0000E00)    // Trace Enable Ports Register
-#define ITM_TCR      (*(volatile unsigned int*)0xE0000E80)    // Trace control register
-
-static Timer *timer = nullptr;
-static bool enabled = false;
-
-static void swo_print(char c) {
-    if ((ITM_TCR & 1) == 0) return;
-    if ((ITM_ENA & 1) == 0) return;
-
-    while ((ITM_STIM_U8 & 1) == 0) {}
-    ITM_STIM_U8 = c;
-}
-
-static void swo_print(const char *str) {
-    while (*str) { swo_print(*str++); }
-}
-
-static void swo_printf(const char *fmt, ...) {
-    static char buf[100];
-    va_list va;
-    va_start(va, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, va);
-    va_end(va);
-    swo_print(buf);
+    void swo_print(const char *str) {
+        while (*str) { ITM_SendChar(*str++); }
+    }
 }
 
 void log_init(Timer *ptr) {
@@ -43,14 +23,19 @@ void log_init(Timer *ptr) {
 }
 
 void log(const char *fmt, ...) {
-    if(!enabled) return;
+    if (!enabled) return;
 
     static char buf[100];
+    snprintf(buf, sizeof(buf), "%010lu ", timer->getMillis());
+
+    auto offset = strlen(buf);
     va_list va;
     va_start(va, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, va);
+    vsnprintf(buf + offset, sizeof(buf) - offset - 1, fmt, va);
     va_end(va);
-    if(timer) swo_printf("%010d ", timer->getMillis());
+
+    offset = strlen(buf);
+    buf[offset++] = '\n';
+    buf[offset] = 0;
     swo_print(buf);
-    swo_print('\n');
 }

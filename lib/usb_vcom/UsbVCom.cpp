@@ -10,8 +10,8 @@ UsbVCom::UsbVCom(Timer &timer) : UsbDevice(), timer(timer) {
 }
 
 void UsbVCom::init() {
-    Set_USBClock();
-    USB_Interrupts_Config();
+    initClock();
+    initInterrupts();
     USB_Init();
     log("USB VCOM initialized");
 }

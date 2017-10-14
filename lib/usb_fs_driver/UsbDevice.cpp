@@ -128,3 +128,23 @@ void UsbDevice::ep4out() { }
 void UsbDevice::ep5out() { }
 void UsbDevice::ep6out() { }
 void UsbDevice::ep7out() { }
+
+void UsbDevice::initClock() {
+    RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
+}
+
+void UsbDevice::initInterrupts() {
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+    /* Enable the USB Wake-up interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_Init(&NVIC_InitStructure);
+}

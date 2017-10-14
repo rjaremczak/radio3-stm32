@@ -6,58 +6,59 @@
  *
  */
 
-#include <stdio.h>
+#include <cstdio>
+
 #include <stm32f10x.h>
 #include <Timer.h>
 #include <UsbVCom.h>
 #include <log.h>
-
 
 #include "vfo.h"
 #include "buildid.h"
 #include "radio3.h"
 #include "fmeter.h"
 #include "board.h"
-#include "datalink.h"
+#include "DataLink.h"
 #include "adc.h"
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
 
-static const auto DEFAULT_AVG_SAMPLES = 3;
+namespace {
+    const auto DEFAULT_AVG_SAMPLES = 3;
 
-static const auto MAX_PAYLOAD_SIZE = 16;
-static const auto TICKS_PER_SECOND = 1000;
+    const auto MAX_PAYLOAD_SIZE = 16;
+    const auto TICKS_PER_SECOND = 1000;
 
-static const auto PING = 0x000;
-static const auto DEVICE_INFO = 0x001;
-static const auto DEVICE_STATE = 0x002;
-static const auto DEVICE_HARDWARE_REVISION = 0x003;
+    const auto PING = 0x000;
+    const auto DEVICE_INFO = 0x001;
+    const auto DEVICE_STATE = 0x002;
+    const auto DEVICE_HARDWARE_REVISION = 0x003;
 
-static const auto VFO_GET_FREQ = 0x008;
-static const auto VFO_SET_FREQ = 0x009;
+    const auto VFO_GET_FREQ = 0x008;
+    const auto VFO_SET_FREQ = 0x009;
 
-static const auto LOGPROBE_DATA = 0x010;
+    const auto LOGPROBE_DATA = 0x010;
 
-static const auto LINPROBE_DATA = 0x018;
+    const auto LINPROBE_DATA = 0x018;
 
-static const auto CMPPROBE_DATA = 0x020;
+    const auto CMPPROBE_DATA = 0x020;
 
-static const auto FMETER_DATA = 0x028;
+    const auto FMETER_DATA = 0x028;
 
-static const auto PROBES_DATA = 0x030;
-static const auto VFO_OUT_DIRECT = 0x033;
-static const auto VFO_OUT_VNA = 0x034;
-static const auto VFO_TYPE = 0x035;
-static const auto VFO_ATTENUATOR = 0x036;
-static const auto VFO_AMPLIFIER = 0x037;
-static const auto VNA_MODE = 0x038;
+    const auto PROBES_DATA = 0x030;
+    const auto VFO_OUT_DIRECT = 0x033;
+    const auto VFO_OUT_VNA = 0x034;
+    const auto VFO_TYPE = 0x035;
+    const auto VFO_ATTENUATOR = 0x036;
+    const auto VFO_AMPLIFIER = 0x037;
 
-static const auto SWEEP_REQUEST = 0x040;
-static const auto SWEEP_RESPONSE = 0x041;
+    const auto SWEEP_REQUEST = 0x040;
+    const auto SWEEP_RESPONSE = 0x041;
 
-static const auto SWEEP_HEADER_SIZE = 12;
-static const auto SWEEP_MAX_STEPS = 1000;
-static const auto SWEEP_MAX_SERIES = 2;
+    const auto SWEEP_HEADER_SIZE = 12;
+    const auto SWEEP_MAX_STEPS = 1000;
+    const auto SWEEP_MAX_SERIES = 2;
+}
 
 enum class SweepSignalSource : uint8_t {
     LOG_PROBE, LIN_PROBE, VNA
@@ -81,10 +82,6 @@ enum class VfoAttenuator : uint8_t {
 
 enum class VfoAmplifier : uint8_t {
     OFF, ON
-};
-
-enum class VnaMode : uint8_t {
-    DIRECTIONAL_COUPLER, BRIDGE
 };
 
 enum class LogLevel : uint8_t {
@@ -148,7 +145,7 @@ struct SweepResponse {
     uint16_t data[SWEEP_MAX_SERIES * (SWEEP_MAX_STEPS + 1)];
 
     uint16_t totalSamples() {
-        const uint16_t ns = (uint16_t) (steps + 1);
+        const auto ns = (uint16_t) (steps + 1);
         return (uint16_t) (source == SweepSignalSource::VNA ? ns * 2 : ns);
     }
 
@@ -158,19 +155,22 @@ struct SweepResponse {
 
 } __packed;
 
-static DeviceInfo deviceInfo = { "radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200 };
-static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0 };
+static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200};
+static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0};
 static SweepResponse sweepResponse;
 static Timer timer;
-static UsbVCom usbVCom(timer);
+
+UsbVCom usbVCom(timer);
+DataLink dataLink(usbVCom);
+
 UsbVCom *_usbVCom;
 
 static void sendData(uint16_t command, uint8_t *payload, uint16_t size) {
-    datalink_writeFrame(command, payload, size);
+    dataLink.writeFrame(command, payload, size);
 }
 
 static void sendSweepResponse() {
-    sendData(SWEEP_RESPONSE, (uint8_t *)&sweepResponse, sweepResponse.size());
+    sendData(SWEEP_RESPONSE, (uint8_t *) &sweepResponse, sweepResponse.size());
 }
 
 static void vfoRelayCommit() {
@@ -269,31 +269,31 @@ static void performSweep(SweepRequest *req) {
 }
 
 static void sendPing() {
-    datalink_writeFrame(PING, nullptr, 0);
+    dataLink.writeFrame(PING, nullptr, 0);
 }
 
 static void sendDeviceInfo() {
-    deviceInfo.baudRate = 0;//usbVCom.baudRate(); // iodev_baudRate();
-    datalink_writeFrame(DEVICE_INFO, &deviceInfo, sizeof(deviceInfo));
+    deviceInfo.baudRate = 0;
+    dataLink.writeFrame(DEVICE_INFO, reinterpret_cast<uint8_t *>(&deviceInfo), sizeof(deviceInfo));
 }
 
 static void sendDeviceState() {
     deviceState.timeMs = timer.getMillis();
-    datalink_writeFrame(DEVICE_STATE, &deviceState, sizeof(deviceState));
+    dataLink.writeFrame(DEVICE_STATE, reinterpret_cast<uint8_t *>(&deviceState), sizeof(deviceState));
 }
 
-static void cmdSetVfoFrequency(uint8_t *payload) {
+static void cmdSetVfoFrequency(const uint8_t *payload) {
     vfo_setFrequency(*((uint32_t *) payload));
 }
 
 static void cmdGetVfoFrequency() {
     uint32_t frequency = vfo_frequency();
-    datalink_writeFrame(VFO_GET_FREQ, &frequency, sizeof(frequency));
+    dataLink.writeFrame(VFO_GET_FREQ, reinterpret_cast<uint8_t *>(&frequency), sizeof(frequency));
 }
 
 static void cmdSweepStart(uint8_t *payload) {
     if (sweepResponse.state != SweepState::PROCESSING) {
-        SweepRequest *req = (SweepRequest *) payload;
+        auto *req = reinterpret_cast<SweepRequest *>(payload);
         if (req->isValid() && req->steps <= SWEEP_MAX_STEPS) {
             sweepResponse.state = SweepState::PROCESSING;
             vfoRelay_set(req->source);
@@ -310,26 +310,26 @@ static void cmdSweepStart(uint8_t *payload) {
 
 static void cmdSampleFMeter() {
     uint32_t frequency = fmeter_read();
-    datalink_writeFrame(FMETER_DATA, &frequency, sizeof(frequency));
+    dataLink.writeFrame(FMETER_DATA, reinterpret_cast<uint8_t *>(&frequency), sizeof(frequency));
 }
 
 static void cmdSampleLogarithmicProbe() {
     uint16_t value = adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES);
-    datalink_writeFrame(LOGPROBE_DATA, &value, sizeof(value));
+    dataLink.writeFrame(LOGPROBE_DATA, reinterpret_cast<uint8_t *>(&value), sizeof(value));
 }
 
 static void cmdSampleLinearProbe() {
     uint16_t value = adc_readLinearProbe(DEFAULT_AVG_SAMPLES);
-    datalink_writeFrame(LINPROBE_DATA, &value, sizeof(value));
+    dataLink.writeFrame(LINPROBE_DATA, reinterpret_cast<uint8_t *>(&value), sizeof(value));
 }
 
-static void cmdVfoType(uint8_t *payload) {
+static void cmdVfoType(const uint8_t *payload) {
     deviceInfo.vfoType = (VfoType) *payload;
     vfo_init(deviceInfo.vfoType);
     vfo_setFrequency(0);
 }
 
-static void cmdVfoAttenuator(uint8_t *payload) {
+static void cmdVfoAttenuator(const uint8_t *payload) {
     if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
         board_vfoAtt1((bool) (*payload & 0b001));
@@ -338,16 +338,11 @@ static void cmdVfoAttenuator(uint8_t *payload) {
     }
 }
 
-static void cmdVfoAmplifier(uint8_t *payload) {
+static void cmdVfoAmplifier(const uint8_t *payload) {
     if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAmplifier = (VfoAmplifier) *payload;
         board_vfoAmplifier((bool) *payload);
     }
-}
-
-static void cmdVnaMode(uint8_t *payload) {
-    VnaMode vnaMode = (VnaMode) *payload;
-    board_vnaMode(vnaMode == VnaMode::BRIDGE);
 }
 
 inline static Complex readVnaProbe() {
@@ -361,12 +356,12 @@ inline static Probes readAllProbes() {
 
 static void cmdSampleComplexProbe() {
     Complex gp = readVnaProbe();
-    datalink_writeFrame(CMPPROBE_DATA, &gp, sizeof(gp));
+    dataLink.writeFrame(CMPPROBE_DATA, reinterpret_cast<uint8_t *>(&gp), sizeof(gp));
 }
 
 static void cmdSampleAllProbes() {
     Probes data = readAllProbes();
-    datalink_writeFrame(PROBES_DATA, &data, sizeof(data));
+    dataLink.writeFrame(PROBES_DATA, reinterpret_cast<uint8_t *>(&data), sizeof(data));
 }
 
 static void cmdHardwareRevision(HardwareRevision hardwareRevision) {
@@ -401,11 +396,11 @@ void radio3_init() {
 }
 
 static void handleIncomingFrame() {
-    static DataLinkFrame frame;
+    static DataLink::Frame frame;
     static uint8_t payload[MAX_PAYLOAD_SIZE];
 
-    datalink_readFrame(&frame, payload, MAX_PAYLOAD_SIZE);
-    if (datalink_error()) { return; }
+    dataLink.readFrame(&frame, payload, MAX_PAYLOAD_SIZE);
+    if (dataLink.error()) { return; }
 
     switch (frame.command) {
         case PING:
@@ -483,10 +478,8 @@ static void handleIncomingFrame() {
             sendPing();
             break;
 
-        case VNA_MODE:
-            cmdVnaMode(payload);
-            sendPing();
-            break;
+        default:
+            log("command %u not supported", frame.command);
     }
 }
 
@@ -495,14 +488,14 @@ void radio3_start() {
 
     while (true) {
         board_indicator(true);
-        if (datalink_isIncomingData()) {
+        if (dataLink.isIncomingData()) {
             board_indicator(false);
             handleIncomingFrame();
         }
     }
 }
 
-void main() {
+int main() {
     _usbVCom = &usbVCom;
 
     log_init(&timer);
@@ -510,22 +503,9 @@ void main() {
 
     board_preInit();
     usbVCom.init();
-
-    /*
-    while(true) {
-        if(usbVCom.available()>0) {
-            uint8_t b = usbVCom.read();
-
-            if(!usbVCom.error()) {
-                SWO_printf("received: %c\n", b);
-                usbVCom.write(b);
-            }
-        }
-    }
-     */
-
-    datalink_init();
     radio3_init();
     vfoOutput_direct();
     radio3_start();
+
+    return 0;
 }
