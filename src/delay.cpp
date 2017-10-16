@@ -1,8 +1,4 @@
-#include <delay.h>
-
-void delay(volatile unsigned count) {
-  while (count--);
-}
+#include "delay.h"
 
 void delayUs(unsigned us) {
   volatile unsigned counter = 8*us;

@@ -7,7 +7,7 @@
  */
 
 #include <stm32f10x.h>
-#include <board.h>
+#include "board.h"
 
 inline static BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
 
@@ -80,8 +80,4 @@ void board_vfoAtt3(bool energize) {
 
 void board_vfoAmplifier(bool enable) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_14, toBitAction(enable));
-}
-
-void board_vnaMode(bool alternate) {
-    GPIO_WriteBit(GPIOA, GPIO_Pin_9, toBitAction(alternate));
 }

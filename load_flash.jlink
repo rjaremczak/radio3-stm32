@@ -1,7 +1,4 @@
 h
 loadfile build/radio3_stm32.hex
 rnh
-sleep 200
-connect
-sleep 200
 exit

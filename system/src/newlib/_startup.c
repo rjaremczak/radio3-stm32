@@ -45,7 +45,7 @@ extern unsigned int _edata;
 extern unsigned int __bss_start__;
 extern unsigned int __bss_end__;
 
-extern void main(void);
+extern int main(void);
 
 // ----------------------------------------------------------------------------
 
