@@ -50,8 +50,8 @@ protected:
 public:
     explicit UsbVCom(Timer &timer);
     void init();
-    bool error() override;
 
+    bool error() override;
     uint8_t available() override;
     uint8_t read() override;
     void read(uint8_t *buf, uint16_t size) override;

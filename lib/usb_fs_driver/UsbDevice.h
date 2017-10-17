@@ -7,11 +7,13 @@
 
 
 #include <cstdint>
+#include "usb_lib.h"
 
 class UsbDevice {
 protected:
-    void initClock();
-    void initInterrupts();
+    void initRCC();
+    void initNVIC();
+    void intToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
 
     void (UsbDevice::*epIn[7])();
     void (UsbDevice::*epOut[7])();
@@ -33,28 +35,15 @@ protected:
     virtual void ep7out();
 
     virtual void handleStartOfFrame();
+    virtual void handleCorrectTransfer();
     virtual void handleReset();
     virtual void handleError();
     virtual void handleWakeUp();
     virtual void handleSuspend();
     virtual void handleExpectedStartOfFrame();
 
-    // virtual void init();
-    // virtual void reset();
-    // virtual void processStatusIn();
-    // virtual void processStatusOut();
-    // virtual RESULT classDataSetup(uint8_t requestNo);
-    // virtual RESULT classNoDataSetup(uint8_t requestNo);
-    // virtual RESULT classGetInterfaceSetting(uint8_t interface, uint8_t alternateSetting);
-    // virtual uint8_t *getDeviceDescriptor();
-    // virtual uint8_t *getConfigDescriptor();
-    // virtual uint8_t *getStringDescriptor();
-    // virtual uint8_t getMaxPacketSize();
-
-
 public:
     UsbDevice();
-    virtual void handleCorrectTransfer();
     void istr();
 };
 

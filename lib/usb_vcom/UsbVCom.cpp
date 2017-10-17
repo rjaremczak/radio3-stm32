@@ -2,16 +2,17 @@
 // Created by Robert Jaremczak on 2017.10.04.
 //
 
-#include <usb_lib.h>
 #include <log.h>
 #include "UsbVCom.h"
+
+extern uint8_t Request;
 
 UsbVCom::UsbVCom(Timer &timer) : UsbDevice(), timer(timer) {
 }
 
 void UsbVCom::init() {
-    initClock();
-    initInterrupts();
+    initRCC();
+    initNVIC();
     USB_Init();
     log("USB VCOM initialized");
 }

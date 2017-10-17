@@ -3,13 +3,13 @@
 //
 
 #include "UsbDevice.h"
-#include "usb_lib.h"
 #include "usb_pwr.h"
 
 __IO uint16_t wIstr;  /* ISTR register last read value */
 __IO uint8_t bIntPackSOF = 0;  /* SOFs received between 2 consecutive packets */
 __IO uint32_t esof_counter = 0; /* expected SOF counter */
 __IO uint32_t wCNTR = 0;
+
 
 namespace {
     UsbDevice *_usbDevicePtr;
@@ -71,12 +71,12 @@ void UsbDevice::ep5out() {}
 void UsbDevice::ep6out() {}
 void UsbDevice::ep7out() {}
 
-void UsbDevice::initClock() {
+void UsbDevice::initRCC() {
     RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
 }
 
-void UsbDevice::initInterrupts() {
+void UsbDevice::initNVIC() {
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
@@ -260,4 +260,3 @@ void UsbDevice::handleCorrectTransfer() {
 
     }/* while(...) */
 }
-

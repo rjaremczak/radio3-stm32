@@ -5,25 +5,6 @@
 static void IntToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
 
 /*******************************************************************************
-* Function Name  : Leave_LowPowerMode
-* Description    : Restores system clocks and power while exiting suspend mode
-* Input          : None.
-* Return         : None.
-*******************************************************************************/
-void Leave_LowPowerMode(void) {
-    DEVICE_INFO *pInfo = &Device_Info;
-
-    /* Set the device state to the correct state */
-    if (pInfo->Current_Configuration != 0) {
-        bDeviceState = CONFIGURED;
-    } else {
-        bDeviceState = ATTACHED;
-    }
-    /*Enable SystemCoreClock*/
-    SystemInit();
-}
-
-/*******************************************************************************
 * Function Name  : Get_SerialNum.
 * Description    : Create the serial number string descriptor.
 * Input          : None.
