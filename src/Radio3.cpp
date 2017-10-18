@@ -16,10 +16,9 @@
 #include "vfo.h"
 #include "buildid.h"
 #include "Radio3.h"
-#include "fMeter.h"
+#include "FreqMeter.h"
 #include "board.h"
 #include "DataLink.h"
-#include "adc.h"
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
 
@@ -163,21 +162,21 @@ void Radio3::sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSa
 
     vfo_setFrequency(freq);
     delayUs(3);
-    adc_readLogarithmicProbe(avgSamples);
+    adcProbes.readLogarithmic(avgSamples);
 
     while (step < totalSamples) {
         vfo_setFrequency(freq);
         delayUs(3);
         switch (sweepResponse.source) {
             case SweepSignalSource::LOG_PROBE:
-                sweepResponse.data[step++] += adc_readLogarithmicProbe(avgSamples);
+                sweepResponse.data[step++] += adcProbes.readLogarithmic(avgSamples);
                 break;
             case SweepSignalSource::LIN_PROBE:
-                sweepResponse.data[step++] += adc_readLinearProbe(avgSamples);
+                sweepResponse.data[step++] += adcProbes.readLinear(avgSamples);
                 break;
             case SweepSignalSource::VNA:
-                sweepResponse.data[step++] += adc_readVnaGainValue(avgSamples);
-                sweepResponse.data[step++] += adc_readVnaPhaseValue(avgSamples);
+                sweepResponse.data[step++] += adcProbes.readVnaGain(avgSamples);
+                sweepResponse.data[step++] += adcProbes.readVnaPhase(avgSamples);
         }
         freq += sweepResponse.freqStep;
     }
@@ -246,12 +245,12 @@ void Radio3::cmdSampleFMeter() {
 }
 
 void Radio3::cmdSampleLogarithmicProbe() {
-    uint16_t value = adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES);
+    uint16_t value = adcProbes.readLogarithmic(DEFAULT_AVG_SAMPLES);
     sendFrame(FrameCmd::LOGPROBE_DATA, &value, sizeof(value));
 }
 
 void Radio3::cmdSampleLinearProbe() {
-    uint16_t value = adc_readLinearProbe(DEFAULT_AVG_SAMPLES);
+    uint16_t value = adcProbes.readLinear(DEFAULT_AVG_SAMPLES);
     sendFrame(FrameCmd::LINPROBE_DATA, &value, sizeof(value));
 }
 
@@ -278,13 +277,13 @@ void Radio3::cmdVfoAmplifier(const uint8_t *payload) {
 }
 
 Complex Radio3::readVnaProbe() {
-    return {adc_readVnaGainValue(DEFAULT_AVG_SAMPLES), adc_readVnaPhaseValue(DEFAULT_AVG_SAMPLES)};
+    return { adcProbes.readVnaGain(DEFAULT_AVG_SAMPLES), adcProbes.readVnaPhase(DEFAULT_AVG_SAMPLES) };
 }
 
-Probes Radio3::readAllProbes() {
+ProbeValues Radio3::readAllProbes() {
     return {
-            adc_readLogarithmicProbe(DEFAULT_AVG_SAMPLES),
-            adc_readLinearProbe(DEFAULT_AVG_SAMPLES),
+            adcProbes.readLogarithmic(DEFAULT_AVG_SAMPLES),
+            adcProbes.readLinear(DEFAULT_AVG_SAMPLES),
             readVnaProbe(),
             fMeter.read()
     };
@@ -296,8 +295,8 @@ void Radio3::cmdSampleComplexProbe() {
 }
 
 void Radio3::cmdSampleAllProbes() {
-    Probes data = readAllProbes();
-    sendFrame(FrameCmd::PROBES_DATA, &data, sizeof(data));
+    ProbeValues values = readAllProbes();
+    sendFrame(FrameCmd::PROBES_DATA, &values, sizeof(values));
 }
 
 void Radio3::cmdHardwareRevision(HardwareRevision hardwareRevision) {
@@ -415,7 +414,7 @@ Radio3::Radio3(ComDevice &comDevice) : comDevice(comDevice), dataLink(comDevice)
 void Radio3::init() {
     SysTick_Config(SystemCoreClock / 1000);
     fMeter.init();
-    adc_init();
+    adcProbes.init();
     vfoOutput_direct();
 }
 

@@ -7,10 +7,14 @@
  */
 
 #include <stm32f10x.h>
-#include "adc.h"
+#include "AdcProbes.h"
 #include "delay.h"
 
-void adc_init() {
+namespace {
+	const auto MEASURE_DELAY_US = 3;
+}
+
+void AdcProbes::init() {
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOA, ENABLE);
 
@@ -37,35 +41,36 @@ void adc_init() {
 	while(ADC_GetCalibrationStatus(ADC1)) {};
 }
 
-static uint16_t adc_readOnce(uint8_t channel) {
+uint16_t AdcProbes::read(uint8_t channel) {
 	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_239Cycles5);
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}
 	return ADC_GetConversionValue(ADC1);
 }
 
-static uint16_t adc_read(uint8_t channel, uint8_t avgSamples) {
+uint16_t AdcProbes::read(uint8_t channel, uint8_t avgSamples) {
 	uint32_t acc = 0;
 	for(char i=0; i<avgSamples; i++) {
-		acc += adc_readOnce(channel);
-		delayUs(3);
+		acc += read(channel);
+		delayUs(MEASURE_DELAY_US);
 	}
 
 	return (uint16_t) (acc / avgSamples);
 }
 
-uint16_t adc_readLogarithmicProbe(uint8_t avgSamples) {
-	return adc_read(ADC_Channel_0, avgSamples);
+uint16_t AdcProbes::readLogarithmic(uint8_t avgSamples) {
+	return read(ADC_Channel_0, avgSamples);
 }
 
-uint16_t adc_readLinearProbe(uint8_t avgSamples) {
-	return adc_read(ADC_Channel_1, avgSamples);
+uint16_t AdcProbes::readLinear(uint8_t avgSamples) {
+	return read(ADC_Channel_1, avgSamples);
 }
 
-uint16_t adc_readVnaGainValue(uint8_t avgSamples) {
-	return adc_read(ADC_Channel_2, avgSamples);
+uint16_t AdcProbes::readVnaGain(uint8_t avgSamples) {
+	return read(ADC_Channel_2, avgSamples);
 }
 
-uint16_t adc_readVnaPhaseValue(uint8_t avgSamples) {
-	return adc_read(ADC_Channel_3, avgSamples);
+uint16_t AdcProbes::readVnaPhase(uint8_t avgSamples) {
+	return read(ADC_Channel_3, avgSamples);
 }
+

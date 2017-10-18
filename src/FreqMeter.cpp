@@ -6,10 +6,10 @@
  * by redirecting them as TIM-er clock source.
  */
 
-#include "fMeter.h"
+#include "FreqMeter.h"
 #include <stm32f10x.h>
 
-void FMeter::init() {
+void FreqMeter::init() {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_GPIOA, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
@@ -46,11 +46,11 @@ void FMeter::init() {
     TIM_Cmd(TIM2, ENABLE);
 }
 
-uint32_t FMeter::read() {
+uint32_t FreqMeter::read() {
     return counter;
 }
 
-void FMeter::tickMs() {
+void FreqMeter::tickMs() {
     if (!(--timebaseCounter)) {
         counter = (TIM_GetCounter(TIM2) << 16) | TIM_GetCounter(TIM1);
         TIM_SetCounter(TIM1, 0);

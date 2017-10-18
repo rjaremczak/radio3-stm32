@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-class FMeter {
+class FreqMeter {
     uint32_t timebaseCounter = 1000;
     uint32_t counter = 0;
 public:

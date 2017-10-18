@@ -7,7 +7,8 @@
 #define _RADIO3_H_
 
 #include "DataLink.h"
-#include "fMeter.h"
+#include "FreqMeter.h"
+#include "AdcProbes.h"
 
 namespace {
     const auto DEFAULT_AVG_SAMPLES = 3;
@@ -74,7 +75,7 @@ struct Complex {
     uint16_t phase;
 } __packed;
 
-struct Probes {
+struct ProbeValues {
     uint16_t logarithmic;
     uint16_t linear;
     Complex complex;
@@ -84,7 +85,8 @@ struct Probes {
 class Radio3 {
     ComDevice &comDevice;
     DataLink dataLink;
-    FMeter fMeter;
+    FreqMeter fMeter;
+    AdcProbes adcProbes;
 
     void sendFrame(FrameCmd cmd, void *payload, uint16_t size);
     void sendSweepResponse();
@@ -109,7 +111,7 @@ class Radio3 {
     void cmdVfoAttenuator(const uint8_t *payload);
     void cmdVfoAmplifier(const uint8_t *payload);
     Complex readVnaProbe();
-    Probes readAllProbes();
+    ProbeValues readAllProbes();
     void cmdSampleComplexProbe();
     void cmdSampleAllProbes();
     void cmdHardwareRevision(HardwareRevision hardwareRevision);
