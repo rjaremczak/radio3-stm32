@@ -13,7 +13,7 @@
 namespace {
     const auto RX_BUF_SIZE = 64;
     const auto TX_BUF_SIZE = 62;
-    const auto IO_TIMEOUT_MS = 200;
+    const auto IO_TIMEOUT_MS = 500;
 }
 
 class UsbVCom : public UsbDevice, public ComDevice {

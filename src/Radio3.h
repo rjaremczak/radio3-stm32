@@ -49,6 +49,10 @@ enum class SweepSignalSource : uint8_t {
     LOG_PROBE, LIN_PROBE, VNA
 };
 
+enum class SweepState : uint8_t {
+    READY, PROCESSING, INVALID_REQUEST
+};
+
 struct SweepRequest {
     uint32_t freqStart;
     uint32_t freqStep;
@@ -68,6 +72,24 @@ struct SweepRequest {
         return (uint8_t) ((avgMode >> 4 & 0x0f) + 1);
     }
 
+} __packed;
+
+struct SweepResponse {
+    SweepState state;
+    uint32_t freqStart;
+    uint32_t freqStep;
+    uint16_t steps;
+    SweepSignalSource source;
+    uint16_t data[SWEEP_MAX_SERIES * (SWEEP_MAX_STEPS + 1)];
+
+    uint16_t totalSamples() {
+        const auto ns = (uint16_t) (steps + 1);
+        return (uint16_t) (source == SweepSignalSource::VNA ? ns * 2 : ns);
+    }
+
+    uint16_t size() {
+        return SWEEP_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
+    }
 } __packed;
 
 struct Complex {

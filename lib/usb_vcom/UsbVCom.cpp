@@ -103,9 +103,6 @@ void UsbVCom::flush() {
     clearError();
     log("flush %d B", txBuf.count());
     writeInProgress = true;
-    //char str[] = "test\n";
-    //UserToPMABufferCopy(reinterpret_cast<uint8_t *>(str), ENDP1_TXADDR, 5);
-    //SetEPTxCount(ENDP1, 5);
     UserToPMABufferCopy(txBuf.data, ENDP1_TXADDR, txBuf.count());
     SetEPTxCount(ENDP1, txBuf.count());
     SetEPTxValid(ENDP1);

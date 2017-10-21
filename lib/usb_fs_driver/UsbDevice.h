@@ -13,7 +13,6 @@ class UsbDevice {
 protected:
     void initRCC();
     void initNVIC();
-    void intToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
 
     void (UsbDevice::*epIn[7])();
     void (UsbDevice::*epOut[7])();

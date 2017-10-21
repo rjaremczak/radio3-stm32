@@ -22,10 +22,6 @@
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
 
-enum class SweepState : uint8_t {
-    READY, PROCESSING, INVALID_REQUEST
-};
-
 enum class VfoOut : uint8_t {
     DIRECT, VNA
 };
@@ -55,25 +51,6 @@ struct DeviceInfo {
     HardwareRevision hardwareRevision;
     VfoType vfoType;
     uint32_t baudRate;
-} __packed;
-
-struct SweepResponse {
-    SweepState state;
-    uint32_t freqStart;
-    uint32_t freqStep;
-    uint16_t steps;
-    SweepSignalSource source;
-    uint16_t data[SWEEP_MAX_SERIES * (SWEEP_MAX_STEPS + 1)];
-
-    uint16_t totalSamples() {
-        const auto ns = (uint16_t) (steps + 1);
-        return (uint16_t) (source == SweepSignalSource::VNA ? ns * 2 : ns);
-    }
-
-    uint16_t size() {
-        return SWEEP_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
-    }
-
 } __packed;
 
 static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200};
@@ -158,25 +135,21 @@ void Radio3::divideAccumulatedData(const uint16_t totalSamples, const uint8_t di
 
 void Radio3::sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSamples) {
     uint32_t freq = sweepResponse.freqStart;
-    uint16_t step = 0;
-
-    vfo_setFrequency(freq);
-    delayUs(3);
-    adcProbes.readLogarithmic(avgSamples);
-
-    while (step < totalSamples) {
+    uint16_t sampleNo = 0;
+    while (sampleNo < totalSamples) {
         vfo_setFrequency(freq);
-        delayUs(3);
+        delayUs(5);
         switch (sweepResponse.source) {
             case SweepSignalSource::LOG_PROBE:
-                sweepResponse.data[step++] += adcProbes.readLogarithmic(avgSamples);
+                sweepResponse.data[sampleNo++] += adcProbes.readLogarithmic(avgSamples);
                 break;
             case SweepSignalSource::LIN_PROBE:
-                sweepResponse.data[step++] += adcProbes.readLinear(avgSamples);
+                sweepResponse.data[sampleNo++] += adcProbes.readLinear(avgSamples);
                 break;
             case SweepSignalSource::VNA:
-                sweepResponse.data[step++] += adcProbes.readVnaGain(avgSamples);
-                sweepResponse.data[step++] += adcProbes.readVnaPhase(avgSamples);
+                sweepResponse.data[sampleNo++] += adcProbes.readVnaGain(avgSamples);
+                sweepResponse.data[sampleNo++] += adcProbes.readVnaPhase(avgSamples);
+                break;
         }
         freq += sweepResponse.freqStep;
     }
@@ -193,8 +166,9 @@ void Radio3::performSweep(SweepRequest *req) {
     const auto totalSamples = sweepResponse.totalSamples();
 
     auto prevFreq = vfo_frequency();
+    sweepAndAccumulate(totalSamples >> 4, avgSamples);
     resetSweepData(totalSamples);
-    for (uint8_t i = 0; i < avgPasses; i++) { sweepAndAccumulate(totalSamples, avgSamples); }
+    for (auto i=0; i < avgPasses; i++) { sweepAndAccumulate(totalSamples, avgSamples); }
     divideAccumulatedData(totalSamples, avgPasses);
     vfo_setFrequency(prevFreq);
 }

@@ -11,7 +11,7 @@
 #include "delay.h"
 
 namespace {
-	const auto MEASURE_DELAY_US = 3;
+	const auto MEASURE_DELAY_US = 5;
 }
 
 void AdcProbes::init() {
