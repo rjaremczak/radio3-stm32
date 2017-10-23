@@ -38,7 +38,7 @@ void Sweep::accumulateData(uint16_t length, uint8_t avgSamples) {
 }
 
 void Sweep::perform(Request &request) {
-    if(!request.isValid() || request.steps >= SWEEP_MAX_STEPS) {
+    if(!request.isValid() || request.steps > SWEEP_MAX_STEPS) {
         response.steps = 0;
         response.state = Sweep::State::INVALID_REQUEST;
         return;
