@@ -7,11 +7,13 @@
  */
 
 #include <stm32f10x.h>
-#include "board.h"
+#include "Board.h"
 
-inline static BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
+namespace {
+    inline BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
+}
 
-void board_preInit() {
+void Board::preInit() {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
@@ -27,16 +29,7 @@ void board_preInit() {
     GPIO_SetBits(GPIOB, gpi.GPIO_Pin);
 }
 
-bool board_isRevision2() {
-    GPIO_InitTypeDef gpi;
-    gpi.GPIO_Speed = GPIO_Speed_50MHz;
-    gpi.GPIO_Mode = GPIO_Mode_IPU;
-    gpi.GPIO_Pin = GPIO_Pin_12;
-    GPIO_Init(GPIOB, &gpi);
-    return !GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12);
-}
-
-void board_init() {
+void Board::init() {
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
     gpi.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -48,36 +41,44 @@ void board_init() {
     gpi.GPIO_Pin = GPIO_Pin_9;
     GPIO_Init(GPIOA, &gpi);
     GPIO_ResetBits(GPIOA, GPIO_Pin_13);
-
 }
 
-void board_indicator(bool on) {
+bool Board::isRevision2() {
+    GPIO_InitTypeDef gpi;
+    gpi.GPIO_Speed = GPIO_Speed_50MHz;
+    gpi.GPIO_Mode = GPIO_Mode_IPU;
+    gpi.GPIO_Pin = GPIO_Pin_12;
+    GPIO_Init(GPIOB, &gpi);
+    return !GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12);
+}
+
+void Board::indicator(bool on) {
     BitAction val = toBitAction(!on);
     GPIO_WriteBit(GPIOC, GPIO_Pin_13, val);
     GPIO_WriteBit(GPIOB, GPIO_Pin_13, val);
 }
 
-void board_vfoOutBistable(bool pin1, bool pin10) {
-    GPIO_WriteBit(GPIOB, GPIO_Pin_15, toBitAction(pin1));
-    GPIO_WriteBit(GPIOB, GPIO_Pin_12, toBitAction(pin10));
+void Board::vfoOutBistable(bool on1, bool on2) {
+    GPIO_WriteBit(GPIOB, GPIO_Pin_15, toBitAction(on1));
+    GPIO_WriteBit(GPIOB, GPIO_Pin_12, toBitAction(on2));
 }
 
-void board_vfoOut(bool energize) {
-    GPIO_WriteBit(GPIOB, GPIO_Pin_15, toBitAction(energize));
+void Board::vfoOutMonostable(bool on) {
+    GPIO_WriteBit(GPIOB, GPIO_Pin_15, toBitAction(on));
 }
 
-void board_vfoAtt1(bool energize) {
+void Board::att1(bool energize) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_12, toBitAction(energize));
 }
 
-void board_vfoAtt2(bool energize) {
+void Board::att2(bool energize) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_10, toBitAction(energize));
 }
 
-void board_vfoAtt3(bool energize) {
+void Board::att3(bool energize) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_11, toBitAction(energize));
 }
 
-void board_vfoAmplifier(bool enable) {
+void Board::amplifier(bool enable) {
     GPIO_WriteBit(GPIOB, GPIO_Pin_14, toBitAction(enable));
 }

@@ -2,9 +2,7 @@
 // Created by Robert Jaremczak on 2017.10.05.
 //
 
-#ifndef RADIO3_STM32_USBDEVICE_H
-#define RADIO3_STM32_USBDEVICE_H
-
+#pragma once
 
 #include <cstdint>
 #include "usb_lib.h"
@@ -45,5 +43,3 @@ public:
     UsbDevice();
     void istr();
 };
-
-#endif //RADIO3_STM32_USBDEVICE_H

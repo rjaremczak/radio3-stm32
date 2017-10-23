@@ -3,21 +3,18 @@
  * Author: Robert Jaremczak, SQ6DGT
  */
 
-#ifndef _RADIO3_H_
-#define _RADIO3_H_
+#pragma once
 
 #include "DataLink.h"
 #include "FreqMeter.h"
 #include "AdcProbes.h"
+#include "Ad985x.h"
+#include "Sweep.h"
+#include "Board.h"
 
 namespace {
     const auto DEFAULT_AVG_SAMPLES = 3;
-
     const auto MAX_PAYLOAD_SIZE = 16;
-
-    const auto SWEEP_HEADER_SIZE = 12;
-    const auto SWEEP_MAX_STEPS = 1000;
-    const auto SWEEP_MAX_SERIES = 2;
 }
 
 enum class FrameCmd : uint16_t {
@@ -45,87 +42,39 @@ enum class HardwareRevision : uint8_t {
     AUTODETECT, VERSION_1, VERSION_2
 };
 
-enum class SweepSignalSource : uint8_t {
-    LOG_PROBE, LIN_PROBE, VNA
-};
-
-enum class SweepState : uint8_t {
-    READY, PROCESSING, INVALID_REQUEST
-};
-
-struct SweepRequest {
-    uint32_t freqStart;
-    uint32_t freqStep;
-    uint16_t steps;
-    SweepSignalSource source;
-    uint8_t avgMode;
-
-    bool isValid() {
-        return steps > 0 && steps <= SWEEP_MAX_STEPS && freqStep > 0;
-    }
-
-    uint8_t getAvgSamples() {
-        return (uint8_t) ((avgMode & 0x0f) + 1);
-    }
-
-    uint8_t getAvgPasses() {
-        return (uint8_t) ((avgMode >> 4 & 0x0f) + 1);
-    }
-
-} __packed;
-
-struct SweepResponse {
-    SweepState state;
-    uint32_t freqStart;
-    uint32_t freqStep;
-    uint16_t steps;
-    SweepSignalSource source;
-    uint16_t data[SWEEP_MAX_SERIES * (SWEEP_MAX_STEPS + 1)];
-
-    uint16_t totalSamples() {
-        const auto ns = (uint16_t) (steps + 1);
-        return (uint16_t) (source == SweepSignalSource::VNA ? ns * 2 : ns);
-    }
-
-    uint16_t size() {
-        return SWEEP_HEADER_SIZE + totalSamples() * sizeof(uint16_t);
-    }
-} __packed;
-
 struct Complex {
     uint16_t value;
     uint16_t phase;
-} __packed;
+} __attribute__((packed));
 
 struct ProbeValues {
     uint16_t logarithmic;
     uint16_t linear;
     Complex complex;
     uint32_t fMeter;
-} __packed;
+} __attribute__((packed));
 
 class Radio3 {
     ComDevice &comDevice;
+    Board &board;
+
     DataLink dataLink;
     FreqMeter fMeter;
     AdcProbes adcProbes;
+    Ad985x vfo;
+    Sweep sweep;
 
-    void sendFrame(FrameCmd cmd, void *payload, uint16_t size);
-    void sendSweepResponse();
+    void sendFrame(FrameCmd cmd, const void *payload, uint16_t size);
     void vfoRelayCommit();
     void vfoOutput_vna();
     void vfoOutput_direct();
-    void vfoRelay_set(SweepSignalSource source);
-    void resetSweepData(uint16_t totalSamples);
-    void divideAccumulatedData(uint16_t totalSamples, uint8_t divider);
-    void sweepAndAccumulate(uint16_t totalSamples, uint8_t avgSamples);
-    void performSweep(SweepRequest *req);
+    void vfoRelay_set(Sweep::Source source);
     void sendPing();
     void sendDeviceInfo();
     void sendDeviceState();
     void cmdSetVfoFrequency(const uint8_t *payload);
     void cmdGetVfoFrequency();
-    void cmdSweepStart(uint8_t *payload);
+    void cmdSweepRequest(uint8_t *payload);
     void cmdSampleFMeter();
     void cmdSampleLogarithmicProbe();
     void cmdSampleLinearProbe();
@@ -140,10 +89,8 @@ class Radio3 {
     void handleIncomingFrame();
 
 public:
-    explicit Radio3(ComDevice &comDevice);
+    explicit Radio3(ComDevice &comDevice, Board &board);
     void init();
     void start();
     void sysTick();
 };
-
-#endif

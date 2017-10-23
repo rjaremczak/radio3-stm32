@@ -1,17 +1,14 @@
-#ifndef __USB_REGS_H
-#define __USB_REGS_H
+#pragma once
 
-typedef enum _EP_DBUF_DIR
-{
+enum EP_DBUF_DIR {
   /* double buffered endpoint direction */
   EP_DBUF_ERR,
   EP_DBUF_OUT,
   EP_DBUF_IN
-}EP_DBUF_DIR;
+};
 
 /* endpoint buffer number */
-enum EP_BUF_NUM
-{
+enum EP_BUF_NUM {
   EP_NOBUF,
   EP_BUF0,
   EP_BUF1
@@ -709,7 +706,3 @@ EP_DBUF_DIR GetEPDblBufDir(uint8_t /*bEpNum*/);
 void FreeUserBuffer(uint8_t bEpNum/*bEpNum*/, uint8_t bDir);
 uint16_t ToWord(uint8_t, uint8_t);
 uint16_t ByteSwap(uint16_t);
-
-#endif /* __USB_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

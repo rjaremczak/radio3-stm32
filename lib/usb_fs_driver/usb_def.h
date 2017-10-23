@@ -1,50 +1,44 @@
-#ifndef __USB_DEF_H
-#define __USB_DEF_H
+#pragma once
 
-typedef enum _RECIPIENT_TYPE
-{
-  DEVICE_RECIPIENT,     /* Recipient device */
-  INTERFACE_RECIPIENT,  /* Recipient interface */
-  ENDPOINT_RECIPIENT,   /* Recipient endpoint */
-  OTHER_RECIPIENT
-} RECIPIENT_TYPE;
+enum RECIPIENT_TYPE {
+    DEVICE_RECIPIENT,     /* Recipient device */
+    INTERFACE_RECIPIENT,  /* Recipient interface */
+    ENDPOINT_RECIPIENT,   /* Recipient endpoint */
+    OTHER_RECIPIENT
+};
 
-
-typedef enum _STANDARD_REQUESTS
-{
-  GET_STATUS = 0,
-  CLEAR_FEATURE,
-  RESERVED1,
-  SET_FEATURE,
-  RESERVED2,
-  SET_ADDRESS,
-  GET_DESCRIPTOR,
-  SET_DESCRIPTOR,
-  GET_CONFIGURATION,
-  SET_CONFIGURATION,
-  GET_INTERFACE,
-  SET_INTERFACE,
-  TOTAL_sREQUEST,  /* Total number of Standard request */
-  SYNCH_FRAME = 12
-} STANDARD_REQUESTS;
+enum STANDARD_REQUESTS {
+    GET_STATUS = 0,
+    CLEAR_FEATURE,
+    RESERVED1,
+    SET_FEATURE,
+    RESERVED2,
+    SET_ADDRESS,
+    GET_DESCRIPTOR,
+    SET_DESCRIPTOR,
+    GET_CONFIGURATION,
+    SET_CONFIGURATION,
+    GET_INTERFACE,
+    SET_INTERFACE,
+    TOTAL_sREQUEST,  /* Total number of Standard request */
+    SYNCH_FRAME = 12
+};
 
 /* Definition of "USBwValue" */
-typedef enum _DESCRIPTOR_TYPE
-{
-  DEVICE_DESCRIPTOR = 1,
-  CONFIG_DESCRIPTOR,
-  STRING_DESCRIPTOR,
-  INTERFACE_DESCRIPTOR,
-  ENDPOINT_DESCRIPTOR,
-  DEVICE_BOS_DESCRIPTOR = 0xF
-} DESCRIPTOR_TYPE;
+enum DESCRIPTOR_TYPE {
+    DEVICE_DESCRIPTOR = 1,
+    CONFIG_DESCRIPTOR,
+    STRING_DESCRIPTOR,
+    INTERFACE_DESCRIPTOR,
+    ENDPOINT_DESCRIPTOR,
+    DEVICE_BOS_DESCRIPTOR = 0xF
+};
 
 /* Feature selector of a SET_FEATURE or CLEAR_FEATURE */
-typedef enum _FEATURE_SELECTOR
-{
-  ENDPOINT_STALL,
-  DEVICE_REMOTE_WAKEUP
-} FEATURE_SELECTOR;
+enum FEATURE_SELECTOR {
+    ENDPOINT_STALL,
+    DEVICE_REMOTE_WAKEUP
+};
 
 /* Exported constants --------------------------------------------------------*/
 /* Definition of "USBbmRequestType" */
@@ -54,10 +48,3 @@ typedef enum _FEATURE_SELECTOR
 #define VENDOR_REQUEST    0x40  /* Vendor request */
 
 #define RECIPIENT         0x1F  /* Mask to get recipient */
-
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
-
-#endif /* __USB_DEF_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

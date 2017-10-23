@@ -1,7 +1,6 @@
-#ifndef __USB_INIT_H
-#define __USB_INIT_H
+#pragma once
 
-void USB_Init(void);
+void USB_Init();
 
 /* External variables --------------------------------------------------------*/
 /*  The number of current endpoint, it will be used to specify an endpoint */
@@ -23,7 +22,3 @@ extern USER_STANDARD_REQUESTS *pUser_Standard_Requests;
 
 extern uint16_t SaveState;
 extern uint16_t wInterrupt_Mask;
-
-#endif /* __USB_INIT_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

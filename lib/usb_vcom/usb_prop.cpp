@@ -79,7 +79,7 @@ ONE_DESCRIPTOR String_Descriptor[4] =
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_init(void) {
+void Virtual_Com_Port_init() {
 
     /* Update the serial number string descriptor with the data from the unique
     ID*/
@@ -103,7 +103,7 @@ void Virtual_Com_Port_init(void) {
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_Reset(void) {
+void Virtual_Com_Port_Reset() {
     /* Set Virtual_Com_Port DEVICE as not configured */
     pInformation->Current_Configuration = 0;
 
@@ -156,7 +156,7 @@ void Virtual_Com_Port_Reset(void) {
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_SetConfiguration(void) {
+void Virtual_Com_Port_SetConfiguration() {
     DEVICE_INFO *pInfo = &Device_Info;
 
     if (pInfo->Current_Configuration != 0) {
@@ -172,7 +172,7 @@ void Virtual_Com_Port_SetConfiguration(void) {
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_SetDeviceAddress(void) {
+void Virtual_Com_Port_SetDeviceAddress() {
     bDeviceState = ADDRESSED;
 }
 
@@ -183,7 +183,7 @@ void Virtual_Com_Port_SetDeviceAddress(void) {
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_Status_In(void) {
+void Virtual_Com_Port_Status_In() {
     if (Request == SET_LINE_CODING) {
         //USART_Config();
         Request = 0;
@@ -197,7 +197,7 @@ void Virtual_Com_Port_Status_In(void) {
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void Virtual_Com_Port_Status_Out(void) {}
+void Virtual_Com_Port_Status_Out() {}
 
 /*******************************************************************************
 * Function Name  : Virtual_Com_Port_Data_Setup

@@ -94,7 +94,7 @@ void UsbVCom::write(uint8_t byte) {
     }
 }
 
-void UsbVCom::write(uint8_t *buf, uint16_t size) {
+void UsbVCom::write(const uint8_t *buf, uint16_t size) {
     log("write %d B", txBuf.count());
     while(size-- > 0 && !error()) { write(*buf++); }
 }

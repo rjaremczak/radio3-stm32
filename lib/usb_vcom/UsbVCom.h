@@ -2,9 +2,7 @@
 // Created by Robert Jaremczak on 2017.10.04.
 //
 
-#ifndef RADIO3_STM32_USBVCOM_H
-#define RADIO3_STM32_USBVCOM_H
-
+#pragma once
 
 #include <Timer.h>
 #include <UsbDevice.h>
@@ -56,8 +54,6 @@ public:
     uint8_t read() override;
     void read(uint8_t *buf, uint16_t size) override;
     void write(uint8_t byte) override;
-    void write(uint8_t *buf, uint16_t size) override;
+    void write(const uint8_t *buf, uint16_t size) override;
     void flush() override;
 };
-
-#endif //RADIO3_STM32_USBVCOM_H

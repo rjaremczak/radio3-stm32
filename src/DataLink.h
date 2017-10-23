@@ -4,8 +4,7 @@
  */
 
 
-#ifndef _DATALINK_H_
-#define _DATALINK_H_
+#pragma once
 
 #include <cstdint>
 #include "Crc8.h"
@@ -33,10 +32,8 @@ public:
     };
 
     explicit DataLink(ComDevice &comDevice);
-    void writeFrame(uint16_t type, uint8_t *payload, uint16_t size);
+    void writeFrame(uint16_t type, const uint8_t *payload, uint16_t size);
     void readFrame(Frame *frame, uint8_t *payloadBuf, uint16_t maxPayloadSize);
     bool isIncomingData();
     bool error();
 };
-
-#endif

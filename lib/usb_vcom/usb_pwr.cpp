@@ -4,14 +4,12 @@
 __IO uint32_t bDeviceState = UNCONNECTED; /* USB device status */
 __IO bool fSuspendEnabled = true;  /* true when suspend is possible */
 __IO uint32_t EP[8];
+__IO uint32_t remotewakeupon = 0;
 
 struct {
     __IO RESUME_STATE eState;
     __IO uint8_t bESOFcnt;
-}
-        ResumeS;
-
-__IO uint32_t remotewakeupon = 0;
+} ResumeS;
 
 /**
   * Function Name  : PowerOn
@@ -20,7 +18,7 @@ __IO uint32_t remotewakeupon = 0;
   * Output         : None.
   * Return         : USB_SUCCESS.
   */
-RESULT PowerOn(void) {
+RESULT PowerOn() {
     uint16_t wRegVal;
 
     /*** CNTR_PWDN = 0 ***/

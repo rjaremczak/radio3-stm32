@@ -1,5 +1,4 @@
-#ifndef __USB_PWR_H
-#define __USB_PWR_H
+#pragma once
 
 enum RESUME_STATE {
     RESUME_EXTERNAL,
@@ -30,5 +29,3 @@ RESULT PowerOff();
 /* External variables --------------------------------------------------------*/
 extern __IO uint32_t bDeviceState; /* USB device status */
 extern __IO bool fSuspendEnabled;  /* true when suspend is possible */
-
-#endif  /*__USB_PWR_H*/

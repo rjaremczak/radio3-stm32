@@ -16,7 +16,7 @@ bool DataLink::error() {
 	return status != Status::OK;
 }
 
-void DataLink::writeFrame(uint16_t type, uint8_t *payload, uint16_t size) {
+void DataLink::writeFrame(uint16_t type, const uint8_t *payload, uint16_t size) {
 	Crc8 crc;
 	if(size <= 13) {
 		writeWord(crc, (size << 12) | type);

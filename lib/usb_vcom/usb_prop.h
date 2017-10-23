@@ -1,12 +1,11 @@
-#ifndef __usb_prop_H
-#define __usb_prop_H
+#pragma once
 
-typedef struct {
+struct LINE_CODING {
     uint32_t bitrate;
     uint8_t format;
     uint8_t paritytype;
     uint8_t datatype;
-} LINE_CODING;
+};
 
 #define Virtual_Com_Port_GetConfiguration          NOP_Process
 //#define Virtual_Com_Port_SetConfiguration          NOP_Process
@@ -29,12 +28,12 @@ typedef struct {
 #define SEND_BREAK                  0x23
 
 /* Exported functions ------------------------------------------------------- */
-void Virtual_Com_Port_init(void);
-void Virtual_Com_Port_Reset(void);
-void Virtual_Com_Port_SetConfiguration(void);
-void Virtual_Com_Port_SetDeviceAddress(void);
-void Virtual_Com_Port_Status_In(void);
-void Virtual_Com_Port_Status_Out(void);
+void Virtual_Com_Port_init();
+void Virtual_Com_Port_Reset();
+void Virtual_Com_Port_SetConfiguration();
+void Virtual_Com_Port_SetDeviceAddress();
+void Virtual_Com_Port_Status_In();
+void Virtual_Com_Port_Status_Out();
 RESULT Virtual_Com_Port_Data_Setup(uint8_t);
 RESULT Virtual_Com_Port_NoData_Setup(uint8_t);
 RESULT Virtual_Com_Port_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
@@ -44,5 +43,3 @@ uint8_t *Virtual_Com_Port_GetStringDescriptor(uint16_t);
 
 uint8_t *Virtual_Com_Port_GetLineCoding(uint16_t Length);
 uint8_t *Virtual_Com_Port_SetLineCoding(uint16_t Length);
-
-#endif /* __usb_prop_H */

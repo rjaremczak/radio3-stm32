@@ -1,5 +1,4 @@
-#ifndef __USB_LIB_H
-#define __USB_LIB_H
+#pragma once
 
 #include "hw_config.h"
 #include "usb_conf.h"
@@ -9,6 +8,3 @@
 #include "usb_init.h"
 #include "usb_sil.h"
 #include "usb_mem.h"
-#include "usb_int.h"
-
-#endif /* __USB_LIB_H */

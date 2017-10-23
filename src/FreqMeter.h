@@ -3,8 +3,7 @@
  * Author: Robert Jaremczak, SQ6DGT
  */
 
-#ifndef _FREQ_METER_H_
-#define _FREQ_METER_H_
+#pragma once
 
 #include <cstdint>
 
@@ -16,5 +15,3 @@ public:
     uint32_t read();
     void tickMs();
 };
-
-#endif

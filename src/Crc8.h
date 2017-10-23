@@ -3,8 +3,7 @@
  * Author: Robert Jaremczak, SQ6DGT
  */
 
-#ifndef _CRC_H_
-#define _CRC_H_
+#pragma once
 
 #include <cstdint>
 
@@ -15,5 +14,3 @@ public:
     void process(const uint8_t *buf, uint16_t size);
     uint8_t value();
 };
-
-#endif

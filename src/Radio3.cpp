@@ -13,12 +13,9 @@
 #include <UsbVCom.h>
 #include <log.h>
 
-#include "vfo.h"
+#include "Vfo.h"
 #include "buildid.h"
 #include "Radio3.h"
-#include "FreqMeter.h"
-#include "board.h"
-#include "DataLink.h"
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
 
@@ -49,17 +46,18 @@ struct DeviceInfo {
     const char name[16];
     const char buildId[32];
     HardwareRevision hardwareRevision;
-    VfoType vfoType;
+    Vfo::Type vfoType;
     uint32_t baudRate;
 } __packed;
 
-static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, VfoType::DDS_AD9851, 115200};
+static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, Vfo::Type::DDS_AD9851, 115200};
 static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0};
-static SweepResponse sweepResponse;
 
 static Timer timer;
+static Board board;
+
 UsbVCom usbVCom(timer);
-Radio3 radio3(usbVCom);
+Radio3 radio3(usbVCom, board);
 
 extern "C" void SysTick_Handler(void) {
     radio3.sysTick();
@@ -70,27 +68,23 @@ void Radio3::sysTick() {
     fMeter.tickMs();
 }
 
-void Radio3::sendFrame(FrameCmd cmd, void *payload, uint16_t size) {
-    dataLink.writeFrame(static_cast<uint16_t>(cmd), static_cast<uint8_t *>(payload), size);
-}
-
-void Radio3::sendSweepResponse() {
-    sendFrame(FrameCmd::SWEEP_RESPONSE, (uint8_t *) &sweepResponse, sweepResponse.size());
+void Radio3::sendFrame(FrameCmd cmd, const void *payload, uint16_t size) {
+    dataLink.writeFrame(static_cast<uint16_t>(cmd), static_cast<const uint8_t *>(payload), size);
 }
 
 void Radio3::vfoRelayCommit() {
     delayUs(100000);
-    board_vfoOutBistable(false, false);
+    board.vfoOutBistable(false, false);
 }
 
 void Radio3::vfoOutput_vna() {
     switch (deviceInfo.hardwareRevision) {
         case HardwareRevision::VERSION_1:
-            board_vfoOutBistable(false, true);
+            board.vfoOutBistable(false, true);
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
-            board_vfoOut(true);
+            board.vfoOutMonostable(true);
             break;
         default:
             return;
@@ -101,11 +95,11 @@ void Radio3::vfoOutput_vna() {
 void Radio3::vfoOutput_direct() {
     switch (deviceInfo.hardwareRevision) {
         case HardwareRevision::VERSION_1:
-            board_vfoOutBistable(true, false);
+            board.vfoOutBistable(true, false);
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
-            board_vfoOut(false);
+            board.vfoOutMonostable(false);
             break;
         default:
             return;
@@ -113,64 +107,16 @@ void Radio3::vfoOutput_direct() {
     deviceState.vfoOut = VfoOut::DIRECT;
 }
 
-void Radio3::vfoRelay_set(SweepSignalSource source) {
+void Radio3::vfoRelay_set(Sweep::Source source) {
     switch (source) {
-        case SweepSignalSource::LOG_PROBE:
-        case SweepSignalSource::LIN_PROBE:
+        case Sweep::Source::LOG_PROBE:
+        case Sweep::Source::LIN_PROBE:
             vfoOutput_direct();
             break;
-        case SweepSignalSource::VNA:
+        case Sweep::Source::VNA:
             vfoOutput_vna();
             break;
     }
-}
-
-void Radio3::resetSweepData(const uint16_t totalSamples) {
-    for (uint16_t i = 0; i < totalSamples; i++) { sweepResponse.data[i] = 0; }
-}
-
-void Radio3::divideAccumulatedData(const uint16_t totalSamples, const uint8_t divider) {
-    for (uint16_t step = 0; step < totalSamples; step++) { sweepResponse.data[step] /= divider; }
-}
-
-void Radio3::sweepAndAccumulate(const uint16_t totalSamples, const uint8_t avgSamples) {
-    uint32_t freq = sweepResponse.freqStart;
-    uint16_t sampleNo = 0;
-    while (sampleNo < totalSamples) {
-        vfo_setFrequency(freq);
-        delayUs(5);
-        switch (sweepResponse.source) {
-            case SweepSignalSource::LOG_PROBE:
-                sweepResponse.data[sampleNo++] += adcProbes.readLogarithmic(avgSamples);
-                break;
-            case SweepSignalSource::LIN_PROBE:
-                sweepResponse.data[sampleNo++] += adcProbes.readLinear(avgSamples);
-                break;
-            case SweepSignalSource::VNA:
-                sweepResponse.data[sampleNo++] += adcProbes.readVnaGain(avgSamples);
-                sweepResponse.data[sampleNo++] += adcProbes.readVnaPhase(avgSamples);
-                break;
-        }
-        freq += sweepResponse.freqStep;
-    }
-}
-
-void Radio3::performSweep(SweepRequest *req) {
-    sweepResponse.freqStart = req->freqStart;
-    sweepResponse.freqStep = req->freqStep;
-    sweepResponse.steps = req->steps;
-    sweepResponse.source = req->source;
-
-    const auto avgPasses = req->getAvgPasses();
-    const auto avgSamples = req->getAvgSamples();
-    const auto totalSamples = sweepResponse.totalSamples();
-
-    auto prevFreq = vfo_frequency();
-    sweepAndAccumulate(totalSamples >> 4, avgSamples);
-    resetSweepData(totalSamples);
-    for (auto i=0; i < avgPasses; i++) { sweepAndAccumulate(totalSamples, avgSamples); }
-    divideAccumulatedData(totalSamples, avgPasses);
-    vfo_setFrequency(prevFreq);
 }
 
 void Radio3::sendPing() {
@@ -188,28 +134,20 @@ void Radio3::sendDeviceState() {
 }
 
 void Radio3::cmdSetVfoFrequency(const uint8_t *payload) {
-    vfo_setFrequency(*((uint32_t *) payload));
+    vfo.setFrequency(*((uint32_t *) payload));
 }
 
 void Radio3::cmdGetVfoFrequency() {
-    uint32_t frequency = vfo_frequency();
+    uint32_t frequency = vfo.frequency();
     sendFrame(FrameCmd::VFO_GET_FREQ, &frequency, sizeof(frequency));
 }
 
-void Radio3::cmdSweepStart(uint8_t *payload) {
-    if (sweepResponse.state != SweepState::PROCESSING) {
-        auto *req = reinterpret_cast<SweepRequest *>(payload);
-        if (req->isValid() && req->steps <= SWEEP_MAX_STEPS) {
-            sweepResponse.state = SweepState::PROCESSING;
-            vfoRelay_set(req->source);
-            performSweep(req);
-            sweepResponse.state = SweepState::READY;
-        } else {
-            sweepResponse.steps = 0;
-            sweepResponse.state = SweepState::INVALID_REQUEST;
-        }
-
-        sendSweepResponse();
+void Radio3::cmdSweepRequest(uint8_t *payload) {
+    if (sweep.getState() != Sweep::State::PROCESSING) {
+        Sweep::Request &request = *reinterpret_cast<Sweep::Request *>(payload);
+        vfoRelay_set(request.source);
+        sweep.perform(request);
+        sendFrame(FrameCmd::SWEEP_RESPONSE, &sweep.getResponse(), sweep.getResponse().size());
     }
 }
 
@@ -229,24 +167,24 @@ void Radio3::cmdSampleLinearProbe() {
 }
 
 void Radio3::cmdVfoType(const uint8_t *payload) {
-    deviceInfo.vfoType = (VfoType) *payload;
-    vfo_init(deviceInfo.vfoType);
-    vfo_setFrequency(0);
+    deviceInfo.vfoType = (Vfo::Type) *payload;
+    vfo.init(deviceInfo.vfoType);
+    vfo.setFrequency(0);
 }
 
 void Radio3::cmdVfoAttenuator(const uint8_t *payload) {
     if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
-        board_vfoAtt1((bool) (*payload & 0b001));
-        board_vfoAtt2((bool) (*payload & 0b010));
-        board_vfoAtt3((bool) (*payload & 0b100));
+        board.att1((bool) (*payload & 0b001));
+        board.att2((bool) (*payload & 0b010));
+        board.att3((bool) (*payload & 0b100));
     }
 }
 
 void Radio3::cmdVfoAmplifier(const uint8_t *payload) {
     if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
         deviceState.vfoAmplifier = (VfoAmplifier) *payload;
-        board_vfoAmplifier((bool) *payload);
+        board.amplifier((bool) *payload);
     }
 }
 
@@ -275,12 +213,12 @@ void Radio3::cmdSampleAllProbes() {
 
 void Radio3::cmdHardwareRevision(HardwareRevision hardwareRevision) {
     if (hardwareRevision == HardwareRevision::AUTODETECT) {
-        deviceInfo.hardwareRevision = board_isRevision2() ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_1;
+        deviceInfo.hardwareRevision = board.isRevision2() ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_1;
     } else {
         deviceInfo.hardwareRevision = hardwareRevision;
     }
 
-    board_init();
+    board.init();
 }
 
 void Radio3::handleIncomingFrame() {
@@ -343,7 +281,7 @@ void Radio3::handleIncomingFrame() {
             break;
 
         case FrameCmd::SWEEP_REQUEST:
-            cmdSweepStart(payload);
+            cmdSweepRequest(payload);
             break;
 
         case FrameCmd::DEVICE_HARDWARE_REVISION:
@@ -375,7 +313,7 @@ int main() {
     log_init(&timer);
     log("radio3 started");
 
-    board_preInit();
+    board.preInit();
     usbVCom.init();
     radio3.init();
     radio3.start();
@@ -383,7 +321,12 @@ int main() {
     return 0;
 }
 
-Radio3::Radio3(ComDevice &comDevice) : comDevice(comDevice), dataLink(comDevice) {}
+Radio3::Radio3(ComDevice &comDevice, Board &board) :
+        comDevice(comDevice),
+        board(board),
+        dataLink(comDevice),
+        sweep(vfo, adcProbes)
+{}
 
 void Radio3::init() {
     SysTick_Config(SystemCoreClock / 1000);
@@ -393,12 +336,12 @@ void Radio3::init() {
 }
 
 void Radio3::start() {
-    sweepResponse.state = SweepState::READY;
+    sweep.init();
 
     while (true) {
-        board_indicator(true);
+        board.indicator(true);
         if (dataLink.isIncomingData()) {
-            board_indicator(false);
+            board.indicator(false);
             handleIncomingFrame();
         }
     }

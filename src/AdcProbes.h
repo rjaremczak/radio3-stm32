@@ -3,8 +3,7 @@
  * Author: Robert Jaremczak, SQ6DGT
  */
 
-#ifndef _ADC_PROBES_H_
-#define _ADC_PROBES_H_
+#pragma once
 
 #include <cstdint>
 
@@ -19,5 +18,3 @@ public:
     uint16_t readVnaGain(uint8_t avgSamples);
     uint16_t readVnaPhase(uint8_t avgSamples);
 };
-
-#endif

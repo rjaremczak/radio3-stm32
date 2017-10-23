@@ -1,6 +1,3 @@
-#ifndef _DELAY_H
-#define _DELAY_H
+#pragma once
 
 void delayUs(unsigned us);
-
-#endif
