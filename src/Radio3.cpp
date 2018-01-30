@@ -84,6 +84,7 @@ void Radio3::vfoOutput_vna() {
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
+        case HardwareRevision::VERSION_3:
             board.vfoOutMonostable(true);
             break;
         default:
@@ -99,6 +100,7 @@ void Radio3::vfoOutput_direct() {
             vfoRelayCommit();
             break;
         case HardwareRevision::VERSION_2:
+        case HardwareRevision::VERSION_3:
             board.vfoOutMonostable(false);
             break;
         default:
@@ -173,7 +175,7 @@ void Radio3::cmdVfoType(const uint8_t *payload) {
 }
 
 void Radio3::cmdVfoAttenuator(const uint8_t *payload) {
-    if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
+    if (deviceInfo.hardwareRevision >= HardwareRevision::VERSION_2) {
         deviceState.vfoAttenuator = (VfoAttenuator) *payload;
         board.att1((bool) (*payload & 0b001));
         board.att2((bool) (*payload & 0b010));
@@ -182,7 +184,7 @@ void Radio3::cmdVfoAttenuator(const uint8_t *payload) {
 }
 
 void Radio3::cmdVfoAmplifier(const uint8_t *payload) {
-    if (deviceInfo.hardwareRevision == HardwareRevision::VERSION_2) {
+    if (deviceInfo.hardwareRevision >= HardwareRevision::VERSION_2) {
         deviceState.vfoAmplifier = (VfoAmplifier) *payload;
         board.amplifier((bool) *payload);
     }
@@ -213,7 +215,7 @@ void Radio3::cmdSampleAllProbes() {
 
 void Radio3::cmdHardwareRevision(HardwareRevision hardwareRevision) {
     if (hardwareRevision == HardwareRevision::AUTODETECT) {
-        deviceInfo.hardwareRevision = board.isRevision2() ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_1;
+        deviceInfo.hardwareRevision = board.detectHardwareRevision();
     } else {
         deviceInfo.hardwareRevision = hardwareRevision;
     }

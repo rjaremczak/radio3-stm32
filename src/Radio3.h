@@ -38,10 +38,6 @@ enum class FrameCmd : uint16_t {
     SWEEP_RESPONSE = 0x041
 };
 
-enum class HardwareRevision : uint8_t {
-    AUTODETECT, VERSION_1, VERSION_2
-};
-
 struct Complex {
     uint16_t value;
     uint16_t phase;

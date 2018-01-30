@@ -7,11 +7,15 @@
 
 #include <cstdint>
 
+enum class HardwareRevision : uint8_t {
+    AUTODETECT, VERSION_1, VERSION_2, VERSION_3
+};
+
 class Board {
 public:
     void preInit();
     void init();
-    bool isRevision2();
+    HardwareRevision detectHardwareRevision();
     void indicator(bool on);
     void vfoOutBistable(bool on1, bool on2);
     void vfoOutMonostable(bool on);

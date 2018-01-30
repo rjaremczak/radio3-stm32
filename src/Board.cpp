@@ -43,13 +43,17 @@ void Board::init() {
     GPIO_ResetBits(GPIOA, GPIO_Pin_13);
 }
 
-bool Board::isRevision2() {
+HardwareRevision Board::detectHardwareRevision() {
     GPIO_InitTypeDef gpi;
     gpi.GPIO_Speed = GPIO_Speed_50MHz;
     gpi.GPIO_Mode = GPIO_Mode_IPU;
-    gpi.GPIO_Pin = GPIO_Pin_12;
+    gpi.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_15;
     GPIO_Init(GPIOB, &gpi);
-    return !GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12);
+
+    if(!GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12)) {
+        return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15) ? HardwareRevision::VERSION_2 : HardwareRevision::VERSION_3;
+    }
+    return HardwareRevision::VERSION_1;
 }
 
 void Board::indicator(bool on) {
