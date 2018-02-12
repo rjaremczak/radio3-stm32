@@ -1,4 +1,4 @@
 h
-loadfile build/radio3_stm32.hex
+loadfile build/radio3.hex
 rnh
 exit

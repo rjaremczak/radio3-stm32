@@ -27,16 +27,16 @@ void DataLink::writeFrame(uint16_t type, const uint8_t *payload, uint16_t size) 
 		writeWord(crc, (uint16_t) ((15 << 12) | type));
 		writeWord(crc, (uint16_t) (size - 270));
 	}
-    if(comDevice.error()) return;
+    if(usbVCom.error()) return;
 
 	if(size > 0) {
-		comDevice.write(payload, size);
-        if(comDevice.error()) return;
+		usbVCom.write(payload, size);
+        if(usbVCom.error()) return;
 		crc.process(payload, size);
 	}
 
-	comDevice.write(crc.value());
-	comDevice.flush();
+	usbVCom.write(crc.value());
+	usbVCom.flush();
 }
 
 void DataLink::readFrame(Frame *frame, uint8_t *payloadBuf, uint16_t maxPayloadSize) {
@@ -44,7 +44,7 @@ void DataLink::readFrame(Frame *frame, uint8_t *payloadBuf, uint16_t maxPayloadS
 
 	Crc8 crc;
 	uint16_t header = readWord(crc);
-	if(comDevice.error()) {
+	if(usbVCom.error()) {
 		status = Status::IO_ERROR;
 		return;
 	}
@@ -59,19 +59,19 @@ void DataLink::readFrame(Frame *frame, uint8_t *payloadBuf, uint16_t maxPayloadS
 	} else {
 		frame->payloadSize = static_cast<uint16_t>(readWord(crc) + 270);
 	}
-	if(comDevice.error()) {
+	if(usbVCom.error()) {
 		status = Status::IO_ERROR;
 		return;
 	}
 
 	uint16_t size = frame->payloadSize > maxPayloadSize ? maxPayloadSize : frame->payloadSize;
 	if(size > 0) {
-        comDevice.read(payloadBuf, size);
-		if(comDevice.error()) { return; }
+        usbVCom.read(payloadBuf, size);
+		if(usbVCom.error()) { return; }
 		crc.process(payloadBuf, size);
 	}
-	uint8_t receivedCrc = comDevice.read();
-	if(comDevice.error()) {
+	uint8_t receivedCrc = usbVCom.read();
+	if(usbVCom.error()) {
 		status = Status::IO_ERROR;
 		return;
 	}
@@ -85,14 +85,14 @@ void DataLink::readFrame(Frame *frame, uint8_t *payloadBuf, uint16_t maxPayloadS
 }
 
 bool DataLink::isIncomingData() {
-    return comDevice.available()>0;
+    return usbVCom.available()>0;
 }
-DataLink::DataLink(ComDevice &comDevice) : comDevice(comDevice) {}
+DataLink::DataLink(UsbVCom &comDevice) : usbVCom(comDevice) {}
 
 void DataLink::writeByte(Crc8 &crc, uint8_t byte) {
-    if(comDevice.error()) return;
+    if(usbVCom.error()) return;
 
-    comDevice.write(byte);
+    usbVCom.write(byte);
     crc.process(byte);
 }
 
@@ -102,9 +102,9 @@ void DataLink::writeWord(Crc8 &crc, uint16_t word) {
 }
 
 uint8_t DataLink::readByte(Crc8 &crc) {
-    if(comDevice.error()) return 0;
+    if(usbVCom.error()) return 0;
 
-    uint8_t byte = comDevice.read();
+    uint8_t byte = usbVCom.read();
     crc.process(byte);
     return byte;
 }

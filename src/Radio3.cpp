@@ -14,7 +14,6 @@
 #include <log.h>
 
 #include "Vfo.h"
-#include "buildid.h"
 #include "Radio3.h"
 #include "cortexm/ExceptionHandlers.h"
 #include "delay.h"
@@ -50,7 +49,7 @@ struct DeviceInfo {
     uint32_t baudRate;
 } __packed;
 
-static DeviceInfo deviceInfo = {"radio3-stm32-md", BUILD_ID, HardwareRevision::AUTODETECT, Vfo::Type::DDS_AD9851, 115200};
+static DeviceInfo deviceInfo = {"radio4", "", HardwareRevision::AUTODETECT, Vfo::Type::DDS_AD9851, 115200};
 static DeviceState deviceState = {0, VfoOut::DIRECT, VfoAmplifier::OFF, VfoAttenuator::LEVEL_0};
 
 static Timer timer;
@@ -311,22 +310,22 @@ void Radio3::handleIncomingFrame() {
     }
 }
 
-int main() {
+void main() {
+    snprintf(const_cast<char *>(deviceInfo.buildId), sizeof(deviceInfo.buildId), "%d.%d-%d-%06d", PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, BUILD_DATE, BUILD_TIME);
+
     log_init(&timer);
-    log("radio3 started");
+    log("%s started (build: %s)", deviceInfo.name, deviceInfo.buildId);
 
     board.preInit();
     usbVCom.init();
     radio3.init();
     radio3.start();
-
-    return 0;
 }
 
-Radio3::Radio3(ComDevice &comDevice, Board &board) :
-        comDevice(comDevice),
+Radio3::Radio3(UsbVCom &usbVCom, Board &board) :
+        usbVCom(usbVCom),
         board(board),
-        dataLink(comDevice),
+        dataLink(usbVCom),
         sweep(vfo, adcProbes)
 {}
 
@@ -340,11 +339,13 @@ void Radio3::init() {
 void Radio3::start() {
     sweep.init();
 
-    while (true) {
-        board.indicator(true);
-        if (dataLink.isIncomingData()) {
-            board.indicator(false);
-            handleIncomingFrame();
-        }
+    mainLoop:
+
+    board.indicator(true);
+    if (dataLink.isIncomingData()) {
+        board.indicator(false);
+        handleIncomingFrame();
     }
+
+    goto mainLoop;
 }

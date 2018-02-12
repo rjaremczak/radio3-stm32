@@ -51,7 +51,7 @@ struct ProbeValues {
 } __attribute__((packed));
 
 class Radio3 {
-    ComDevice &comDevice;
+    UsbVCom &usbVCom;
     Board &board;
 
     DataLink dataLink;
@@ -85,7 +85,7 @@ class Radio3 {
     void handleIncomingFrame();
 
 public:
-    explicit Radio3(ComDevice &comDevice, Board &board);
+    explicit Radio3(UsbVCom &usbVCom1, Board &board);
     void init();
     void start();
     void sysTick();
