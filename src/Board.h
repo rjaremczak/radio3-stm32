@@ -7,20 +7,28 @@
 
 #include <cstdint>
 
+namespace {
+    BitAction toBitAction(bool b) { return b ? Bit_SET : Bit_RESET; }
+}
+
 enum class HardwareRevision : uint8_t {
-    AUTODETECT, VERSION_1, VERSION_2, VERSION_3
+    unknown, rev1, rev2, rev3
 };
 
 class Board {
+    HardwareRevision hardwareRevision;
+    void detectHardwareRevision();
+
 public:
-    void preInit();
     void init();
-    HardwareRevision detectHardwareRevision();
     void indicator(bool on);
     void vfoOutBistable(bool on1, bool on2);
-    void vfoOutMonostable(bool on);
-    void att1(bool on);
-    void att2(bool on);
-    void att3(bool on);
-    void amplifier(bool on);
+
+    inline HardwareRevision getHardwareRevision() { return hardwareRevision; };
+    inline void att1(bool energize) { GPIO_WriteBit(GPIOB, GPIO_Pin_12, toBitAction(energize)); }
+    inline void att2(bool energize) { GPIO_WriteBit(GPIOB, GPIO_Pin_10, toBitAction(energize)); }
+    inline void att3(bool energize) { GPIO_WriteBit(GPIOB, GPIO_Pin_11, toBitAction(energize)); }
+    inline void amplifier(bool enable) { GPIO_WriteBit(GPIOB, GPIO_Pin_14, toBitAction(enable)); }
+    inline void vfoOutMonostable(bool on) { GPIO_WriteBit(GPIOB, GPIO_Pin_15, toBitAction(on)); }
 };
+

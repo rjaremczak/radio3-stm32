@@ -18,27 +18,23 @@ namespace {
 }
 
 enum class FrameCmd : uint16_t {
-    PING = 0x000,
-    DEVICE_INFO = 0x001,
-    DEVICE_STATE = 0x002,
-    DEVICE_HARDWARE_REVISION = 0x003,
-    VFO_GET_FREQ = 0x008,
-    VFO_SET_FREQ = 0x009,
-    LOGPROBE_DATA = 0x010,
-    LINPROBE_DATA = 0x018,
-    CMPPROBE_DATA = 0x020,
-    FMETER_DATA = 0x028,
-    PROBES_DATA = 0x030,
-    VFO_OUT_DIRECT = 0x033,
-    VFO_OUT_VNA = 0x034,
-    VFO_TYPE = 0x035,
-    VFO_ATTENUATOR = 0x036,
-    VFO_AMPLIFIER = 0x037,
-    SWEEP_REQUEST = 0x040,
-    SWEEP_RESPONSE = 0x041
+    ping = 0x000,
+    getDeviceConfiguration = 0x001,
+    getDeviceState = 0x002,
+    getVfoFreq = 0x003,
+    setVfoFreq = 0x004,
+    getAllProbes = 0x005,
+    setVfoToSocket = 0x006,
+    setVfoToVna = 0x007,
+    setVfoType = 0x008,
+    setAttenuator = 0x009,
+    setAmplifier = 0x00a,
+
+    sweepRequest = 0x020,
+    sweepResponse = 0x021
 };
 
-struct Complex {
+struct VnaValue {
     uint16_t value;
     uint16_t phase;
 } __attribute__((packed));
@@ -46,13 +42,34 @@ struct Complex {
 struct ProbeValues {
     uint16_t logarithmic;
     uint16_t linear;
-    Complex complex;
+    VnaValue complex;
     uint32_t fMeter;
+} __attribute__((packed));
+
+struct State {
+    uint32_t timeMs;
+    bool vfoToVna;
+    bool amplifier;
+    uint8_t attenuator;
+}  __attribute__((packed));
+
+struct Configuration {
+    uint32_t coreUniqueId0;
+    uint32_t coreUniqueId1;
+    uint32_t coreUniqueId2;
+    uint8_t firmwareVersionMajor;
+    uint8_t firmwareVersionMinor;
+    uint32_t firmwareBuildTimestamp;
+    HardwareRevision hardwareRevision;
+    Vfo::Type vfoType;
 } __attribute__((packed));
 
 class Radio3 {
     UsbVCom &usbVCom;
     Board &board;
+
+    State state;
+    Configuration configuration;
 
     DataLink dataLink;
     FreqMeter fMeter;
@@ -62,26 +79,25 @@ class Radio3 {
 
     void sendFrame(FrameCmd cmd, const void *payload, uint16_t size);
     void vfoRelayCommit();
-    void vfoOutput_vna();
-    void vfoOutput_direct();
-    void vfoRelay_set(Sweep::Source source);
+    void vfoToVna();
+    void vfoToSocket();
+    void adjustVfoOutputFor(Sweep::Source source);
     void sendPing();
     void sendDeviceInfo();
     void sendDeviceState();
     void cmdSetVfoFrequency(const uint8_t *payload);
     void cmdGetVfoFrequency();
-    void cmdSweepRequest(uint8_t *payload);
+    void cmdSweepRequest(const uint8_t *payload);
     void cmdSampleFMeter();
     void cmdSampleLogarithmicProbe();
     void cmdSampleLinearProbe();
     void cmdVfoType(const uint8_t *payload);
     void cmdVfoAttenuator(const uint8_t *payload);
     void cmdVfoAmplifier(const uint8_t *payload);
-    Complex readVnaProbe();
+    VnaValue readVnaProbe();
     ProbeValues readAllProbes();
     void cmdSampleComplexProbe();
     void cmdSampleAllProbes();
-    void cmdHardwareRevision(HardwareRevision hardwareRevision);
     void handleIncomingFrame();
 
 public:

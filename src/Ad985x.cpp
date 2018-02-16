@@ -31,11 +31,11 @@ void Ad985x::sendByte(uint8_t data) {
 
 void Ad985x::init(Vfo::Type type) {
     switch (type) {
-        case Vfo::Type::DDS_AD9850 :
+        case Vfo::Type::ddsAD9850 :
             XTAL = 125000000U;
             CONTROL_W0 = 0x00;
             break;
-        case Vfo::Type::DDS_AD9851 :
+        case Vfo::Type::ddsAD9851 :
             XTAL = 180000000U;
             CONTROL_W0 = 0x01;
             break;

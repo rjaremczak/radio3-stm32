@@ -10,7 +10,7 @@
 class Vfo {
 public:
     enum class Type : uint8_t {
-        NONE, DDS_AD9850, DDS_AD9851
+        ddsAD9850, ddsAD9851
     };
 
     virtual void setFrequency(uint32_t frequency) = 0;
