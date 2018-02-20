@@ -6,7 +6,6 @@
  *
  */
 
-#include <stm32f10x.h>
 #include "AdcProbes.h"
 #include "delay.h"
 
@@ -57,20 +56,3 @@ uint16_t AdcProbes::read(uint8_t channel, uint8_t avgSamples) {
 
 	return (uint16_t) (acc / avgSamples);
 }
-
-uint16_t AdcProbes::readLogarithmic(uint8_t avgSamples) {
-	return read(ADC_Channel_0, avgSamples);
-}
-
-uint16_t AdcProbes::readLinear(uint8_t avgSamples) {
-	return read(ADC_Channel_1, avgSamples);
-}
-
-uint16_t AdcProbes::readVnaGain(uint8_t avgSamples) {
-	return read(ADC_Channel_2, avgSamples);
-}
-
-uint16_t AdcProbes::readVnaPhase(uint8_t avgSamples) {
-	return read(ADC_Channel_3, avgSamples);
-}
-

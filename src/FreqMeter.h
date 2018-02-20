@@ -10,8 +10,10 @@
 class FreqMeter {
     uint32_t timebaseCounter = 1000;
     uint32_t counter = 0;
+
 public:
     void init();
-    uint32_t read();
     void tickMs();
+
+    inline uint32_t read() { return counter; }
 };

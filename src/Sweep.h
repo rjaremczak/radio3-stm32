@@ -75,8 +75,9 @@ private:
 
 public:
     Sweep(Vfo &vfo, AdcProbes &adcProbes);
-    State getState();
-    const Response &getResponse();
     void perform(Request &request);
     void init();
+
+    inline State getState() { return state; }
+    inline const Response &getResponse() { return response; }
 };

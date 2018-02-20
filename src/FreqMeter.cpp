@@ -46,10 +46,6 @@ void FreqMeter::init() {
     TIM_Cmd(TIM2, ENABLE);
 }
 
-uint32_t FreqMeter::read() {
-    return counter;
-}
-
 void FreqMeter::tickMs() {
     if (!(--timebaseCounter)) {
         counter = (TIM_GetCounter(TIM2) << 16) | TIM_GetCounter(TIM1);

@@ -18,6 +18,6 @@ class Ad985x : public Vfo {
 public:
     void init(Type type);
     void setFrequency(uint32_t frequency) override;
-    uint32_t frequency() override;
 
+    inline uint32_t frequency() { return currentFrequency; }
 };

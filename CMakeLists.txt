@@ -17,6 +17,7 @@ include_directories(lib_stm32/timer)
 include_directories(lib_stm32/io)
 include_directories(lib_stm32/usb_fs_driver)
 include_directories(lib_stm32/usb_vcom)
+include_directories(license)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_EXE_LINKER_FLAGS "-mcpu=cortex-m3 -mthumb -ffreestanding -ffunction-sections -Wall -Wextra -T ${CMAKE_SOURCE_DIR}/stm32f103c8t6_flash.ld -nostartfiles -Xlinker --gc-sections --specs=nano.specs  -Wl,-Map=${PROJECT_BINARY_DIR}/radio3.map")
@@ -27,8 +28,9 @@ set_property(SOURCE src/Radio3.cpp APPEND PROPERTY COMPILE_DEFINITIONS BUILD_TIM
 
 file(GLOB_RECURSE USER_SOURCES "src/*.c*" "src/*.h")
 file(GLOB_RECURSE LIB_STM32_SOURCES "lib_stm32/*.c*" "lib_stm32/*.h")
+file(GLOB_RECURSE LICENSE_SOURCES "license/*.c**" "license/*.h")
 
-add_executable(radio3.elf ${USER_SOURCES} ${LIB_STM32_SOURCES})
+add_executable(radio3.elf ${USER_SOURCES} ${LIB_STM32_SOURCES} ${LICENSE_SOURCES})
 target_compile_features(radio3.elf PUBLIC cxx_std_17 c_std_11)
 
 target_compile_options(radio3.elf

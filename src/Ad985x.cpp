@@ -39,7 +39,6 @@ void Ad985x::init(Vfo::Type type) {
             XTAL = 180000000U;
             CONTROL_W0 = 0x01;
             break;
-        default: break;
     }
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
@@ -75,8 +74,4 @@ void Ad985x::setFrequency(uint32_t frequency) {
     }
     sendByte(CONTROL_W0);
     pulse(PIN_FQUD);
-}
-
-uint32_t Ad985x::frequency() {
-    return currentFrequency;
 }

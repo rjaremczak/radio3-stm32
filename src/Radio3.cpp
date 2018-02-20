@@ -13,6 +13,8 @@
 #include <UsbVCom.h>
 #include <log.h>
 #include <ElectronicSignature.h>
+#include <license.h>
+#include <crypt.h>
 
 #include "Vfo.h"
 #include "Radio3.h"
@@ -90,13 +92,18 @@ void Radio3::sendPing() {
     sendFrame(FrameCmd::ping, nullptr, 0);
 }
 
-void Radio3::sendDeviceInfo() {
+void Radio3::sendDeviceConfiguration() {
     sendFrame(FrameCmd::getDeviceConfiguration, &configuration, sizeof(configuration));
 }
 
 void Radio3::sendDeviceState() {
     state.timeMs = timer.getMillis();
     sendFrame(FrameCmd::getDeviceState, &state, sizeof(state));
+}
+
+void Radio3::sendLicenseData() {
+    license::LicenseData unencrypted = license::crypt(license::encryptedLicenseData);
+    sendFrame(FrameCmd::getLicenseData, &unencrypted, sizeof(unencrypted));
 }
 
 void Radio3::cmdSetVfoFrequency(const uint8_t *payload) {
@@ -170,11 +177,15 @@ void Radio3::handleIncomingFrame() {
             break;
 
         case FrameCmd::getDeviceConfiguration:
-            sendDeviceInfo();
+            sendDeviceConfiguration();
             break;
 
         case FrameCmd::getDeviceState:
             sendDeviceState();
+            break;
+
+        case FrameCmd::getLicenseData:
+            sendLicenseData();
             break;
 
         case FrameCmd::getVfoFreq:
@@ -200,10 +211,6 @@ void Radio3::handleIncomingFrame() {
             sendPing();
             break;
 
-        case FrameCmd::sweepRequest:
-            cmdSweepRequest(payload);
-            break;
-
         case FrameCmd::setVfoType:
             cmdVfoType(payload);
             sendPing();
@@ -217,6 +224,10 @@ void Radio3::handleIncomingFrame() {
         case FrameCmd::setAmplifier:
             cmdVfoAmplifier(payload);
             sendPing();
+            break;
+
+        case FrameCmd::sweepRequest:
+            cmdSweepRequest(payload);
             break;
 
         default:
@@ -250,9 +261,9 @@ void Radio3::init() {
     state.amplifier = false;
     state.attenuator = 0;
 
-    configuration.coreUniqueId0 = core::uniqueId.id0;
-    configuration.coreUniqueId1 = core::uniqueId.id1;
-    configuration.coreUniqueId2 = core::uniqueId.id2;
+    configuration.coreUniqueId0 = core::uniqueId0();
+    configuration.coreUniqueId1 = core::uniqueId1();
+    configuration.coreUniqueId2 = core::uniqueId2();
     configuration.firmwareVersionMajor = PROJECT_VERSION_MAJOR,
     configuration.firmwareVersionMinor = PROJECT_VERSION_MINOR,
     configuration.firmwareBuildTimestamp = BUILD_TIMESTAMP,

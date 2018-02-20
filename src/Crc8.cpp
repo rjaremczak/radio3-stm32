@@ -21,7 +21,3 @@ void Crc8::process(uint8_t byte) {
 void Crc8::process(const uint8_t *buf, uint16_t size) {
     while (size--) process(*(buf++));
 }
-
-uint8_t Crc8::value() {
-    return crc;
-}

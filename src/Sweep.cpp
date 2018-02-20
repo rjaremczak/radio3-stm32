@@ -63,14 +63,6 @@ void Sweep::perform(Request &request) {
     state = Sweep::State::READY;
 }
 
-Sweep::State Sweep::getState() {
-    return state;
-}
-
-const Sweep::Response &Sweep::getResponse() {
-    return response;
-}
-
 void Sweep::init() {
     state = Sweep::State::READY;
 }

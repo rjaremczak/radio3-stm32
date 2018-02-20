@@ -21,17 +21,19 @@ enum class FrameCmd : uint16_t {
     ping = 0x000,
     getDeviceConfiguration = 0x001,
     getDeviceState = 0x002,
-    getVfoFreq = 0x003,
-    setVfoFreq = 0x004,
-    getAllProbes = 0x005,
-    setVfoToSocket = 0x006,
-    setVfoToVna = 0x007,
-    setVfoType = 0x008,
-    setAttenuator = 0x009,
-    setAmplifier = 0x00a,
+    getLicenseData = 0x003,
 
-    sweepRequest = 0x020,
-    sweepResponse = 0x021
+    getVfoFreq = 0x010,
+    setVfoFreq = 0x011,
+    getAllProbes = 0x012,
+    setVfoToSocket = 0x013,
+    setVfoToVna = 0x014,
+    setVfoType = 0x015,
+    setAttenuator = 0x016,
+    setAmplifier = 0x017,
+
+    sweepRequest = 0x030,
+    sweepResponse = 0x031
 };
 
 struct VnaValue {
@@ -83,20 +85,17 @@ class Radio3 {
     void vfoToSocket();
     void adjustVfoOutputFor(Sweep::Source source);
     void sendPing();
-    void sendDeviceInfo();
+    void sendDeviceConfiguration();
     void sendDeviceState();
+    void sendLicenseData();
     void cmdSetVfoFrequency(const uint8_t *payload);
     void cmdGetVfoFrequency();
     void cmdSweepRequest(const uint8_t *payload);
-    void cmdSampleFMeter();
-    void cmdSampleLogarithmicProbe();
-    void cmdSampleLinearProbe();
     void cmdVfoType(const uint8_t *payload);
     void cmdVfoAttenuator(const uint8_t *payload);
     void cmdVfoAmplifier(const uint8_t *payload);
     VnaValue readVnaProbe();
     ProbeValues readAllProbes();
-    void cmdSampleComplexProbe();
     void cmdSampleAllProbes();
     void handleIncomingFrame();
 
