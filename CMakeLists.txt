@@ -28,9 +28,8 @@ set_property(SOURCE src/Radio3.cpp APPEND PROPERTY COMPILE_DEFINITIONS BUILD_TIM
 
 file(GLOB_RECURSE USER_SOURCES "src/*.c*" "src/*.h")
 file(GLOB_RECURSE LIB_STM32_SOURCES "lib_stm32/*.c*" "lib_stm32/*.h")
-file(GLOB_RECURSE LICENSE_SOURCES "license/*.c**" "license/*.h")
 
-add_executable(radio3.elf ${USER_SOURCES} ${LIB_STM32_SOURCES} ${LICENSE_SOURCES})
+add_executable(radio3.elf ${USER_SOURCES} ${LIB_STM32_SOURCES})
 target_compile_features(radio3.elf PUBLIC cxx_std_17 c_std_11)
 
 target_compile_options(radio3.elf
@@ -39,5 +38,6 @@ target_compile_options(radio3.elf
 
 add_custom_command(TARGET radio3.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex radio3.elf ${PROJECT_BINARY_DIR}/radio3.hex
+        COMMAND ${CMAKE_OBJCOPY} -O binary radio3.elf ${PROJECT_BINARY_DIR}/radio3.bin
         COMMAND ${TOOLCHAIN}/bin/arm-none-eabi-size --format=berkeley radio3.elf
         COMMENT "post build steps")
