@@ -56,6 +56,7 @@ struct State {
 }  __attribute__((packed));
 
 struct Configuration {
+    bool licenseOk = false;
     uint32_t coreUniqueId0;
     uint32_t coreUniqueId1;
     uint32_t coreUniqueId2;
