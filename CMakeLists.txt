@@ -1,3 +1,4 @@
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 cmake_minimum_required(VERSION 3.9)
 project(radio3_stm32 VERSION 3.3 LANGUAGES CXX C ASM)
 string(TIMESTAMP BUILD_TIMESTAMP %s)
@@ -25,6 +26,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-mcpu=cortex-m3 -mthumb -ffreestanding -ffunction-se
 set_property(SOURCE src/Radio3.cpp APPEND PROPERTY COMPILE_DEFINITIONS PROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR})
 set_property(SOURCE src/Radio3.cpp APPEND PROPERTY COMPILE_DEFINITIONS PROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR})
 set_property(SOURCE src/Radio3.cpp APPEND PROPERTY COMPILE_DEFINITIONS BUILD_TIMESTAMP=${BUILD_TIMESTAMP})
+get_filename_component(TOOLCHAIN ${CMAKE_C_COMPILER} DIRECTORY)
 
 file(GLOB_RECURSE USER_SOURCES "src/*.c*" "src/*.h")
 file(GLOB_RECURSE LIB_STM32_SOURCES "lib_stm32/*.c*" "lib_stm32/*.h")
@@ -39,5 +41,5 @@ target_compile_options(radio3.elf
 add_custom_command(TARGET radio3.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex radio3.elf ${PROJECT_BINARY_DIR}/radio3.hex
         #COMMAND ${CMAKE_OBJCOPY} -O binary radio3.elf ${PROJECT_BINARY_DIR}/radio3.bin
-        COMMAND ${TOOLCHAIN}/bin/arm-none-eabi-size --format=berkeley radio3.elf
+        COMMAND ${TOOLCHAIN}/arm-none-eabi-size --format=berkeley radio3.elf
         COMMENT "post build steps")
