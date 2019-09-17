@@ -1,5 +1,4 @@
 /build
+/build-release
 .DS_Store
-*.user
-CMakeLists.txt.user
 *.user
