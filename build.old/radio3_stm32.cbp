@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="radio3_stm32"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/robert/projects/mindpart/radio3_stm32/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/robert/projects/mindpart/radio3_stm32/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/robert/projects/mindpart/radio3_stm32/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="radio3.elf">
+				<Option output="/Users/robert/projects/mindpart/radio3_stm32/build/radio3.elf" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/robert/projects/mindpart/radio3_stm32/build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSTM32F10X_MD"/>
+					<Add option="-DUSE_STDPERIPH_DRIVER"/>
+					<Add option="-DHSE_VALUE=8000000"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/src"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/newlib"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/core"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/license"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/include"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 radio3.elf"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="radio3.elf/fast">
+				<Option output="/Users/robert/projects/mindpart/radio3_stm32/build/radio3.elf" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/robert/projects/mindpart/radio3_stm32/build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSTM32F10X_MD"/>
+					<Add option="-DUSE_STDPERIPH_DRIVER"/>
+					<Add option="-DHSE_VALUE=8000000"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/src"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/newlib"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/core"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom"/>
+					<Add directory="/Users/robert/projects/mindpart/radio3_stm32/license"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/include"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+					<Add directory="/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 radio3.elf/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/robert/projects/mindpart/radio3_stm32/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/core/ElectronicSignature.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug/log.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug/log.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/Spi.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/Spi.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/BlinkingLed.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/BlinkingLed.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/radio/Rf95x.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/radio/Rf95x.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/arm_common_tables.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/arm_const_structs.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/arm_math.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/cmsis_armcc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/cmsis_armcc_V6.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/cmsis_gcc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cm0.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cm0plus.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cm3.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cm4.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cm7.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cmFunc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cmInstr.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_cmSimd.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_sc000.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/core_sc300.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/stm32f10x.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cmsis/system_stm32f10x.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/cortexm/ExceptionHandlers.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/misc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_adc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_bkp.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_can.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_cec.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_crc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_dac.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_dbgmcu.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_dma.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_exti.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_flash.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_fsmc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_gpio.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_i2c.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_iwdg.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_pwr.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_rcc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_rtc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_sdio.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_spi.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_tim.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_usart.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/include/stm32f1-stdperiph/stm32f10x_wwdg.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/cmsis/system_stm32f10x.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/cmsis/vectors_stm32f10x.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/newlib/_cxx.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/newlib/_sbrk.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/newlib/_startup.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/newlib/_syscalls.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/misc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_adc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_bkp.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_can.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_cec.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_crc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_dac.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_dbgmcu.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_dma.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_exti.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_flash.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_fsmc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_gpio.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_i2c.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_iwdg.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_pwr.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_rcc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_rtc.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_sdio.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_spi.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_tim.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_usart.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/stm32f1-stdperiph/stm32f10x_wwdg.c">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer/Timer.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer/Timer.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/UsbDevice.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/UsbDevice.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_core.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_core.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_def.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_init.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_init.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_mem.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_mem.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_regs.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_regs.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_sil.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_sil.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/UsbVCom.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/UsbVCom.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/hw_config.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/hw_config.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/platform_config.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_conf.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_prop.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_prop.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Board.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Board.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Radio3.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Radio3.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/delay.cpp">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/delay.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/license.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/src/stm32f10x_conf.h">
+			<Option target="radio3.elf"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/robert/projects/mindpart/radio3_stm32/stm32f103c8.cmake">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,3 @@
+Options: 
+
+Options:-DCMAKE_TOOLCHAIN_FILE=stm32f103c8.cmake

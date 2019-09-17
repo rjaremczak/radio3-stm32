@@ -1,6 +1,19 @@
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
 cmake_minimum_required(VERSION 3.9)
 project(radio3_stm32 VERSION 3.3 LANGUAGES CXX C ASM)
 string(TIMESTAMP BUILD_TIMESTAMP %s)
+
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_VERSION 1)
+set(TOOLCHAIN "/usr/local/gcc-arm-none-eabi-7-2017-q4-major")
+
+# specify the cross compiler
+#set(CMAKE_C_COMPILER ${TOOLCHAIN}/bin/arm-none-eabi-gcc)
+#set(CMAKE_CXX_COMPILER ${TOOLCHAIN}/bin/arm-none-eabi-g++)
+#set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+#set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+#set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 add_definitions(-DSTM32F10X_MD)
 add_definitions(-DUSE_STDPERIPH_DRIVER)
@@ -33,8 +46,8 @@ add_executable(radio3.elf ${USER_SOURCES} ${LIB_STM32_SOURCES})
 target_compile_features(radio3.elf PUBLIC cxx_std_17 c_std_11)
 
 target_compile_options(radio3.elf
-        PUBLIC -mcpu=cortex-m3 -mthumb -ffreestanding -fmessage-length=0 -ffunction-sections -fdata-sections -Wall -Wextra -Wno-register
-        PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics>)
+        PUBLIC -mcpu=cortex-m3 -mthumb -ffreestanding -fmessage-length=0 -ffunction-sections -fdata-sections -Wall -Wextra
+        PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics -Wno-register>)
 
 add_custom_command(TARGET radio3.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex radio3.elf ${PROJECT_BINARY_DIR}/radio3.hex

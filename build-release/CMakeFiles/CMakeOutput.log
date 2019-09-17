@@ -1,0 +1,486 @@
+The system is: Darwin - 17.7.0 - x86_64
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+
+The CXX compiler identification is GNU, found in "/Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/3.12.1/CompilerIdCXX/CMakeCXXCompilerId.o"
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is GNU, found in "/Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/3.12.1/CompilerIdC/CMakeCCompilerId.o"
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5ba04/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_5ba04.dir/build.make CMakeFiles/cmTC_5ba04.dir/build
+Building CXX object CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX static library libcmTC_5ba04.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_5ba04.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ba04.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_5ba04.a  CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o
+/usr/bin/ranlib libcmTC_5ba04.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_5ba04.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_92fc0/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_92fc0.dir/build.make CMakeFiles/cmTC_92fc0.dir/build
+Building CXX object CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX static library libcmTC_92fc0.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_92fc0.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92fc0.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_92fc0.a  CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/ranlib libcmTC_92fc0.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_92fc0.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_92fc0/fast"]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_92fc0.dir/build.make CMakeFiles/cmTC_92fc0.dir/build]
+  ignore line: [Building CXX object CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX static library libcmTC_92fc0.a]
+  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_92fc0.dir/cmake_clean_target.cmake]
+  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92fc0.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/ar qc libcmTC_92fc0.a  CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/ranlib libcmTC_92fc0.a]
+  ignore line: [warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_92fc0.a the table of contents is empty (no object file members in the library define global symbols)]
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+
+
+Detecting CXX [-std=c++1z] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a693a/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_a693a.dir/build.make CMakeFiles/cmTC_a693a.dir/build
+Building CXX object CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++1z -o CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_a693a.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_a693a.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a693a.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_a693a.a  CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_a693a.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_a693a.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++14] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8bd5a/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8bd5a.dir/build.make CMakeFiles/cmTC_8bd5a.dir/build
+Building CXX object CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++14 -o CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_8bd5a.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_8bd5a.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bd5a.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_8bd5a.a  CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_8bd5a.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_8bd5a.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++11] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4c4c1/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4c4c1.dir/build.make CMakeFiles/cmTC_4c4c1.dir/build
+Building CXX object CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++11 -o CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_4c4c1.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_4c4c1.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c4c1.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_4c4c1.a  CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_4c4c1.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_4c4c1.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++98] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1da0c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_1da0c.dir/build.make CMakeFiles/cmTC_1da0c.dir/build
+Building CXX object CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++98 -o CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_1da0c.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_1da0c.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1da0c.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_1da0c.a  CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_1da0c.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_1da0c.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:0cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:0cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:0cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:0cxx_default_function_template_args
+    Feature record: CXX_FEATURE:0cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:0cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:0cxx_explicit_conversions
+    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:0cxx_extern_templates
+    Feature record: CXX_FEATURE:0cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:0cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:0cxx_local_type_template_args
+    Feature record: CXX_FEATURE:0cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:0cxx_nullptr
+    Feature record: CXX_FEATURE:0cxx_override
+    Feature record: CXX_FEATURE:0cxx_range_for
+    Feature record: CXX_FEATURE:0cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:0cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:0cxx_static_assert
+    Feature record: CXX_FEATURE:0cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:0cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:0cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:0cxx_variadic_macros
+    Feature record: CXX_FEATURE:0cxx_variadic_templates
+Determining if the C compiler works passed with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_58116/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_58116.dir/build.make CMakeFiles/cmTC_58116.dir/build
+Building C object CMakeFiles/cmTC_58116.dir/testCCompiler.c.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_58116.dir/testCCompiler.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C static library libcmTC_58116.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_58116.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_58116.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_58116.a  CMakeFiles/cmTC_58116.dir/testCCompiler.c.o
+/usr/bin/ranlib libcmTC_58116.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_58116.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d020c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_d020c.dir/build.make CMakeFiles/cmTC_d020c.dir/build
+Building C object CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCCompilerABI.c
+Linking C static library libcmTC_d020c.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_d020c.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d020c.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_d020c.a  CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o
+/usr/bin/ranlib libcmTC_d020c.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_d020c.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_d020c/fast"]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_d020c.dir/build.make CMakeFiles/cmTC_d020c.dir/build]
+  ignore line: [Building C object CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C static library libcmTC_d020c.a]
+  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_d020c.dir/cmake_clean_target.cmake]
+  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d020c.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/ar qc libcmTC_d020c.a  CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/ranlib libcmTC_d020c.a]
+  ignore line: [warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_d020c.a the table of contents is empty (no object file members in the library define global symbols)]
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7f015/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7f015.dir/build.make CMakeFiles/cmTC_7f015.dir/build
+Building C object CMakeFiles/cmTC_7f015.dir/feature_tests.c.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c11 -o CMakeFiles/cmTC_7f015.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_7f015.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_7f015.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f015.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_7f015.a  CMakeFiles/cmTC_7f015.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_7f015.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_7f015.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bf412/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_bf412.dir/build.make CMakeFiles/cmTC_bf412.dir/build
+Building C object CMakeFiles/cmTC_bf412.dir/feature_tests.c.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c99 -o CMakeFiles/cmTC_bf412.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_bf412.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_bf412.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bf412.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_bf412.a  CMakeFiles/cmTC_bf412.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_bf412.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_bf412.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6e6a0/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_6e6a0.dir/build.make CMakeFiles/cmTC_6e6a0.dir/build
+Building C object CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c90 -o CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_6e6a0.a
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_6e6a0.dir/cmake_clean_target.cmake
+/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e6a0.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_6e6a0.a  CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_6e6a0.a
+warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_6e6a0.a the table of contents is empty (no object file members in the library define global symbols)
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros

@@ -1,0 +1,474 @@
+The target system is: Generic - 1 - 
+The host system is: Darwin - 17.4.0 - x86_64
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++ 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+
+The CXX compiler identification is GNU, found in "/Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/3.9.6/CompilerIdCXX/CMakeCXXCompilerId.o"
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is GNU, found in "/Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/3.9.6/CompilerIdC/CMakeCCompilerId.o"
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e95b6/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_e95b6.dir/build.make CMakeFiles/cmTC_e95b6.dir/build
+Building CXX object CMakeFiles/cmTC_e95b6.dir/testCXXCompiler.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_e95b6.dir/testCXXCompiler.cxx.obj -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX static library libcmTC_e95b6.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_e95b6.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e95b6.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_e95b6.a  CMakeFiles/cmTC_e95b6.dir/testCXXCompiler.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_e95b6.a
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ec91c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ec91c.dir/build.make CMakeFiles/cmTC_ec91c.dir/build
+Building CXX object CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj -c /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.9/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX static library libcmTC_ec91c.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_ec91c.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ec91c.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_ec91c.a  CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_ec91c.a
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-none-eabi-ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_ec91c/fast"]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ec91c.dir/build.make CMakeFiles/cmTC_ec91c.dir/build]
+  ignore line: [Building CXX object CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj -c /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.9/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX static library libcmTC_ec91c.a]
+  ignore line: [/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_ec91c.dir/cmake_clean_target.cmake]
+  ignore line: [/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ec91c.dir/link.txt --verbose=1]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_ec91c.a  CMakeFiles/cmTC_ec91c.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_ec91c.a]
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+
+
+Detecting CXX [-std=c++1z] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_52387/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_52387.dir/build.make CMakeFiles/cmTC_52387.dir/build
+Building CXX object CMakeFiles/cmTC_52387.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++    -std=c++1z -o CMakeFiles/cmTC_52387.dir/feature_tests.cxx.obj -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_52387.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_52387.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_52387.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_52387.a  CMakeFiles/cmTC_52387.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_52387.a
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++14] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7d344/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7d344.dir/build.make CMakeFiles/cmTC_7d344.dir/build
+Building CXX object CMakeFiles/cmTC_7d344.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++    -std=c++14 -o CMakeFiles/cmTC_7d344.dir/feature_tests.cxx.obj -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_7d344.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_7d344.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d344.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_7d344.a  CMakeFiles/cmTC_7d344.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_7d344.a
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++11] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e6d66/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_e6d66.dir/build.make CMakeFiles/cmTC_e6d66.dir/build
+Building CXX object CMakeFiles/cmTC_e6d66.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++    -std=c++11 -o CMakeFiles/cmTC_e6d66.dir/feature_tests.cxx.obj -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_e6d66.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_e6d66.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6d66.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_e6d66.a  CMakeFiles/cmTC_e6d66.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_e6d66.a
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++98] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_edf74/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_edf74.dir/build.make CMakeFiles/cmTC_edf74.dir/build
+Building CXX object CMakeFiles/cmTC_edf74.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++    -std=c++98 -o CMakeFiles/cmTC_edf74.dir/feature_tests.cxx.obj -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_edf74.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_edf74.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_edf74.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_edf74.a  CMakeFiles/cmTC_edf74.dir/feature_tests.cxx.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_edf74.a
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:0cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:0cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:0cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:0cxx_default_function_template_args
+    Feature record: CXX_FEATURE:0cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:0cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:0cxx_explicit_conversions
+    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:0cxx_extern_templates
+    Feature record: CXX_FEATURE:0cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:0cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:0cxx_local_type_template_args
+    Feature record: CXX_FEATURE:0cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:0cxx_nullptr
+    Feature record: CXX_FEATURE:0cxx_override
+    Feature record: CXX_FEATURE:0cxx_range_for
+    Feature record: CXX_FEATURE:0cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:0cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:0cxx_static_assert
+    Feature record: CXX_FEATURE:0cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:0cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:0cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:0cxx_variadic_macros
+    Feature record: CXX_FEATURE:0cxx_variadic_templates
+Determining if the C compiler works passed with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_97310/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_97310.dir/build.make CMakeFiles/cmTC_97310.dir/build
+Building C object CMakeFiles/cmTC_97310.dir/testCCompiler.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_97310.dir/testCCompiler.c.obj   -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C static library libcmTC_97310.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_97310.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97310.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_97310.a  CMakeFiles/cmTC_97310.dir/testCCompiler.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_97310.a
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e830f/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_e830f.dir/build.make CMakeFiles/cmTC_e830f.dir/build
+Building C object CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj   -c /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.9/Modules/CMakeCCompilerABI.c
+Linking C static library libcmTC_e830f.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_e830f.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e830f.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_e830f.a  CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_e830f.a
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-none-eabi-ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_e830f/fast"]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_e830f.dir/build.make CMakeFiles/cmTC_e830f.dir/build]
+  ignore line: [Building C object CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj   -c /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.9/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C static library libcmTC_e830f.a]
+  ignore line: [/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_e830f.dir/cmake_clean_target.cmake]
+  ignore line: [/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e830f.dir/link.txt --verbose=1]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_e830f.a  CMakeFiles/cmTC_e830f.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_e830f.a]
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3dc89/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_3dc89.dir/build.make CMakeFiles/cmTC_3dc89.dir/build
+Building C object CMakeFiles/cmTC_3dc89.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c11 -o CMakeFiles/cmTC_3dc89.dir/feature_tests.c.obj   -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_3dc89.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_3dc89.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3dc89.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_3dc89.a  CMakeFiles/cmTC_3dc89.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_3dc89.a
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_513c8/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_513c8.dir/build.make CMakeFiles/cmTC_513c8.dir/build
+Building C object CMakeFiles/cmTC_513c8.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c99 -o CMakeFiles/cmTC_513c8.dir/feature_tests.c.obj   -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_513c8.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_513c8.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_513c8.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_513c8.a  CMakeFiles/cmTC_513c8.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_513c8.a
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_47db0/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_47db0.dir/build.make CMakeFiles/cmTC_47db0.dir/build
+Building C object CMakeFiles/cmTC_47db0.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c90 -o CMakeFiles/cmTC_47db0.dir/feature_tests.c.obj   -c /Users/robert/Projects/mindpart/radio3_stm32/build/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_47db0.a
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -P CMakeFiles/cmTC_47db0.dir/cmake_clean_target.cmake
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47db0.dir/link.txt --verbose=1
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ar qc libcmTC_47db0.a  CMakeFiles/cmTC_47db0.dir/feature_tests.c.obj
+/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-ranlib libcmTC_47db0.a
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros

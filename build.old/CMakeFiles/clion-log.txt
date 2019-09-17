@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=stm32f103c8.cmake -G "CodeBlocks - Unix Makefiles" /Users/robert/projects/mindpart/radio3_stm32
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/robert/projects/mindpart/radio3_stm32/build
