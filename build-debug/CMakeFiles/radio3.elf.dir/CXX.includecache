@@ -276,7 +276,7 @@ stm32f10x_wwdg.h
 misc.h
 ../src/misc.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug/log.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/debug/log.cpp
 cstdarg
 -
 cstdio
@@ -284,139 +284,139 @@ cstdio
 cstring
 -
 log.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug/log.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/debug/log.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/debug/log.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/debug/log.h
 Timer.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/GpioPin.cpp
 GpioPin.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/GpioPin.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/GpioPin.h
 stm32f10x.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/Spi.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/Spi.cpp
 Spi.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/Spi.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/Spi.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/Spi.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/Spi.h
 stm32f10x.h
 -
 GpioPin.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/io/GpioPin.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/io/GpioPin.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/BlinkingLed.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/BlinkingLed.cpp
 BlinkingLed.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/BlinkingLed.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/BlinkingLed.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/BlinkingLed.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/BlinkingLed.h
 Led.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/Led.h
 Timer.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Timer.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/Timer.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/Led.cpp
 Led.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/Led.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/Led.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/Led.h
 GpioPin.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/led/GpioPin.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/led/GpioPin.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/radio/Rf95x.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/radio/Rf95x.cpp
 algorithm
 -
 Rf95x.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/radio/Rf95x.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/radio/Rf95x.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/radio/Rf95x.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/radio/Rf95x.h
 Timer.h
 -
 Spi.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/system/src/newlib/_cxx.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/system/src/newlib/_cxx.cpp
 cstdlib
 -
 sys/types.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer/Timer.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/timer/Timer.cpp
 Timer.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer/Timer.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/timer/Timer.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/timer/Timer.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/timer/Timer.h
 stm32f10x.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/UsbDevice.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/UsbDevice.cpp
 UsbDevice.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/UsbDevice.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/UsbDevice.h
 usb_pwr.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_pwr.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_pwr.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/UsbDevice.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/UsbDevice.h
 cstdint
 -
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_core.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_core.cpp
 climits
 -
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_core.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_core.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_def.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_def.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_init.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_init.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_init.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_init.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 hw_config.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/hw_config.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/hw_config.h
 usb_conf.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_conf.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_conf.h
 usb_regs.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_regs.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_regs.h
 usb_def.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_def.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_def.h
 usb_core.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_core.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_core.h
 usb_init.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_init.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_init.h
 usb_sil.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_sil.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_sil.h
 usb_mem.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_mem.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_mem.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_mem.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_mem.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_mem.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_mem.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_regs.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_regs.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_regs.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_regs.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_sil.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_sil.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_lib.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_fs_driver/usb_sil.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_fs_driver/usb_sil.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/UsbVCom.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/UsbVCom.cpp
 log.h
 -
 cstdio
@@ -426,117 +426,119 @@ cstdarg
 cstring
 -
 UsbVCom.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/UsbVCom.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/UsbVCom.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/UsbVCom.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/UsbVCom.h
 Timer.h
 -
 UsbDevice.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/hw_config.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/hw_config.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_lib.h
 usb_desc.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_desc.h
 usb_pwr.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_pwr.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_desc.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_lib.h
 usb_desc.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_desc.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_desc.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_prop.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_prop.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_lib.h
 usb_prop.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_prop.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_prop.h
 usb_desc.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_desc.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_desc.h
 usb_pwr.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_pwr.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_prop.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_prop.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.cpp
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_pwr.cpp
 usb_lib.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_lib.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_lib.h
 usb_pwr.h
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_pwr.h
 
-/Users/robert/projects/mindpart/radio3_stm32/lib_stm32/usb_vcom/usb_pwr.h
+/home/robert/projects/mindpart/radio3-stm32/lib_stm32/usb_vcom/usb_pwr.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/Ad985x.cpp
 Vfo.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h
+/home/robert/projects/mindpart/radio3-stm32/src/Vfo.h
 delay.h
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 Ad985x.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.h
+/home/robert/projects/mindpart/radio3-stm32/src/Ad985x.h
 stm32f10x.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.h
+/home/robert/projects/mindpart/radio3-stm32/src/Ad985x.h
 Vfo.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h
+/home/robert/projects/mindpart/radio3-stm32/src/Vfo.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/AdcProbes.cpp
 AdcProbes.h
-/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.h
+/home/robert/projects/mindpart/radio3-stm32/src/AdcProbes.h
 delay.h
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.h
+/home/robert/projects/mindpart/radio3-stm32/src/AdcProbes.h
 cstdint
 -
 stm32f10x.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Board.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/Board.cpp
 stm32f10x.h
 -
 Board.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Board.h
+/home/robert/projects/mindpart/radio3-stm32/src/Board.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Board.h
+/home/robert/projects/mindpart/radio3-stm32/src/Board.h
 cstdint
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/Crc8.cpp
 Crc8.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.h
+/home/robert/projects/mindpart/radio3-stm32/src/Crc8.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.h
+/home/robert/projects/mindpart/radio3-stm32/src/Crc8.h
 cstdint
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/DataLink.cpp
 UsbVCom.h
 -
 DataLink.h
-/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.h
+/home/robert/projects/mindpart/radio3-stm32/src/DataLink.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.h
+/home/robert/projects/mindpart/radio3-stm32/src/DataLink.h
 cstdint
 -
 Crc8.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Crc8.h
+/home/robert/projects/mindpart/radio3-stm32/src/Crc8.h
+UsbVCom.h
+/home/robert/projects/mindpart/radio3-stm32/src/UsbVCom.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/FreqMeter.cpp
 FreqMeter.h
-/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.h
+/home/robert/projects/mindpart/radio3-stm32/src/FreqMeter.h
 stm32f10x.h
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.h
+/home/robert/projects/mindpart/radio3-stm32/src/FreqMeter.h
 cstdint
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Radio3.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/Radio3.cpp
 cstdio
 -
 stm32f10x.h
@@ -550,53 +552,53 @@ log.h
 ElectronicSignature.h
 -
 license.h
-/Users/robert/projects/mindpart/radio3_stm32/src/license.h
+/home/robert/projects/mindpart/radio3-stm32/src/license.h
 Vfo.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h
+/home/robert/projects/mindpart/radio3-stm32/src/Vfo.h
 Radio3.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Radio3.h
+/home/robert/projects/mindpart/radio3-stm32/src/Radio3.h
 delay.h
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Radio3.h
+/home/robert/projects/mindpart/radio3-stm32/src/Radio3.h
 DataLink.h
-/Users/robert/projects/mindpart/radio3_stm32/src/DataLink.h
+/home/robert/projects/mindpart/radio3-stm32/src/DataLink.h
 FreqMeter.h
-/Users/robert/projects/mindpart/radio3_stm32/src/FreqMeter.h
+/home/robert/projects/mindpart/radio3-stm32/src/FreqMeter.h
 AdcProbes.h
-/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.h
+/home/robert/projects/mindpart/radio3-stm32/src/AdcProbes.h
 Ad985x.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Ad985x.h
+/home/robert/projects/mindpart/radio3-stm32/src/Ad985x.h
 Sweep.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.h
+/home/robert/projects/mindpart/radio3-stm32/src/Sweep.h
 Board.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Board.h
+/home/robert/projects/mindpart/radio3-stm32/src/Board.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/Sweep.cpp
 Sweep.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.h
+/home/robert/projects/mindpart/radio3-stm32/src/Sweep.h
 delay.h
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Sweep.h
+/home/robert/projects/mindpart/radio3-stm32/src/Sweep.h
 cstdint
 -
 Vfo.h
-/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h
+/home/robert/projects/mindpart/radio3-stm32/src/Vfo.h
 AdcProbes.h
-/Users/robert/projects/mindpart/radio3_stm32/src/AdcProbes.h
+/home/robert/projects/mindpart/radio3-stm32/src/AdcProbes.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/Vfo.h
+/home/robert/projects/mindpart/radio3-stm32/src/Vfo.h
 cstdint
 -
 
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.cpp
+/home/robert/projects/mindpart/radio3-stm32/src/delay.cpp
 delay.h
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/delay.h
+/home/robert/projects/mindpart/radio3-stm32/src/delay.h
 
-/Users/robert/projects/mindpart/radio3_stm32/src/license.h
+/home/robert/projects/mindpart/radio3-stm32/src/license.h
 cstdint
 -
 ElectronicSignature.h

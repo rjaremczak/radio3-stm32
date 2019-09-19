@@ -1,6 +1,6 @@
-The system is: Darwin - 17.7.0 - x86_64
+The system is: Linux - 5.0.0-27-generic - x86_64
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc 
+Compiler: /home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++ 
 Build flags: 
 Id flags: -c 
 
@@ -10,10 +10,10 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
 
-The CXX compiler identification is GNU, found in "/Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/3.12.1/CompilerIdCXX/CMakeCXXCompilerId.o"
+The CXX compiler identification is GNU, found in "/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/3.13.4/CompilerIdCXX/CMakeCXXCompilerId.o"
 
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-Compiler: /usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc 
+Compiler: /home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc 
 Build flags: 
 Id flags: -c 
 
@@ -23,52 +23,61 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
 
-The C compiler identification is GNU, found in "/Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/3.12.1/CompilerIdC/CMakeCCompilerId.o"
+The C compiler identification is GNU, found in "/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/3.13.4/CompilerIdC/CMakeCCompilerId.o"
+
+Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+arm-none-eabi-gcc (GNU Tools for Arm Embedded Processors 8-2018-q4-major) 8.2.1 20181213 (release) [gcc-8-branch revision 267074]
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5ba04/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_5ba04.dir/build.make CMakeFiles/cmTC_5ba04.dir/build
-Building CXX object CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX static library libcmTC_5ba04.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_5ba04.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ba04.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_5ba04.a  CMakeFiles/cmTC_5ba04.dir/testCXXCompiler.cxx.o
-/usr/bin/ranlib libcmTC_5ba04.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_5ba04.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_036de/fast"
+/usr/bin/make -f CMakeFiles/cmTC_036de.dir/build.make CMakeFiles/cmTC_036de.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_036de.dir/testCXXCompiler.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_036de.dir/testCXXCompiler.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX static library libcmTC_036de.a
+/usr/bin/cmake -P CMakeFiles/cmTC_036de.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_036de.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_036de.a  CMakeFiles/cmTC_036de.dir/testCXXCompiler.cxx.o
+/usr/bin/ranlib libcmTC_036de.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_92fc0/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_92fc0.dir/build.make CMakeFiles/cmTC_92fc0.dir/build
-Building CXX object CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX static library libcmTC_92fc0.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_92fc0.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92fc0.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_92fc0.a  CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/ranlib libcmTC_92fc0.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_92fc0.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_b274f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b274f.dir/build.make CMakeFiles/cmTC_b274f.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX static library libcmTC_b274f.a
+/usr/bin/cmake -P CMakeFiles/cmTC_b274f.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b274f.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_b274f.a  CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/ranlib libcmTC_b274f.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_92fc0/fast"]
-  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_92fc0.dir/build.make CMakeFiles/cmTC_92fc0.dir/build]
-  ignore line: [Building CXX object CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc     -o CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX static library libcmTC_92fc0.a]
-  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_92fc0.dir/cmake_clean_target.cmake]
-  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92fc0.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/ar qc libcmTC_92fc0.a  CMakeFiles/cmTC_92fc0.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/ranlib libcmTC_92fc0.a]
-  ignore line: [warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_92fc0.a the table of contents is empty (no object file members in the library define global symbols)]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_b274f/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_b274f.dir/build.make CMakeFiles/cmTC_b274f.dir/build]
+  ignore line: [make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++     -o CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX static library libcmTC_b274f.a]
+  ignore line: [/usr/bin/cmake -P CMakeFiles/cmTC_b274f.dir/cmake_clean_target.cmake]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b274f.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/ar qc libcmTC_b274f.a  CMakeFiles/cmTC_b274f.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/ranlib libcmTC_b274f.a]
+  ignore line: [make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp']
   ignore line: []
   implicit libs: []
   implicit dirs: []
@@ -77,19 +86,95 @@ Parsed CXX implicit link information from above output:
 
 
 
-Detecting CXX [-std=c++1z] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Detecting CXX [-std=c++2a] compiler features compiled with the following output:
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a693a/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_a693a.dir/build.make CMakeFiles/cmTC_a693a.dir/build
-Building CXX object CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++1z -o CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
-Linking CXX static library libcmTC_a693a.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_a693a.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a693a.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_a693a.a  CMakeFiles/cmTC_a693a.dir/feature_tests.cxx.o
-/usr/bin/ranlib libcmTC_a693a.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_a693a.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_91bf7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_91bf7.dir/build.make CMakeFiles/cmTC_91bf7.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_91bf7.dir/feature_tests.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    -std=c++2a -o CMakeFiles/cmTC_91bf7.dir/feature_tests.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_91bf7.a
+/usr/bin/cmake -P CMakeFiles/cmTC_91bf7.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91bf7.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_91bf7.a  CMakeFiles/cmTC_91bf7.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_91bf7.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++17] compiler features compiled with the following output:
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_413ec/fast"
+/usr/bin/make -f CMakeFiles/cmTC_413ec.dir/build.make CMakeFiles/cmTC_413ec.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_413ec.dir/feature_tests.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    -std=c++17 -o CMakeFiles/cmTC_413ec.dir/feature_tests.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_413ec.a
+/usr/bin/cmake -P CMakeFiles/cmTC_413ec.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_413ec.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_413ec.a  CMakeFiles/cmTC_413ec.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_413ec.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -152,18 +237,19 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8bd5a/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8bd5a.dir/build.make CMakeFiles/cmTC_8bd5a.dir/build
-Building CXX object CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++14 -o CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
-Linking CXX static library libcmTC_8bd5a.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_8bd5a.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bd5a.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_8bd5a.a  CMakeFiles/cmTC_8bd5a.dir/feature_tests.cxx.o
-/usr/bin/ranlib libcmTC_8bd5a.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_8bd5a.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_0cf5e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0cf5e.dir/build.make CMakeFiles/cmTC_0cf5e.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0cf5e.dir/feature_tests.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    -std=c++14 -o CMakeFiles/cmTC_0cf5e.dir/feature_tests.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_0cf5e.a
+/usr/bin/cmake -P CMakeFiles/cmTC_0cf5e.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0cf5e.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_0cf5e.a  CMakeFiles/cmTC_0cf5e.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_0cf5e.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -226,18 +312,19 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_4c4c1/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4c4c1.dir/build.make CMakeFiles/cmTC_4c4c1.dir/build
-Building CXX object CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++11 -o CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
-Linking CXX static library libcmTC_4c4c1.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_4c4c1.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c4c1.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_4c4c1.a  CMakeFiles/cmTC_4c4c1.dir/feature_tests.cxx.o
-/usr/bin/ranlib libcmTC_4c4c1.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_4c4c1.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_f0be9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f0be9.dir/build.make CMakeFiles/cmTC_f0be9.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_f0be9.dir/feature_tests.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    -std=c++11 -o CMakeFiles/cmTC_f0be9.dir/feature_tests.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_f0be9.a
+/usr/bin/cmake -P CMakeFiles/cmTC_f0be9.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f0be9.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_f0be9.a  CMakeFiles/cmTC_f0be9.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_f0be9.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -300,18 +387,19 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_1da0c/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_1da0c.dir/build.make CMakeFiles/cmTC_1da0c.dir/build
-Building CXX object CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -std=c++98 -o CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.cxx
-Linking CXX static library libcmTC_1da0c.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_1da0c.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1da0c.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_1da0c.a  CMakeFiles/cmTC_1da0c.dir/feature_tests.cxx.o
-/usr/bin/ranlib libcmTC_1da0c.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_1da0c.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_60b0c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_60b0c.dir/build.make CMakeFiles/cmTC_60b0c.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_60b0c.dir/feature_tests.cxx.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-g++    -std=c++98 -o CMakeFiles/cmTC_60b0c.dir/feature_tests.cxx.o -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.cxx
+Linking CXX static library libcmTC_60b0c.a
+/usr/bin/cmake -P CMakeFiles/cmTC_60b0c.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60b0c.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_60b0c.a  CMakeFiles/cmTC_60b0c.dir/feature_tests.cxx.o
+/usr/bin/ranlib libcmTC_60b0c.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -372,49 +460,52 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
 Determining if the C compiler works passed with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_58116/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_58116.dir/build.make CMakeFiles/cmTC_58116.dir/build
-Building C object CMakeFiles/cmTC_58116.dir/testCCompiler.c.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_58116.dir/testCCompiler.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C static library libcmTC_58116.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_58116.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_58116.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_58116.a  CMakeFiles/cmTC_58116.dir/testCCompiler.c.o
-/usr/bin/ranlib libcmTC_58116.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_58116.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_c00b4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c00b4.dir/build.make CMakeFiles/cmTC_c00b4.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c00b4.dir/testCCompiler.c.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_c00b4.dir/testCCompiler.c.o   -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C static library libcmTC_c00b4.a
+/usr/bin/cmake -P CMakeFiles/cmTC_c00b4.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c00b4.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_c00b4.a  CMakeFiles/cmTC_c00b4.dir/testCCompiler.c.o
+/usr/bin/ranlib libcmTC_c00b4.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d020c/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_d020c.dir/build.make CMakeFiles/cmTC_d020c.dir/build
-Building C object CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCCompilerABI.c
-Linking C static library libcmTC_d020c.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_d020c.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d020c.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_d020c.a  CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o
-/usr/bin/ranlib libcmTC_d020c.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_d020c.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_94074/fast"
+/usr/bin/make -f CMakeFiles/cmTC_94074.dir/build.make CMakeFiles/cmTC_94074.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c
+Linking C static library libcmTC_94074.a
+/usr/bin/cmake -P CMakeFiles/cmTC_94074.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_94074.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_94074.a  CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o
+/usr/bin/ranlib libcmTC_94074.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_d020c/fast"]
-  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_d020c.dir/build.make CMakeFiles/cmTC_d020c.dir/build]
-  ignore line: [Building C object CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.12.1/share/cmake/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C static library libcmTC_d020c.a]
-  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_d020c.dir/cmake_clean_target.cmake]
-  ignore line: [/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d020c.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/ar qc libcmTC_d020c.a  CMakeFiles/cmTC_d020c.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/ranlib libcmTC_d020c.a]
-  ignore line: [warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_d020c.a the table of contents is empty (no object file members in the library define global symbols)]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_94074/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_94074.dir/build.make CMakeFiles/cmTC_94074.dir/build]
+  ignore line: [make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc    -o CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C static library libcmTC_94074.a]
+  ignore line: [/usr/bin/cmake -P CMakeFiles/cmTC_94074.dir/cmake_clean_target.cmake]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_94074.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/ar qc libcmTC_94074.a  CMakeFiles/cmTC_94074.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/ranlib libcmTC_94074.a]
+  ignore line: [make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp']
   ignore line: []
   implicit libs: []
   implicit dirs: []
@@ -424,18 +515,19 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7f015/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7f015.dir/build.make CMakeFiles/cmTC_7f015.dir/build
-Building C object CMakeFiles/cmTC_7f015.dir/feature_tests.c.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c11 -o CMakeFiles/cmTC_7f015.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
-Linking C static library libcmTC_7f015.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_7f015.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f015.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_7f015.a  CMakeFiles/cmTC_7f015.dir/feature_tests.c.o
-/usr/bin/ranlib libcmTC_7f015.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_7f015.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_815c6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_815c6.dir/build.make CMakeFiles/cmTC_815c6.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_815c6.dir/feature_tests.c.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc   -std=c11 -o CMakeFiles/cmTC_815c6.dir/feature_tests.c.o   -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_815c6.a
+/usr/bin/cmake -P CMakeFiles/cmTC_815c6.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_815c6.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_815c6.a  CMakeFiles/cmTC_815c6.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_815c6.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -445,18 +537,19 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_bf412/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_bf412.dir/build.make CMakeFiles/cmTC_bf412.dir/build
-Building C object CMakeFiles/cmTC_bf412.dir/feature_tests.c.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c99 -o CMakeFiles/cmTC_bf412.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
-Linking C static library libcmTC_bf412.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_bf412.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bf412.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_bf412.a  CMakeFiles/cmTC_bf412.dir/feature_tests.c.o
-/usr/bin/ranlib libcmTC_bf412.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_bf412.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_6a53d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6a53d.dir/build.make CMakeFiles/cmTC_6a53d.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a53d.dir/feature_tests.c.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc   -std=c99 -o CMakeFiles/cmTC_6a53d.dir/feature_tests.c.o   -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_6a53d.a
+/usr/bin/cmake -P CMakeFiles/cmTC_6a53d.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a53d.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_6a53d.a  CMakeFiles/cmTC_6a53d.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_6a53d.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -466,18 +559,19 @@ warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xcto
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/CMakeTmp
+Change Dir: /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6e6a0/fast"
-/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_6e6a0.dir/build.make CMakeFiles/cmTC_6e6a0.dir/build
-Building C object CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o
-/usr/local/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc   -std=c90 -o CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o   -c /Users/robert/projects/mindpart/radio3_stm32/build-release/CMakeFiles/feature_tests.c
-Linking C static library libcmTC_6e6a0.a
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -P CMakeFiles/cmTC_6e6a0.dir/cmake_clean_target.cmake
-/usr/local/Cellar/cmake/3.12.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e6a0.dir/link.txt --verbose=1
-/usr/bin/ar qc libcmTC_6e6a0.a  CMakeFiles/cmTC_6e6a0.dir/feature_tests.c.o
-/usr/bin/ranlib libcmTC_6e6a0.a
-warning: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: warning for library: libcmTC_6e6a0.a the table of contents is empty (no object file members in the library define global symbols)
+Run Build Command:"/usr/bin/make" "cmTC_0dbca/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0dbca.dir/build.make CMakeFiles/cmTC_0dbca.dir/build
+make[1]: Entering directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0dbca.dir/feature_tests.c.o
+/home/robert/toolchains/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-gcc   -std=c90 -o CMakeFiles/cmTC_0dbca.dir/feature_tests.c.o   -c /home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/feature_tests.c
+Linking C static library libcmTC_0dbca.a
+/usr/bin/cmake -P CMakeFiles/cmTC_0dbca.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0dbca.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_0dbca.a  CMakeFiles/cmTC_0dbca.dir/feature_tests.c.o
+/usr/bin/ranlib libcmTC_0dbca.a
+make[1]: Leaving directory '/home/robert/projects/mindpart/radio3-stm32/build-release/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes

@@ -52,5 +52,5 @@ target_compile_options(radio3.elf
 add_custom_command(TARGET radio3.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex radio3.elf ${PROJECT_BINARY_DIR}/radio3.hex
         #COMMAND ${CMAKE_OBJCOPY} -O binary radio3.elf ${PROJECT_BINARY_DIR}/radio3.bin
-        COMMAND ${TOOLCHAIN}/bin/arm-none-eabi-size --format=berkeley radio3.elf
+        COMMAND ${TOOLCHAIN}/arm-none-eabi-size --format=berkeley radio3.elf
         COMMENT "post build steps")

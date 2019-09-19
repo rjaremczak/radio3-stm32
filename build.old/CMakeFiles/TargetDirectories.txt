@@ -1,3 +1,0 @@
-/Users/robert/projects/mindpart/radio3_stm32/build/CMakeFiles/rebuild_cache.dir
-/Users/robert/projects/mindpart/radio3_stm32/build/CMakeFiles/edit_cache.dir
-/Users/robert/projects/mindpart/radio3_stm32/build/CMakeFiles/radio3.elf.dir

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include "Crc8.h"
+#include "UsbVCom.h"
 
 class DataLink {
     enum class Status : uint8_t {
